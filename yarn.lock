@@ -5434,9 +5434,9 @@ scss-tokenizer@^0.2.3:
     js-base64 "^2.1.8"
     source-map "^0.4.2"
 
-sdk-tools@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/sdk-tools/-/sdk-tools-1.0.3.tgz#df5159d6c8c66d44195084eca6387784f4d9253d"
+sdk-tools@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/sdk-tools/-/sdk-tools-1.0.5.tgz#ed0f7aee34f63baca623f4db8a403885f4804f55"
 
 select-hose@^2.0.0:
   version "2.0.0"

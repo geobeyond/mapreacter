@@ -10,13 +10,18 @@ var plugins = [
     'Intl': 'imports?this=>global!exports?global.Intl!intl'
   }),
   new ExtractTextPlugin('css/sdk.css'),
-  new ExtractTextPlugin({ filename: 'css/app.min.css', disable: false })
+  new ExtractTextPlugin({ filename: 'css/app.css', disable: false })
 ];
 var filename = '[name].js';
 var devtool= 'inline-source-map';
+if(process.env.NODE_ENV === "development") {
+  plugins.push(new webpack.DefinePlugin({ 'process.env': { 'NODE_ENV': JSON.stringify('development') } }));
+  filename = '[name].js';
+  devtool = '';
+}
 if(process.env.NODE_ENV === "production") {
   plugins.push(new webpack.DefinePlugin({ 'process.env': { 'NODE_ENV': JSON.stringify('production') } }));
-  filename = '[name].min.js';
+  filename = '[name].js';
   devtool = '';
 }
 
