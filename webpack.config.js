@@ -9,7 +9,8 @@ var plugins = [
   new webpack.ProvidePlugin({
     'Intl': 'imports?this=>global!exports?global.Intl!intl'
   }),
-  new ExtractTextPlugin('sdk.css'),
+  new ExtractTextPlugin('css/sdk.css'),
+  new ExtractTextPlugin({ filename: 'css/app.min.css', disable: false })
 ];
 var filename = '[name].js';
 var devtool= 'inline-source-map';
@@ -21,7 +22,10 @@ if(process.env.NODE_ENV === "production") {
 
 module.exports = {
   entry: {
-    app: APP_DIR + '/src/app.js'
+    app: [
+        APP_DIR + '/src/app.js',
+        APP_DIR + '/src/styles/less/app.less',
+    ],
   },
   output: {
     path: BUILD_DIR,
@@ -46,6 +50,14 @@ module.exports = {
       }, {
         test: /\.css$/,
         loader: "style-loader!css-loader"
+      }, {
+        test: /\.less$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', {
+          loader: 'less-loader',
+          }],
+        }),
       }, {
         test: /\.json$/,
         loader: "json-loader"
