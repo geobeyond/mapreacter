@@ -2,6 +2,7 @@ var webpack = require('webpack');
 var path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HTMLWebpackPlugin = require('html-webpack-plugin');
+var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 var Minimist = require('minimist');
 
 var BUILD_DIR = path.resolve(__dirname, 'dist');
@@ -97,6 +98,14 @@ if (process.env.NODE_ENV === "production") {
   plugins.push(new HTMLWebpackPlugin({
               filename: 'index.html',
               template: path.resolve(APP_DIR, 'src/tpl/prod.html'),
+          }));
+  plugins.push(new UglifyJSPlugin({
+              uglifyOptions: {
+                  sourceMap: true,   // enable source maps to map errors (stack traces) to modules
+                  output: {
+                    comments: false, // remove all comments
+                  },
+              }
           }));
   filename = '[name].min.js';
   devtool = '';
