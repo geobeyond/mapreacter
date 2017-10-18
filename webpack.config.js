@@ -1,9 +1,12 @@
 var webpack = require('webpack');
 var path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var HTMLWebpackPlugin = require('html-webpack-plugin');
+var Minimist = require('minimist');
 
 var BUILD_DIR = path.resolve(__dirname, 'dist');
 var APP_DIR = path.resolve(__dirname, '.');
+var DEFAULT_CONTEXT = '/mapreacter';
 
 var plugins = [
   new webpack.ProvidePlugin({
@@ -15,7 +18,7 @@ var filename = '[name].js';
 var devtool= 'inline-source-map';
 if (process.env.NODE_ENV === "development") {
   plugins.push(new webpack.DefinePlugin({ 'process.env': { 'NODE_ENV': JSON.stringify('development') } }));
-  plugins.push(new ExtractTextPlugin({ filename: 'css/app.css', disable: false }));
+  plugins.push(new ExtractTextPlugin({ filename: 'css/[name].css', disable: false }));
   plugins.push(new ExtractTextPlugin('css/sdk.css'));
   filename = '[name].js';
   devtool = '';
@@ -89,10 +92,24 @@ if (process.env.NODE_ENV === "development") {
 }
 if (process.env.NODE_ENV === "production") {
   plugins.push(new webpack.DefinePlugin({ 'process.env': { 'NODE_ENV': JSON.stringify('production') } }));
-  plugins.push(new ExtractTextPlugin({ filename: 'css/app.min.css', disable: false }));
+  plugins.push(new ExtractTextPlugin({ filename: 'css/[name].min.css', disable: false }));
   plugins.push(new ExtractTextPlugin('css/sdk.min.css'));
+  plugins.push(new HTMLWebpackPlugin({
+              filename: 'index.html',
+              template: path.resolve(APP_DIR, 'src/tpl/prod.html'),
+          }));
   filename = '[name].min.js';
   devtool = '';
+
+  function _resolveBuildContext(defaultContext) {
+    // get context command line argument eg: "webpack --context=mapreacter"
+    var context = '/' + Minimist(process.argv.slice(2)).context;
+    if (!context) {
+        console.log('No build context provided, using default target instead\n\n');
+        context = defaultContext;
+    }
+    return context;
+  }
 
   module.exports = {
     entry: {
@@ -107,7 +124,7 @@ if (process.env.NODE_ENV === "production") {
       library: '[name]',
       libraryTarget: 'umd',
       umdNamedDefine: true,
-      publicPath: "/dist/"
+      publicPath: _resolveBuildContext(DEFAULT_CONTEXT)
     },
     devtool: devtool,
     node: {fs: "empty"},
