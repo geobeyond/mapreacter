@@ -27,8 +27,8 @@ if (process.env.NODE_ENV === "development") {
   module.exports = {
     entry: {
       Client: [
-          APP_DIR + '/src/client.jsx',
           APP_DIR + '/src/styles/less/client.less',
+          APP_DIR + '/src/client.jsx',
       ],
     },
     output: {
@@ -124,8 +124,8 @@ if (process.env.NODE_ENV === "production") {
   module.exports = {
     entry: {
       Client: [
-          APP_DIR + '/src/client.jsx',
           APP_DIR + '/src/styles/less/client.less',
+          APP_DIR + '/src/client.jsx',
       ],
     },
     output: {
