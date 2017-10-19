@@ -1,3 +1,6 @@
 node_modules
+dist
+npm-debug.log
 *.swp
+*.zip
 .DS_Store
