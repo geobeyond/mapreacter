@@ -34,14 +34,15 @@ export class Map extends React.Component {
     this.props.updateLayersWithViewparams(viewparams.split("/"))
   }
   render() {
+    let token = this.props.mapConfig.basemap === 'mapbox' ? this.props.mapConfig.mapbox.token : '';
     let layerListStyle = {
       margin: 0
     }
     return(
       <div className="client-map">
         <SdkMap
-          accessToken={this.props.mapConfig.mapbox.token}
           style={{position: 'relative'}}
+          accessToken={token}
           includeFeaturesOnClick
           onClick={(map, xy, featuresPromise) => {
             featuresPromise.then((featureGroups) => {
