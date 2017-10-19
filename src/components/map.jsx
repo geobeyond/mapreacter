@@ -40,7 +40,6 @@ export class Map extends React.Component {
     return(
       <div className="client-map">
         <SdkMap
-          accessToken={this.props.mapConfig.mapbox.token}
           style={{position: 'relative'}}
           includeFeaturesOnClick
           onClick={(map, xy, featuresPromise) => {
