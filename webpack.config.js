@@ -98,6 +98,7 @@ if (process.env.NODE_ENV === "production") {
   plugins.push(new HTMLWebpackPlugin({
               filename: 'index.html',
               template: path.resolve(APP_DIR, 'src/tpl/prod.html'),
+              inject: 'head',
           }));
   plugins.push(new UglifyJSPlugin({
               uglifyOptions: {
