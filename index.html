@@ -52,7 +52,12 @@
   <script src="/dist/Client.js"></script>
   <script >
 		var config = {
-			basemap: 'osm',
+			basemap: 'mapbox',
+			mapbox: {
+				type: 'raster',
+				style: 'mapbox.satellite',
+				token: 'pk.eyJ1IjoibWlsYWZyZXJpY2hzIiwiYSI6ImNqOHk3YXJibTFwbTkycW9iM2JkMGVzbnEifQ.TKtR_oqVfT3bR7kEAPxK7w',
+			},
 			viewparams: ['nome_scientifico'],
 			source: 'http://ogsuite.geobeyond.it/geoserver/nnb/wms?SERVICE=WMS&VERSION=1.1.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true',
 			layers: ['nnb:param_oss_point'],
