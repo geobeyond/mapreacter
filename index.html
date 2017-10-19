@@ -49,8 +49,15 @@
       s.parentNode.insertBefore(wf, s);
     })();
   </script>
-  <script src="/dist/app.js"></script>
+  <script src="/dist/Client.js"></script>
   <script >
-    </script>
+		var config = {
+			basemap: 'osm',
+			viewparams: ['nome_scientifico'],
+			source: 'http://ogsuite.geobeyond.it/geoserver/nnb/wms?SERVICE=WMS&VERSION=1.1.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true',
+			layers: ['nnb:param_oss_point'],
+		};
+		var client = new Client('map', config);
+	</script>
 </body>
 </html>

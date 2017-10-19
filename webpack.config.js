@@ -21,7 +21,7 @@ if(process.env.NODE_ENV === "production") {
 
 module.exports = {
   entry: {
-    app: APP_DIR + '/src/app.js'
+    Client: APP_DIR + '/src/client.jsx'
   },
   output: {
     path: BUILD_DIR,
