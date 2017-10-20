@@ -24,18 +24,27 @@ class Client {
     this.mapId = mapId;
     this.config = config;
     this._configureStore();
-    if(config.basemap) {
-      if(config.basemap === 'osm') {
-        this.addOsmBasemap();
-      } else if (config.basemap === 'mapbox' && config.mapbox.style) {
-        this.addMapBoxBasemap();
-      }
+    if(config.basemaps) {
+      config.basemaps.reverse().forEach( (basemap) => {
+        this._addBasemap(basemap, config[basemap]);
+      })
     }
     this.store.dispatch(configActions.setConfig(config));
     if(config.source && config.layers) {
       this._createLayers(config.source, config.layers);
     }
     this.renderMap();
+    if(this.config.map && this.config.map.center) {
+      let zoom = this.config.map.zoom || 2;
+      this.store.dispatch(mapActions.setView(this.config.map.center, zoom));
+    }
+  }
+  _addBasemap(basemap, basemapConfig = {}) {
+    if(basemap === 'osm') {
+      this.addOsmBasemap();
+    } else if (basemap === 'mapbox' && basemapConfig.style) {
+      this.addMapBoxBasemap();
+    }
   }
   _createLayers(sourceUrl, layers) {
     layers.forEach( (layerName, i, layers_) => {

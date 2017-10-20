@@ -54,11 +54,15 @@
   <script src="/dist/Client.js"></script>
   <script >
 		var config = {
-			basemap: 'mapbox',
+			basemaps: ['mapbox', 'osm'],
 			mapbox: {
 				type: 'raster',
 				style: 'mapbox.satellite',
 				token: 'pk.eyJ1IjoibWlsYWZyZXJpY2hzIiwiYSI6ImNqOHk3YXJibTFwbTkycW9iM2JkMGVzbnEifQ.TKtR_oqVfT3bR7kEAPxK7w',
+			},
+			map: {
+				center: [12, 42],
+				zoom: 6
 			},
 			viewparams: ['nome_scientifico'],
 			source: 'http://ogsuite.geobeyond.it/geoserver/nnb/wms?SERVICE=WMS&VERSION=1.1.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true',
