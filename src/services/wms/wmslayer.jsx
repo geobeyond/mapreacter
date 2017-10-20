@@ -5,7 +5,7 @@ export const createWMSSourceWithLayerName = (url, name, options = {tileSize: 256
   return {
       type: 'raster',
       tileSize: options.tileSize,
-      tiles: [`${url}&layers=${name}`],
+      tiles: [`${url}&LAYERS=${name}`],
   }
 }
 export const createWMSSource = (url, options = {tileSize: 256}) => {
@@ -15,7 +15,7 @@ export const createWMSSource = (url, options = {tileSize: 256}) => {
       tiles: [url],
   }
 }
-export const createWMSLayer = (sourceId, id, title, options = {}) => {
+export const createWMSLayer = (sourceId, id, title, options = {queryable: true }) => {
   return {
     metadata: {
       'bnd:title': title,
