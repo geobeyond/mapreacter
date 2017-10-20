@@ -13,6 +13,7 @@ import * as mapActions from '@boundlessgeo/sdk/actions/map';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import {createWMSLayer, createWMSSourceWithLayerName} from './services/wms/wmslayer'
+import {createVectorSourceFromStyle, createRasterSourceFromStyle} from './services/mapbox'
 
 import MapReducer from './reducers/map';
 import * as configActions from './actions/map';
@@ -26,7 +27,7 @@ class Client {
     if(config.basemap) {
       if(config.basemap === 'osm') {
         this.addOsmBasemap();
-      } else if (config.basemap === 'mapbox') {
+      } else if (config.basemap === 'mapbox' && config.mapbox.style) {
         this.addMapBoxBasemap();
       }
     }
@@ -70,10 +71,15 @@ class Client {
   }
 
   addMapBoxBasemap() {
-    const baseUrl = `https://api.mapbox.com/styles/v1/mapbox/${this.config.mapbox.style}`;
-    const mapboxUrl = `mapbox://${this.config.mapbox.style}`;
-    const url = `http://api.mapbox.com/styles/v1/mapbox/${this.config.mapbox.style}?access_token=${this.config.mapbox.token}`;
-    this.store.dispatch(mapActions.addSource('mapbox',{ type: 'vector', url: mapboxUrl}));
+    let source;
+    switch(this.config.mapbox.type) {
+      case 'raster':
+        source = createRasterSourceFromStyle(this.config.mapbox.style, this.config.mapbox.token);
+        break;
+      default:
+        source = createVectorSourceFromStyle(this.config.mapbox.style);
+    }
+    this.store.dispatch(mapActions.addSource('mapbox', source));
     this.store.dispatch(mapActions.addLayer({
       id: 'mapbox',
       source: 'mapbox',
