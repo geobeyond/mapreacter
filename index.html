@@ -60,7 +60,7 @@
 			},
 			viewparams: ['nome_scientifico'],
 			source: 'http://ogsuite.geobeyond.it/geoserver/nnb/wms?SERVICE=WMS&VERSION=1.1.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true',
-			layers: ['nnb:param_oss_point'],
+			layers: ['nnb:param_oss_point', 'nnb:param_oss_polig', 'nnb:param_dist_geom'],
 		};
 		var client = new Client('map', config);
 	</script>
