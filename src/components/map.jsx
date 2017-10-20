@@ -44,20 +44,22 @@ export class Map extends React.Component {
           includeFeaturesOnClick
           onClick={(map, xy, featuresPromise) => {
             featuresPromise.then((featureGroups) => {
-              let features = [];
+              let items = [];
               for (let g = 0, gg = featureGroups.length; g < gg; g++) {
                 const layers = Object.keys(featureGroups[g]);
                 for (let l = 0, ll = layers.length; l < ll; l++) {
                   const layer = layers[l];
-                  features = features.concat(featureGroups[g][layer]);
+                  items.push({ layer: layer, features: featureGroups[g][layer]});
                 }
               }
-              if (features.length > 0) {
-                map.addPopup(<WMSPopup
+              if (items.length > 0) {
+                map.addPopup(
+                <WMSPopup
                   coordinate={xy}
                   closeable
-                  features={features}
-                />);
+                  items={items}
+                />
+                );
               }
             });
           }}>
