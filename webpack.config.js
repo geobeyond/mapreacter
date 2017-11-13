@@ -4,6 +4,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HTMLWebpackPlugin = require('html-webpack-plugin');
 var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 var Minimist = require('minimist');
+var DashboardPlugin = require('webpack-dashboard/plugin')
 
 var BUILD_DIR = path.resolve(__dirname, 'dist');
 var APP_DIR = path.resolve(__dirname, '.');
@@ -21,6 +22,7 @@ if (process.env.NODE_ENV === "development") {
   plugins.push(new webpack.DefinePlugin({ 'process.env': { 'NODE_ENV': JSON.stringify('development') } }));
   plugins.push(new ExtractTextPlugin({ filename: 'css/[name].css', disable: false }));
   plugins.push(new ExtractTextPlugin('css/sdk.css'));
+  plugins.push(new DashboardPlugin());
   filename = '[name].js';
   devtool = '';
 
