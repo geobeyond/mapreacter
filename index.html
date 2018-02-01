@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" >
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Intl.~locale.en,Object.assign"></script>
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link href="/dist/css/Client.css" rel="stylesheet">
 	<link href="/dist/css/sdk.css" rel="stylesheet">
 	<style>
@@ -31,12 +32,19 @@
 			top: 20px;
 			z-index: 2;
 		}
+		.footer {
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			padding: 1rem;
+			background-color: #efefef;
+			text-align: center;
+		}		
 	</style>
 </head>
 <body>
   <div id='map'></div>
-  <div id='controls'></div>
-  <div id='add-wms'></div>
   <!-- This script adds the Roboto font to our project. For more detail go to this site:  http://www.google.com/fonts#UsePlace:use/Collection:Roboto:400,300,500 -->
   <script>
     var WebFontConfig = {
@@ -64,10 +72,12 @@
 				center: [12, 42],
 				zoom: 6
 			},
-			viewparams: ['nome_scientifico'],
-			source: 'http://ogsuite.geobeyond.it/geoserver/nnb/wms?SERVICE=WMS&VERSION=1.1.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true',
-			layers: ['nnb:param_oss_point', 'nnb:param_oss_polig', 'nnb:param_dist_geom'],
+			viewparams: ['phylum','famiglia','nome_scientifico'],
+			source: 'http://localhost:8080/geoserver/wms?SERVICE=WMS&VERSION=1.1.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true',
+			layers: ['nnb:param_oss_point'],
+			tassonomiaserviceurl: 'http://localhost:8080/MyRestServer/tassonomia?name=',
 		};
+		console.log("index.html", JSON.stringify(config));
 		var client = new Client('map', config);
 	</script>
 </body>
