@@ -31,9 +31,11 @@ export class Map extends React.Component {
     }
   }
   updateLayer(viewparams) {
+    console.log("Map.updateLayer()", viewparams);
     this.props.updateLayersWithViewparams(viewparams.split("/"))
   }
   render() {
+    console.log("Map.render()");
     let token = this.props.mapConfig.basemap === 'mapbox' ? this.props.mapConfig.mapbox.token : '';
     let layerListStyle = {
       margin: 0
@@ -67,13 +69,6 @@ export class Map extends React.Component {
           }}>
           <ZoomControl />
         </SdkMap>
-        <div id="controls">
-          <Paper>
-            <List>
-              <SdkLayerList style={layerListStyle} className='layer-list' layerClass={LayerListItem}/>
-            </List>
-          </Paper>
-        </div>
       </div>
     )
   }
