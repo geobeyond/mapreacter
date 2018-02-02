@@ -4,3 +4,4 @@ npm-debug.log
 *.swp
 *.zip
 .DS_Store
+/package-lock.json
