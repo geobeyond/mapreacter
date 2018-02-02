@@ -1,6 +1,8 @@
 import * as mapActions from '@boundlessgeo/sdk/actions/map';
 import {createWMSLayer, createWMSSourceWithLayerName} from '../services/wms/wmslayer'
 
+export const viewparams = [];
+
 export const changeOrAddViewParamsToUrl = (url, viewparams) => {
   console.log("map.changeOrAddViewParamsToUrl()", url, viewparams);
   if(url.search('viewparams') > 0) {
@@ -14,7 +16,7 @@ export const updateLayersWithViewparams = (params) => {
   return function (dispatch, getState) {
     const { local } = getState();
   
-    let viewparams = [];
+    viewparams.length=0;
     params.forEach( (param, i) => {
       if (param !== '*') {
         viewparams.push(local.mapConfig.viewparams[i] + ':' + param);

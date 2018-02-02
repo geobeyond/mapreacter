@@ -55,7 +55,7 @@ class TassonomiaAutoComplete extends Component {
     console.log("GET", this.props.url + value);
     axios.get(this.props.url + value)
       .then((response) => {
-        console.log("response:", JSON.stringify(response.data.nome_scientifico));
+        console.log("response:", JSON.stringify(response.data));
         tassonomiastore.dispatch(newDataAction(response.data));
       })
       .catch((error) => {
@@ -81,10 +81,7 @@ class TassonomiaAutoComplete extends Component {
           onUpdateInput={this.handleUpdateInput}
           onNewRequest={this.handleOnNewRequest}
           filter={AutoComplete.noFilter}
-          menuProps={{
-            desktop: true,
-            disableAutoFocus: true,
-          }}
+          openOnFocus={true}
         />
       </div>
     );

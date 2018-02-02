@@ -10,6 +10,8 @@ import SdkMap from '@boundlessgeo/sdk/components/map';
 import SdkMapReducer from '@boundlessgeo/sdk/reducers/map';
 import * as mapActions from '@boundlessgeo/sdk/actions/map';
 import SdkLayerList from '@boundlessgeo/sdk/components/layer-list';
+import * as printActions from '@boundlessgeo/sdk/actions/print';
+import SdkPrintReducer from '@boundlessgeo/sdk/reducers/print';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import IconMenu from 'material-ui/IconMenu';
@@ -21,6 +23,8 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
 import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import Download from 'material-ui/svg-icons/file/file-download';
 
 import { createWMSLayer, createWMSSourceWithLayerName } from './services/wms/wmslayer'
 import { createVectorSourceFromStyle, createRasterSourceFromStyle } from './services/mapbox'
@@ -30,25 +34,34 @@ import * as configActions from './actions/map';
 import Map from './components/map';
 import TassonomiaAutoComplete from './components/TassonomiaAutoComplete';
 import LayerListItem from './components/map/layerlistitem';
+import { downloadCSV } from './download';
+
+export const store = createStore(
+  combineReducers({
+    map: SdkMapReducer,
+    print: SdkPrintReducer,
+    local: MapReducer
+  }),
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+  applyMiddleware(thunkMiddleware));
 
 class Client {
   constructor(mapId, config = {}) {
     this.mapId = mapId;
     this.config = config;
-    this._configureStore();
     if (config.basemaps) {
       config.basemaps.reverse().forEach((basemap) => {
         this._addBasemap(basemap, config[basemap]);
       })
     }
-    this.store.dispatch(configActions.setConfig(config));
+    store.dispatch(configActions.setConfig(config));
     if (config.source && config.layers) {
       this._createLayers(config.source, config.layers);
     }
     this.renderMap();
     if (this.config.map && this.config.map.center) {
       let zoom = this.config.map.zoom || 2;
-      this.store.dispatch(mapActions.setView(this.config.map.center, zoom));
+      store.dispatch(mapActions.setView(this.config.map.center, zoom));
     }
   }
   _addBasemap(basemap, basemapConfig = {}) {
@@ -66,35 +79,39 @@ class Client {
       this.addLayer(createWMSLayer(sourceId, layerName, layerName));
     });
   }
-  _configureStore() {
-    this.store = createStore(combineReducers({
-      map: SdkMapReducer,
-      local: MapReducer
-    }), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-      applyMiddleware(thunkMiddleware));
-  }
   renderMap() {
     console.log("client.renderMap()");
     ReactDOM.render((
       <MuiThemeProvider>
-        <Provider store={this.store}>
+        <Provider store={store}>
           <HashRouter>
             <div>
               <Toolbar>
                 <ToolbarGroup firstChild={true} >
-                  <IconMenu
-                    iconButtonElement={
-                      <IconButton touch={true}>
-                        <NavigationExpandMoreIcon />
-                      </IconButton>
-                    }
+                  <IconMenu iconButtonElement={
+                    <IconButton><MoreVertIcon /></IconButton>
+                  }
                   >
-                    <MenuItem onClick={ (event) => { console.log("finestra modale");}}>
-                      <FontIcon className="material-icons">help</FontIcon>
+                    <MenuItem onClick={(event) => { console.log("finestra modale"); }}>
+                      <IconButton>
+                        <FontIcon className="material-icons">help</FontIcon>
+                      </IconButton>
                     </MenuItem>
-                    <Divider />
+
+                    <MenuItem
+                      primaryText="Download"
+                      leftIcon={<Download />}
+                      menuItems={[
+                        <MenuItem primaryText="PNG" onClick={(event) => {
+                          store.dispatch(printActions.exportMapImage());
+                        }} />,
+                        <MenuItem primaryText="CSV" onClick={(event) => {
+                          downloadCSV(this.config.geoserverurl, this.config.layers);
+                        }} />,
+                      ]}
+                    />
+
                     <SdkLayerList style={{ margin: 0 }} className='layer-list' layerClass={LayerListItem} />
-                    <Divider />
                   </IconMenu>
                   <TassonomiaAutoComplete url={this.config.tassonomiaserviceurl} />
                 </ToolbarGroup>
@@ -126,14 +143,14 @@ class Client {
       default:
         source = createVectorSourceFromStyle(this.config.mapbox.style);
     }
-    this.store.dispatch(mapActions.addSource('mapbox', source));
-    this.store.dispatch(mapActions.addLayer({
+    store.dispatch(mapActions.addSource('mapbox', source));
+    store.dispatch(mapActions.addLayer({
       id: 'mapbox',
       source: 'mapbox',
     }));
   }
   addOsmBasemap() {
-    this.store.dispatch(mapActions.addSource('osm', {
+    store.dispatch(mapActions.addSource('osm', {
       type: 'raster',
       tileSize: 256,
       tiles: [
@@ -142,16 +159,16 @@ class Client {
         'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png',
       ],
     }));
-    this.store.dispatch(mapActions.addLayer({
+    store.dispatch(mapActions.addLayer({
       id: 'osm',
       source: 'osm',
     }));
   }
   addLayer(layer) {
-    this.store.dispatch(mapActions.addLayer(layer));
+    store.dispatch(mapActions.addLayer(layer));
   }
   addSource(sourceId, source) {
-    this.store.dispatch(mapActions.addSource(sourceId, source));
+    store.dispatch(mapActions.addSource(sourceId, source));
   }
 }
 module.exports = Client;

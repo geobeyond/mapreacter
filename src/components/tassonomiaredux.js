@@ -31,6 +31,6 @@ const tassonomiareducer = (state = initialState, action) => {
 export const tassonomiastore = createStore(tassonomiareducer, initialState);
 
 tassonomiastore.subscribe(() => {
-    console.log(JSON.stringify(tassonomiastore.getState()))
+    console.log("tassonomiastore.getState():", JSON.stringify(tassonomiastore.getState()))
 });
 
