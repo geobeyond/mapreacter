@@ -23,8 +23,11 @@ import { store } from '../client';
 
 export class Map extends React.Component {
   componentDidMount() {
+    console.log("Map.componentDidMount()");
     if (this.props.viewparams) {
       this.updateLayer(this.props.viewparams);
+    } else {
+      this.updateLayer('none');
     }
   }
   componentWillReceiveProps(nextProps) {
