@@ -5,6 +5,7 @@ import { Menu, MenuItem } from 'material-ui/Menu';
 import Divider from 'material-ui/Divider';
 import Subheader from 'material-ui/Subheader';
 import { tassonomiastore, newDataAction } from './tassonomiaredux';
+import { isprastyle } from '../client';
 
 var axios = require('axios');
 
@@ -51,7 +52,7 @@ class TassonomiaAutoComplete extends Component {
   handleUpdateInput = (value) => {
     this.setState({
       searchText: value,
-    });    
+    });
     console.log("GET", this.props.url + value);
     axios.get(this.props.url + value)
       .then((response) => {
@@ -67,7 +68,7 @@ class TassonomiaAutoComplete extends Component {
     console.log("TassonomiaAutoComplete.handleOnNewRequest()", chosenRequest, index);
     this.setState({
       searchText: '',
-    });    
+    });
     this.props.history.push(chosenRequest.text);
   }
 
@@ -82,6 +83,9 @@ class TassonomiaAutoComplete extends Component {
           onNewRequest={this.handleOnNewRequest}
           filter={AutoComplete.noFilter}
           openOnFocus={true}
+          maxSearchResults={15}
+          menuStyle={isprastyle}
+          style={isprastyle}
         />
       </div>
     );

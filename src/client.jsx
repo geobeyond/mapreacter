@@ -36,6 +36,11 @@ import TassonomiaAutoComplete from './components/TassonomiaAutoComplete';
 import LayerListItem from './components/map/layerlistitem';
 import { downloadCSV } from './download';
 
+export const isprastyle = {
+  margin: 0,
+  backgroundColor: '#60f808'
+}
+
 export const store = createStore(
   combineReducers({
     map: SdkMapReducer,
@@ -82,36 +87,41 @@ class Client {
   renderMap() {
     console.log("client.renderMap()");
     ReactDOM.render((
-      <MuiThemeProvider>
+      <MuiThemeProvider style={isprastyle}>
         <Provider store={store}>
           <HashRouter>
             <div>
-              <Toolbar>
-                <ToolbarGroup firstChild={true} >
-                  <IconMenu iconButtonElement={
-                    <IconButton><MoreVertIcon /></IconButton>
-                  }
+              <Toolbar style={isprastyle}>
+                <ToolbarGroup firstChild={true} style={isprastyle} >
+                  <IconMenu
+                    menuStyle={isprastyle}
+                    iconButtonElement={
+                      <IconButton><MoreVertIcon /></IconButton>
+                    }
                   >
-                    <MenuItem onClick={(event) => { console.log("finestra modale"); }}>
+                    <MenuItem onClick={(event) => { console.log("finestra modale"); }} >
                       <IconButton>
                         <FontIcon className="material-icons">help</FontIcon>
                       </IconButton>
                     </MenuItem>
 
                     <MenuItem
-                      primaryText="Download"
+                      primaryText="PNG"
                       leftIcon={<Download />}
-                      menuItems={[
-                        <MenuItem primaryText="PNG" onClick={(event) => {
-                          store.dispatch(printActions.exportMapImage());
-                        }} />,
-                        <MenuItem primaryText="CSV" onClick={(event) => {
-                          downloadCSV(this.config.geoserverurl, this.config.layers);
-                        }} />,
-                      ]}
+                      onClick={(event) => {
+                        store.dispatch(printActions.exportMapImage());
+                      }}
                     />
 
-                    <SdkLayerList style={{ margin: 0 }} className='layer-list' layerClass={LayerListItem} />
+                    <MenuItem
+                      primaryText="CSV"
+                      leftIcon={<Download />}
+                      onClick={(event) => {
+                        downloadCSV(this.config.geoserverurl, this.config.layers);
+                      }}
+                    />
+
+                    <SdkLayerList style={isprastyle} className='layer-list' layerClass={LayerListItem} />
                   </IconMenu>
                   <TassonomiaAutoComplete url={this.config.tassonomiaserviceurl} />
                 </ToolbarGroup>
@@ -122,11 +132,9 @@ class Client {
                 )} />
                 <Route exact path="/" component={Map} />
               </Switch>
-              <Toolbar className="footer">
-                <ToolbarGroup>
-                  <ToolbarTitle text="footer ..." />
-                </ToolbarGroup>
-              </Toolbar>
+              <div className="footer">
+                <img src="logo.png" alt="ispra ambiente" />
+              </div>
             </div>
           </HashRouter>
         </Provider>
