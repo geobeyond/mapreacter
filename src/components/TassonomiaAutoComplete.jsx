@@ -43,6 +43,10 @@ class TassonomiaAutoComplete extends Component {
         });
       });
 
+      if (_datasource.length === 2) {
+        _datasource.length=0;
+      }
+
       this.setState({
         dataSource: _datasource,
       });
