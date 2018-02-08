@@ -5,7 +5,7 @@ import { Menu, MenuItem } from 'material-ui/Menu';
 import Divider from 'material-ui/Divider';
 import Subheader from 'material-ui/Subheader';
 import { tassonomiastore, newDataAction } from './tassonomiaredux';
-import { isprastyle } from '../client';
+
 
 var axios = require('axios');
 
@@ -85,8 +85,6 @@ class TassonomiaAutoComplete extends Component {
           filter={AutoComplete.noFilter}
           openOnFocus={true}
           maxSearchResults={15}
-          menuStyle={isprastyle}
-          style={isprastyle}
           id={'tassonomiaautocomplete'}
           className={'tassonomiaautocomplete'}
         />

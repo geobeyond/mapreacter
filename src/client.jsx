@@ -25,6 +25,7 @@ import Divider from 'material-ui/Divider';
 import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import Download from 'material-ui/svg-icons/file/file-download';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import { createWMSLayer, createWMSSourceWithLayerName } from './services/wms/wmslayer'
 import { createVectorSourceFromStyle, createRasterSourceFromStyle } from './services/mapbox'
@@ -36,11 +37,6 @@ import TassonomiaAutoComplete from './components/TassonomiaAutoComplete';
 import LayerListItem from './components/map/layerlistitem';
 import { downloadCSV } from './download';
 
-export const isprastyle = {
-  margin: 0,
-  backgroundColor: '#e9f6e7'
-}
-
 export const store = createStore(
   combineReducers({
     map: SdkMapReducer,
@@ -49,6 +45,40 @@ export const store = createStore(
   }),
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
   applyMiddleware(thunkMiddleware));
+
+const ispraTheme =
+  {
+    spacing: {
+      iconSize: 24,
+      desktopGutter: 24,
+      desktopGutterMore: 32,
+      desktopGutterLess: 16,
+      desktopGutterMini: 8,
+      desktopKeylineIncrement: 64,
+      desktopDropDownMenuItemHeight: 32,
+      desktopDropDownMenuFontSize: 15,
+      desktopDrawerMenuItemHeight: 48,
+      desktopSubheaderHeight: 48,
+      desktopToolbarHeight: 56
+    },
+    fontFamily: 'Roboto, sans-serif',
+    palette: {
+      primary1Color: '#0097a7',
+      primary2Color: '#0097a7',
+      primary3Color: '#757575',
+      accent1Color: '#ff4081',
+      accent2Color: '#f50057',
+      accent3Color: '#ff80ab',
+      textColor: 'rgba(255, 255, 255, 1)',
+      secondaryTextColor: 'rgba(255, 255,  255, 0.7)',
+      alternateTextColor: '#303030',
+      canvasColor: '#303030',
+      borderColor: 'rgba(255, 255, 255, 0.3)',
+      disabledColor: 'rgba(255, 255, 255, 0.3)',
+      pickerHeaderColor: 'rgba(255, 255, 255, 0.12)',
+      clockCircleColor: 'rgba(255, 255, 255, 0.12)'
+    }
+  }
 
 class Client {
   constructor(mapId, config = {}) {
@@ -87,14 +117,13 @@ class Client {
   renderMap() {
     console.log("client.renderMap()");
     ReactDOM.render((
-      <MuiThemeProvider style={isprastyle}>
+      <MuiThemeProvider muiTheme={getMuiTheme(ispraTheme)}>
         <Provider store={store}>
           <HashRouter>
             <div>
-              <Toolbar style={isprastyle}>
-                <ToolbarGroup firstChild={true} style={isprastyle} >
+              <Toolbar>
+                <ToolbarGroup firstChild={true} >
                   <IconMenu
-                    menuStyle={isprastyle}
                     iconButtonElement={
                       <IconButton><MoreVertIcon /></IconButton>
                     }
@@ -121,7 +150,7 @@ class Client {
                       }}
                     />
 
-                    <SdkLayerList style={isprastyle} className='layer-list' layerClass={LayerListItem} />
+                    <SdkLayerList className='layer-list' layerClass={LayerListItem} />
                   </IconMenu>
                   <TassonomiaAutoComplete url={this.config.tassonomiaserviceurl} />
                 </ToolbarGroup>
