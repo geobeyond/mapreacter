@@ -6,9 +6,7 @@ import Divider from 'material-ui/Divider';
 import Subheader from 'material-ui/Subheader';
 import { tassonomiastore, newDataAction } from './tassonomiaredux';
 
-
 var axios = require('axios');
-
 
 class TassonomiaAutoComplete extends Component {
 
@@ -20,7 +18,7 @@ class TassonomiaAutoComplete extends Component {
   constructor(props) {
     super(props);
     tassonomiastore.subscribe(() => {
-      
+
       const _datasource = [];
       tassonomiastore.getState().phylumarr.forEach(element => {
         _datasource.push({

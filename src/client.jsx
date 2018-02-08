@@ -13,6 +13,7 @@ import SdkLayerList from '@boundlessgeo/sdk/components/layer-list';
 import * as printActions from '@boundlessgeo/sdk/actions/print';
 import SdkPrintReducer from '@boundlessgeo/sdk/reducers/print';
 
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
@@ -23,9 +24,11 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
 import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar';
+
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import Download from 'material-ui/svg-icons/file/file-download';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
 
 import { createWMSLayer, createWMSSourceWithLayerName } from './services/wms/wmslayer'
 import { createVectorSourceFromStyle, createRasterSourceFromStyle } from './services/mapbox'
@@ -35,6 +38,7 @@ import * as configActions from './actions/map';
 import Map from './components/map';
 import TassonomiaAutoComplete from './components/TassonomiaAutoComplete';
 import LayerListItem from './components/map/layerlistitem';
+
 import { downloadCSV } from './download';
 
 export const store = createStore(
@@ -76,16 +80,20 @@ const ispraTheme = {
   },
 };
 
+
 class Client {
   constructor(mapId, config = {}) {
     this.mapId = mapId;
     this.config = config;
+
     if (config.basemaps) {
       config.basemaps.reverse().forEach((basemap) => {
         this._addBasemap(basemap, config[basemap]);
       })
     }
+
     store.dispatch(configActions.setConfig(config));
+
     if (config.source && config.layers) {
       this._createLayers(config.source, config.layers);
     }
@@ -110,6 +118,7 @@ class Client {
       this.addLayer(createWMSLayer(sourceId, layerName, layerName));
     });
   }
+
   renderMap() {
     console.log("client.renderMap()");
     ReactDOM.render((
@@ -147,6 +156,7 @@ class Client {
                     />
 
                     <SdkLayerList className='layer-list' layerClass={LayerListItem} />
+
                   </IconMenu>
                   <TassonomiaAutoComplete url={this.config.tassonomiaserviceurl} />
                 </ToolbarGroup>
@@ -157,9 +167,11 @@ class Client {
                 )} />
                 <Route exact path="/" component={Map} />
               </Switch>
+
               <div className="footer">
                 <img src="logo.png" alt="ispra ambiente" />
               </div>
+
             </div>
           </HashRouter>
         </Provider>
