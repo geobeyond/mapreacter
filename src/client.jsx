@@ -38,7 +38,7 @@ import { downloadCSV } from './download';
 
 export const isprastyle = {
   margin: 0,
-  backgroundColor: '#60f808'
+  backgroundColor: '#e9f6e7'
 }
 
 export const store = createStore(
