@@ -20,7 +20,7 @@ class TassonomiaAutoComplete extends Component {
   constructor(props) {
     super(props);
     tassonomiastore.subscribe(() => {
-
+      
       const _datasource = [];
       tassonomiastore.getState().phylumarr.forEach(element => {
         _datasource.push({
@@ -50,6 +50,7 @@ class TassonomiaAutoComplete extends Component {
   }
 
   handleUpdateInput = (value) => {
+    console.log("TassonomiaAutoComplete.handleUpdateInput()");
     this.setState({
       searchText: value,
     });
@@ -86,6 +87,8 @@ class TassonomiaAutoComplete extends Component {
           maxSearchResults={15}
           menuStyle={isprastyle}
           style={isprastyle}
+          id={'tassonomiaautocomplete'}
+          className={'tassonomiaautocomplete'}
         />
       </div>
     );
