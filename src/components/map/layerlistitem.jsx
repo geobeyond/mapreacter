@@ -14,9 +14,7 @@ class LayerListItem extends SdkLayerListItem {
     const layer = this.props.layer;
 
     let legend;
-    if(layer.type != "background") {
-      legend = (<SdkLegend key={layer.id} layerId={layer.id} />);
-    }
+
     let visibleIcon = isLayerVisible(layer) ? 'fa fa-eye' : 'fa fa-eye-slash';
     let visibility = (<i className={visibleIcon} />);
     return (

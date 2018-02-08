@@ -4,6 +4,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HTMLWebpackPlugin = require('html-webpack-plugin');
 var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 var Minimist = require('minimist');
+var DashboardPlugin = require('webpack-dashboard/plugin')
 
 var BUILD_DIR = path.resolve(__dirname, 'dist');
 var APP_DIR = path.resolve(__dirname, '.');
@@ -21,14 +22,15 @@ if (process.env.NODE_ENV === "development") {
   plugins.push(new webpack.DefinePlugin({ 'process.env': { 'NODE_ENV': JSON.stringify('development') } }));
   plugins.push(new ExtractTextPlugin({ filename: 'css/[name].css', disable: false }));
   plugins.push(new ExtractTextPlugin('css/sdk.css'));
+  plugins.push(new DashboardPlugin());
   filename = '[name].js';
   devtool = '';
 
   module.exports = {
     entry: {
       Client: [
-          APP_DIR + '/src/client.jsx',
           APP_DIR + '/src/styles/less/client.less',
+          APP_DIR + '/src/client.jsx',
       ],
     },
     output: {
@@ -98,6 +100,7 @@ if (process.env.NODE_ENV === "production") {
   plugins.push(new HTMLWebpackPlugin({
               filename: 'index.html',
               template: path.resolve(APP_DIR, 'src/tpl/prod.html'),
+              inject: 'head',
           }));
   plugins.push(new UglifyJSPlugin({
               uglifyOptions: {
@@ -123,8 +126,8 @@ if (process.env.NODE_ENV === "production") {
   module.exports = {
     entry: {
       Client: [
-          APP_DIR + '/src/client.jsx',
           APP_DIR + '/src/styles/less/client.less',
+          APP_DIR + '/src/client.jsx',
       ],
     },
     output: {
