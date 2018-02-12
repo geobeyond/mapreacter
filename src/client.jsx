@@ -39,7 +39,7 @@ import Map from './components/map';
 import TassonomiaAutoComplete from './components/TassonomiaAutoComplete';
 import LayerListItem from './components/map/layerlistitem';
 
-import { downloadCSV } from './download';
+import { downloadCSV, downloadShapefile } from './download';
 
 export const store = createStore(
   combineReducers({
@@ -140,20 +140,31 @@ class Client {
                     </MenuItem>
 
                     <MenuItem
-                      primaryText="PNG"
-                      leftIcon={<Download />}
-                      onClick={(event) => {
-                        store.dispatch(printActions.exportMapImage());
-                      }}
-                    />
-
-                    <MenuItem
-                      primaryText="CSV"
-                      leftIcon={<Download />}
-                      onClick={(event) => {
-                        downloadCSV(this.config.geoserverurl, this.config.layers);
-                      }}
-                    />
+                      menuItems={[
+                        <MenuItem
+                          primaryText="PNG"
+                          onClick={(event) => {
+                            store.dispatch(printActions.exportMapImage());
+                          }}
+                        />,
+                        <MenuItem
+                          primaryText="CSV"
+                          onClick={(event) => {
+                            downloadCSV(this.config.geoserverurl, this.config.layers);
+                          }}
+                        />,
+                        <MenuItem
+                          primaryText="Shapefile"
+                          onClick={(event) => {
+                            downloadShapefile(this.config.geoserverurl, this.config.layers);
+                          }}
+                        />
+                      ]}
+                    >
+                      <IconButton>
+                        <Download />
+                      </IconButton>
+                    </MenuItem>
 
                     <SdkLayerList className='layer-list' layerClass={LayerListItem} />
 

@@ -28,3 +28,20 @@ export const downloadCSV = (geoserverurl, layers) => {
     });
 }
 
+export const downloadShapefile = (geoserverurl, layers) => {
+
+
+    layers.forEach(element => {
+        const url = geoserverurl + '/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=shape-zip' +
+            '&typeName=' + element +
+            '&viewparams=' + viewparams.join(';');
+
+        var hiddenElement = document.createElement('a');
+        hiddenElement.href = url;
+        hiddenElement.target = '_blank';
+        hiddenElement.download = element + '.zip';
+        hiddenElement.click();
+
+    });
+}
+
