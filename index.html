@@ -78,6 +78,11 @@
 			layers: ['nnb:param_oss_point','nnb:param_oss_polig'],
 			tassonomiaserviceurl: 'http://localhost:8080/MyRestServer/tassonomia?name=',
 			geoserverurl: 'http://localhost:8080/geoserver',
+			routing: [
+				{ field: 'phylum', label: 'Phylum', routinglevel: '/' },
+				{ field: 'famiglia', label: 'Famiglia', routinglevel: '/*/' },
+				{ field: 'nome_scientifico', label: 'Specie', routinglevel: '/*/*/' },
+			],			
 		};
 		console.log("index.html", JSON.stringify(config));
 		var client = new Client('map', config);

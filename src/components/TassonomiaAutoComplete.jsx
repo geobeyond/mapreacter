@@ -20,37 +20,21 @@ class TassonomiaAutoComplete extends Component {
     tassonomiastore.subscribe(() => {
 
       const _datasource = [];
-      if (tassonomiastore.getState().phylumarr.length > 0) {
-        _datasource.push({ text: '', value: (<Divider />), });
-        _datasource.push({ text: '', value: (<MenuItem primaryText={'Phylum'} disabled={true} />), });
-        tassonomiastore.getState().phylumarr.forEach(element => {
-          _datasource.push({
-            text: '/' + element,
-            value: (<MenuItem primaryText={element} />),
-          });
-        });
-      }
-      if (tassonomiastore.getState().famigliaarr.length > 0) {
-        _datasource.push({ text: '', value: (<Divider />), });
-        _datasource.push({ text: '', value: (<MenuItem primaryText={'Famiglia'} disabled={true} />), });
-        tassonomiastore.getState().famigliaarr.forEach(element => {
-          _datasource.push({
-            text: '/*/' + element,
-            value: (<MenuItem primaryText={element} />),
-          });
-        });
-      }
-      if (tassonomiastore.getState().nomescientificoarr.length > 0) {
-        _datasource.push({ text: '', value: (<Divider />), });
-        _datasource.push({ text: '', value: (<MenuItem primaryText={'Specie'} disabled={true} />), });
-        tassonomiastore.getState().nomescientificoarr.forEach(element => {
-          _datasource.push({
-            text: '/*/*/' + element,
-            value: (<MenuItem primaryText={element} />),
-          });
-        });
-      }
-
+      this.props.config.routing.forEach(routingrecord => {
+        if (tassonomiastore.getState()._data[routingrecord.field]) {
+          if (tassonomiastore.getState()._data[routingrecord.field].length > 0) {
+            _datasource.push({ text: '', value: (<Divider />), });
+            _datasource.push({ text: '', value: (<MenuItem primaryText={routingrecord.label} disabled={true} />), });
+            tassonomiastore.getState()._data[routingrecord.field].forEach(element => {
+              _datasource.push({
+                text: routingrecord.routinglevel + element,
+                value: (<MenuItem primaryText={element} />),
+              });
+            });            
+          }
+        }
+      });
+      
       this.setState({
         dataSource: _datasource,
       });
@@ -62,8 +46,9 @@ class TassonomiaAutoComplete extends Component {
     this.setState({
       searchText: value,
     });
-    console.log("GET", this.props.url + value);
-    axios.get(this.props.url + value)
+    const url =  this.props.config.tassonomiaserviceurl + value;
+    console.log("GET", url);
+    axios.get(url)
       .then((response) => {
         console.log("response:", JSON.stringify(response.data));
         tassonomiastore.dispatch(newDataAction(response.data));

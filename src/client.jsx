@@ -158,7 +158,7 @@ class Client {
                     <SdkLayerList className='layer-list' layerClass={LayerListItem} />
 
                   </IconMenu>
-                  <TassonomiaAutoComplete url={this.config.tassonomiaserviceurl} />
+                  <TassonomiaAutoComplete config={this.config} />
                 </ToolbarGroup>
               </Toolbar>
               <Switch>

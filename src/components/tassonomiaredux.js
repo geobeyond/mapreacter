@@ -19,9 +19,10 @@ const tassonomiareducer = (state = initialState, action) => {
     switch (action.type) {
         case NEWDATA:
             state = Object.assign({}, state, {
-                phylumarr: action.payload._data.phylum,
-                famigliaarr: action.payload._data.famiglia,
-                nomescientificoarr: action.payload._data.nome_scientifico,
+                //phylumarr: action.payload._data.phylum,
+                //famigliaarr: action.payload._data.famiglia,
+                //nomescientificoarr: action.payload._data.nome_scientifico,
+                _data: action.payload._data,
             });
             break;
     }
