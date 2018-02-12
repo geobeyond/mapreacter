@@ -20,29 +20,35 @@ class TassonomiaAutoComplete extends Component {
     tassonomiastore.subscribe(() => {
 
       const _datasource = [];
-      tassonomiastore.getState().phylumarr.forEach(element => {
-        _datasource.push({
-          text: '/' + element,
-          value: (<MenuItem primaryText={element} />),
+      if (tassonomiastore.getState().phylumarr.length > 0) {
+        _datasource.push({ text: '', value: (<Divider />), });
+        _datasource.push({ text: '', value: (<MenuItem primaryText={'Phylum'} disabled={true} />), });
+        tassonomiastore.getState().phylumarr.forEach(element => {
+          _datasource.push({
+            text: '/' + element,
+            value: (<MenuItem primaryText={element} />),
+          });
         });
-      });
-      _datasource.push({ text: '', value: (<Divider />), });
-      tassonomiastore.getState().famigliaarr.forEach(element => {
-        _datasource.push({
-          text: '/*/' + element,
-          value: (<MenuItem primaryText={element} />),
+      }
+      if (tassonomiastore.getState().famigliaarr.length > 0) {
+        _datasource.push({ text: '', value: (<Divider />), });
+        _datasource.push({ text: '', value: (<MenuItem primaryText={'Famiglia'} disabled={true} />), });
+        tassonomiastore.getState().famigliaarr.forEach(element => {
+          _datasource.push({
+            text: '/*/' + element,
+            value: (<MenuItem primaryText={element} />),
+          });
         });
-      });
-      _datasource.push({ text: '', value: (<Divider />), });
-      tassonomiastore.getState().nomescientificoarr.forEach(element => {
-        _datasource.push({
-          text: '/*/*/' + element,
-          value: (<MenuItem primaryText={element} />),
+      }
+      if (tassonomiastore.getState().nomescientificoarr.length > 0) {
+        _datasource.push({ text: '', value: (<Divider />), });
+        _datasource.push({ text: '', value: (<MenuItem primaryText={'Specie'} disabled={true} />), });
+        tassonomiastore.getState().nomescientificoarr.forEach(element => {
+          _datasource.push({
+            text: '/*/*/' + element,
+            value: (<MenuItem primaryText={element} />),
+          });
         });
-      });
-
-      if (_datasource.length === 2) {
-        _datasource.length=0;
       }
 
       this.setState({
