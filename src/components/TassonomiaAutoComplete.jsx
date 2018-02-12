@@ -70,7 +70,7 @@ class TassonomiaAutoComplete extends Component {
     return (
       <div>
         <AutoComplete
-          hintText="Phylum / Famiglia ..."
+          hintText="Tassonomia ..."
           dataSource={this.state.dataSource}
           searchText={this.state.searchText}
           onUpdateInput={this.handleUpdateInput}
