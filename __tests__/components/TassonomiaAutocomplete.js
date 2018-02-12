@@ -22,12 +22,21 @@ const _wait = (ms) => {
     }
 }
 
+const config = {
+    tassonomiaserviceurl: 'http://localhost:8080/MyRestServer/tassonomia?name=',
+    routing: [
+        { field: 'phylum', label: 'Phylum', routinglevel: '/' },
+        { field: 'famiglia', label: 'Famiglia', routinglevel: '/*/' },
+        { field: 'nome_scientifico', label: 'Specie', routinglevel: '/*/*/' },
+    ],
+};
+
 test('renders correctly', () => {
     const component = renderer.create(
         <MuiThemeProvider>
             <Provider store={createStore((state = [], action) => { return state })}>
                 <HashRouter>
-                    <TassonomiaAutoComplete url={'http://localhost:8080/MyRestServer/tassonomia?name='} />
+                    <TassonomiaAutoComplete config={config} />
                 </HashRouter>
             </Provider>
         </MuiThemeProvider>
@@ -43,7 +52,7 @@ test('component changes the after click', () => {
         <MuiThemeProvider>
             <Provider store={createStore((state = [], action) => { return state })}>
                 <HashRouter>
-                    <TassonomiaAutoComplete url={'http://localhost:8080/MyRestServer/tassonomia?name='} />
+                    <TassonomiaAutoComplete config={config} />
                 </HashRouter>
             </Provider>
         </MuiThemeProvider>
@@ -56,7 +65,7 @@ test('component changes the after click', () => {
     var axios = require('axios');
     var MockAdapter = require('axios-mock-adapter');
     var mock = new MockAdapter(axios);
-    mock.onGet('http://localhost:8080/MyRestServer/tassonomia?name=a').reply(200, {
+    mock.onGet(config.tassonomiaserviceurl+'a').reply(200, {
         "phylum": [
             "Chordata",
             "Arthropoda"
@@ -81,9 +90,11 @@ test('component changes the after click', () => {
 
     tassonomiastore.subscribe(() => {
         console.log('---------------------------------------------');
-        expect(tassonomiastore.getState().phylumarr.length).toEqual(2);
-        expect(tassonomiastore.getState().famigliaarr.length).toEqual(2);
-        expect(tassonomiastore.getState().nomescientificoarr.length).toEqual(10);
+        config.routing.forEach(routingrecord => {
+            if (tassonomiastore.getState()._data[routingrecord.field]) {
+                expect(tassonomiastore.getState()._data[routingrecord.field].length).toBeGreaterThan(1);
+            }
+        });
         console.log('---------------------------------------------');
     });
 

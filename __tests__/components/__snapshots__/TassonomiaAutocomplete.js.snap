@@ -42,7 +42,7 @@ exports[`renders correctly 1`] = `
           }
         }
       >
-        Phylum / Famiglia ...
+        Tassonomia ...
       </div>
       <input
         autoComplete="off"
