@@ -36,8 +36,8 @@
 			bottom: 0;
 			left: 0;
 			padding: 1rem;
-			background-color: #efefef;
-			text-align: center;
+			background-color: #ffffff;
+			text-align: right;
 		}				
 	</style>
 </head>
@@ -71,8 +71,14 @@
 			},
 			viewparams: ['phylum','famiglia','nome_scientifico'],
 			source: 'http://localhost:8080/geoserver/wms?SERVICE=WMS&VERSION=1.1.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true',
-			layers: ['nnb:param_oss_point'],
+			layers: ['nnb:param_oss_point','nnb:param_oss_polig'],
 			tassonomiaserviceurl: 'http://localhost:8080/MyRestServer/tassonomia?name=',
+			geoserverurl: 'http://localhost:8080/geoserver',
+			routing: [
+				{ field: 'phylum', label: 'Phylum', routinglevel: '/' },
+				{ field: 'famiglia', label: 'Famiglia', routinglevel: '/*/' },
+				{ field: 'nome_scientifico', label: 'Specie', routinglevel: '/*/*/' },
+			],			
 		};
 		console.log("prod.html", JSON.stringify(config));
 		var client = new Client('map', config);
