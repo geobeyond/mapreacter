@@ -41,6 +41,37 @@ import LayerListItem from './components/map/layerlistitem';
 
 import { downloadCSV, downloadShapefile } from './download';
 
+
+export const themiddleware = store => next => action => {
+  console.log('themiddleware() current action:', JSON.stringify(action, (key, value) => {
+    if (key === 'component') return '...';
+    return value;
+  }));
+
+  let result = next(action);
+
+  if (action.type === 'MAP_SET_VIEW') {
+    const _array = store.getState().local.viewparams.split("/");
+    while (_array.length < 7) {
+      _array.push('*');
+    }
+
+    _array[3] = store.getState().map.zoom;
+    _array[4] = '' + Math.round(store.getState().map.center[0] * 100) / 100;
+    _array[5] = '' + Math.round(store.getState().map.center[1] * 100) / 100;
+    _array[6] = store.getState().map.bearing;
+    const thehash = '/#/' + _array.join('/');
+    console.log('themiddleware()', thehash);
+    window.history.pushState(thehash, 'map', thehash);
+  }
+
+  /*console.log('themiddleware() current state:', JSON.stringify(store.getState(), (key, value) => {
+    if (key === 'component') return '...';
+    return value;
+  })); */
+  return result;
+}
+
 export const store = createStore(
   combineReducers({
     map: SdkMapReducer,
@@ -48,7 +79,7 @@ export const store = createStore(
     local: MapReducer
   }),
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-  applyMiddleware(thunkMiddleware));
+  applyMiddleware(themiddleware, thunkMiddleware));
 
 import {
   cyan500, cyan700,
@@ -83,6 +114,8 @@ const ispraTheme = {
 
 class Client {
   constructor(mapId, config = {}) {
+    console.log("client(), window.location.hash:", window.location.hash);
+
     this.mapId = mapId;
     this.config = config;
 
@@ -98,7 +131,16 @@ class Client {
       this._createLayers(config.source, config.layers);
     }
     this.renderMap();
-    if (this.config.map && this.config.map.center) {
+
+    const _array = window.location.hash.split("/");
+    if (_array.length === 8) {
+      const _map = {
+        center: [Number(_array[5]), Number(_array[6])],
+        zoom: Number(_array[4])
+      };
+      store.dispatch(mapActions.setView(_map.center, _map.zoom));
+
+    } else if (this.config.map && this.config.map.center) {
       let zoom = this.config.map.zoom || 2;
       store.dispatch(mapActions.setView(this.config.map.center, zoom));
     }
@@ -136,6 +178,12 @@ class Client {
                     <MenuItem onClick={(event) => { console.log("finestra modale"); }} >
                       <IconButton>
                         <FontIcon className="material-icons">help</FontIcon>
+                      </IconButton>
+                    </MenuItem>
+
+                    <MenuItem onClick={(event) => { this.share(); }} >
+                      <IconButton>
+                        <FontIcon className="material-icons">share</FontIcon>
                       </IconButton>
                     </MenuItem>
 
@@ -225,6 +273,9 @@ class Client {
   }
   addSource(sourceId, source) {
     store.dispatch(mapActions.addSource(sourceId, source));
+  }
+  share() {
+    console.log('share()');
   }
 }
 module.exports = Client;
