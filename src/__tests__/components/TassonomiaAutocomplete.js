@@ -1,3 +1,4 @@
+import 'jsdom-global/register'; //at the top of file , even  , before importing react
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { HashRouter, Switch, Route, Link } from 'react-router-dom'
@@ -8,9 +9,11 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { Menu, MenuItem } from 'material-ui/Menu';
 import { shallow, mount, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import TassonomiaAutoComplete from '../../src/components/TassonomiaAutoComplete';
-import { tassonomiastore, newDataAction } from '../../src/components/tassonomiaredux';
+import TassonomiaAutoComplete from '../../components/TassonomiaAutoComplete';
+import { tassonomiastore, newDataAction } from '../../components/tassonomiaredux';
 import { wrap } from 'module';
+import jsdom from 'jsdom';
+
 
 configure({ adapter: new Adapter() });
 
@@ -30,6 +33,7 @@ const config = {
         { field: 'nome_scientifico', label: 'Specie', routinglevel: '/*/*/' },
     ],
 };
+
 
 test('renders correctly', () => {
     const component = renderer.create(
@@ -65,7 +69,7 @@ test('component changes the after click', () => {
     var axios = require('axios');
     var MockAdapter = require('axios-mock-adapter');
     var mock = new MockAdapter(axios);
-    mock.onGet(config.tassonomiaserviceurl+'a').reply(200, {
+    mock.onGet(config.tassonomiaserviceurl + 'a').reply(200, {
         "phylum": [
             "Chordata",
             "Arthropoda"

@@ -1,26 +1,42 @@
 import React from 'react';
-import { SdkLayerListItem } from '@boundlessgeo/sdk/components/layer-list';
-import SdkLegend from '@boundlessgeo/sdk/components/legend';
-import {isLayerVisible} from '@boundlessgeo/sdk/util';
+import { DragSource, DropTarget } from 'react-dnd';
+import { types, layerListItemSource, layerListItemTarget, collect, collectDrop } from '@boundlessgeo/sdk/components/layer-list-item';
+import SdkLayerListItem from '@boundlessgeo/sdk/components/layer-list-item';
+import IconButton from 'material-ui/IconButton';
+import FontIcon from 'material-ui/FontIcon';
 
-import {ListItem} from 'material-ui/List';
 
 class LayerListItem extends SdkLayerListItem {
   render() {
-    var flexContainer = {
-      display: 'flex',
-      padding: '16px'
-    };
     const layer = this.props.layer;
-
-    let legend;
-
-    let visibleIcon = isLayerVisible(layer) ? 'fa fa-eye' : 'fa fa-eye-slash';
-    let visibility = (<i className={visibleIcon} />);
-    return (
-      <ListItem onClick={() => { this.toggleVisibility(); }} innerDivStyle={flexContainer} insetChildren={true} primaryText={<span>{visibility}{layer.id}{legend}</span>} >
-      </ListItem>
+    const checkbox = this.getVisibilityControl(layer);
+    const moveButtons = (
+      <span>
+        <IconButton
+          onClick={() => {
+            this.moveLayerUp();
+          }}>
+          <FontIcon className="material-icons">arrow_upward</FontIcon>
+        </IconButton>
+        <IconButton
+          onClick={() => {
+            this.moveLayerDown();
+          }}>
+          <FontIcon className="material-icons">arrow_downward</FontIcon>
+        </IconButton>
+      </span>
     );
+
+    return this.props.connectDragSource(this.props.connectDropTarget((
+      <li className="layer">
+        <span className="checkbox">{checkbox}</span>
+        <span className="btn-container">{moveButtons}</span>
+        <span className="name">{layer.id}</span>
+      </li>
+    )));
   }
 }
+
+LayerListItem = DropTarget(types, layerListItemTarget, collectDrop)(DragSource(types, layerListItemSource, collect)(LayerListItem));
+
 export default LayerListItem;

@@ -1,5 +1,5 @@
 
-import * as wms from '../../../src/services/wms/wmslayer'
+import * as wms from '../../../services/wms/wmslayer'
 
 describe('#createWMSSource', () => {
   it('returns a Mapbox GL source definition', () => {
