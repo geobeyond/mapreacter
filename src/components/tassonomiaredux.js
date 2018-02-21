@@ -5,10 +5,10 @@ const initialState = {};
 const NEWDATA = "NEWDATA";
 
 export const newDataAction = (_data) => {
-  return {
-    type: NEWDATA,
-    payload: { _data: _data }
-  };
+    return {
+        type: NEWDATA,
+        payload: { _data: _data }
+    };
 }
 
 const tassonomiareducer = (state = initialState, action) => {
@@ -17,9 +17,10 @@ const tassonomiareducer = (state = initialState, action) => {
             state = Object.assign({}, state, {
                 _data: action.payload._data,
             });
-            break;
+            return state;
         default:
             return state;
+    }
 }
 
 export const tassonomiastore = createStore(tassonomiareducer, initialState);

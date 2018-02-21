@@ -42,10 +42,11 @@ export const setConfig = (config) => {
 }
 
 export const setViewParams = (viewparams) => {
+  const _viewparams = viewparams.replace(/^#\//g, "");
   return {
     type: 'SET_VIEWPARAMS',
     payload: {
-      viewparams: viewparams
+      viewparams: _viewparams
     }
   };
 }

@@ -32,6 +32,40 @@ import './App.css';
 //import {} from 'dotenv/config';
 require('dotenv').config();
 
+export const themiddleware = store => next => action => {
+  if (action.type !== 'MAPINFO.SET_MOUSE_POSITION') {
+    console.log('themiddleware() current action:', JSON.stringify(action, (key, value) => {
+      if (key === 'component') return '...';
+      return value;
+    }));
+  }
+
+  let result = next(action);
+
+  if (action.type === 'MAP_SET_VIEW') {
+    if (store.getState().local['viewparams']) {
+      const _array = store.getState().local.viewparams.split("/");
+      while (_array.length < 7) {
+        _array.push('*');
+      }
+
+      _array[3] = store.getState().map.zoom;
+      _array[4] = '' + Math.round(store.getState().map.center[0] * 100) / 100;
+      _array[5] = '' + Math.round(store.getState().map.center[1] * 100) / 100;
+      _array[6] = store.getState().map.bearing;
+      const thehash = '/#/' + _array.join('/');
+      console.log('themiddleware()', thehash);
+      window.history.pushState(thehash, 'map', thehash);
+    }
+  }
+
+  /*console.log('themiddleware() current state:', JSON.stringify(store.getState(), (key, value) => {
+    if (key === 'component') return '...';
+    return value;
+  })); */
+  return result;
+}
+
 export const store = createStore(
   combineReducers({
     map: SdkMapReducer,
@@ -40,7 +74,7 @@ export const store = createStore(
     local: MapReducer
   }),
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-  applyMiddleware(thunkMiddleware));
+  applyMiddleware(themiddleware, thunkMiddleware));
 
 
 const ispraTheme = {
@@ -70,9 +104,9 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    console.log("App()", JSON.stringify(process.env));
+    console.log("App()");
 
-    console.log("window.config=", window.config);
+    //console.log("window.config=", window.config);
 
     this.config = JSON.parse(process.env.REACT_APP_THECONFIG);
     store.dispatch(configActions.setConfig(this.config));
@@ -107,7 +141,15 @@ class App extends Component {
     if (this.config.source && this.config.layers) {
       this._createLayers(this.config.source, this.config.layers);
     }
-    if (this.config.map && this.config.map.center) {
+
+    const _array = window.location.hash.split("/");
+    if (_array.length === 8) {
+      const _map = {
+        center: [Number(_array[5]), Number(_array[6])],
+        zoom: Number(_array[4])
+      };
+      store.dispatch(mapActions.setView(_map.center, _map.zoom));
+    } else if (this.config.map && this.config.map.center) {
       let zoom = this.config.map.zoom || 2;
       store.dispatch(mapActions.setView(this.config.map.center, zoom));
     }
@@ -136,6 +178,12 @@ class App extends Component {
                       <MenuItem onClick={(event) => { console.log("finestra modale"); }} >
                         <IconButton>
                           <FontIcon className="material-icons">help</FontIcon>
+                        </IconButton>
+                      </MenuItem>
+
+                      <MenuItem onClick={(event) => { this.share(); }} >
+                        <IconButton>
+                          <FontIcon className="material-icons">share</FontIcon>
                         </IconButton>
                       </MenuItem>
 
@@ -251,6 +299,9 @@ class App extends Component {
         'mapbox:group': 'base'
       }
     }));
+  }
+  share() {
+    console.log('share()');
   }
 }
 

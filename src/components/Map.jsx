@@ -34,6 +34,7 @@ class Map extends Component {
   }
   updateLayer(viewparams) {
     console.log("Map.updateLayer()", viewparams);
+    store.dispatch(actions.setViewParams(viewparams));
     this.props.updateLayersWithViewparams(viewparams.split("/"))
   }
   exportMapImage(blob) {

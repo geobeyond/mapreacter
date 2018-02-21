@@ -1,5 +1,3 @@
-import { viewparams } from "../actions/map";
-
 let defaultState = {
   mapConfig: {},
   viewparams: ''
