@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="theme-color" content="#000000">
+  <!--
+      manifest.json provides metadata used when your web app is added to the
+      homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
+    -->
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+  <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+  <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+  <title>mapreacter</title>
+
+  <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Intl.~locale.en,Object.assign"></script>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    .ispraheader {
+      position: absolute;
+      right: 0;
+      top: 0;
+      left: 0;
+      padding: 1rem;
+      background-color: #ffffff;
+      text-align: left;
+    }
+
+    .isprafooter {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      padding: 1rem;
+      background-color: #ffffff;
+      text-align: right;
+    }
+
+  </style>
+  <script>
+    var config = {
+      basemaps: ['mapbox', 'osm'],
+      mapbox: {
+        type: 'raster',
+        style: 'mapbox.satellite',
+        token: 'pk.eyJ1IjoibWlsYWZyZXJpY2hzIiwiYSI6ImNqOHk3YXJibTFwbTkycW9iM2JkMGVzbnEifQ.TKtR_oqVfT3bR7kEAPxK7w',
+      },
+      map: {
+        center: [12, 42],
+        zoom: 6
+      },
+      viewparams: ['phylum', 'famiglia', 'nome_scientifico'],
+      source: 'http://localhost:8080/geoserver/wms?SERVICE=WMS&VERSION=1.1.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true',
+      layers: ['nnb:param_oss_point', 'nnb:param_oss_polig'],
+      tassonomiaserviceurl: 'http://localhost:8080/MyRestServer/tassonomia?name=',
+      geoserverurl: 'http://localhost:8080/geoserver',
+      routing: [
+        { field: 'phylum', label: 'Phylum', routinglevel: '/' },
+        { field: 'famiglia', label: 'Famiglia', routinglevel: '/*/' },
+        { field: 'nome_scientifico', label: 'Specie', routinglevel: '/*/*/' },
+      ],
+    };    
+  </script>
+</head>
+
+<body>
+  <noscript>
+    You need to enable JavaScript to run this app.
+  </noscript>
+  <div className="ispraheader">
+    <img src="%PUBLIC_URL%/logo.png" alt="ispra ambiente ..." />
+  </div>
+  <div id="root" style="width: 100%; position:absolute"></div>
+  <!--div className="isprafooter">
+      <img src="%PUBLIC_URL%/logo.png" alt="ispra ambiente ..." />
+    </div-->
+</body>
+
+</html>

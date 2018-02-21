@@ -1,7 +1,5 @@
 import { viewparams } from "../actions/map";
 
-
-
 let defaultState = {
   mapConfig: {},
   viewparams: ''
@@ -18,6 +16,7 @@ export default function MapReducer(state = defaultState, action) {
         viewparams: action.payload['viewparams']
       });
       return state;
+
     default:
       return state;
   }

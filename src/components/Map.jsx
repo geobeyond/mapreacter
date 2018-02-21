@@ -1,29 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-
-import SdkMap from '@boundlessgeo/sdk/components/map';
-import SdkMapReducer from '@boundlessgeo/sdk/reducers/map';
-import * as mapActions from '@boundlessgeo/sdk/actions/map';
-import SdkLayerList from '@boundlessgeo/sdk/components/layer-list';
-import * as printActions from '@boundlessgeo/sdk/actions/print';
-
+import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-
-import Paper from 'material-ui/Paper';
-import { List } from 'material-ui/List';
-
+import SdkMap from '@boundlessgeo/sdk/components/map';
+//import SdkZoomControl from '@boundlessgeo/sdk/components/map/zoom-control';
+import SdkZoomSlider from '@boundlessgeo/sdk/components/map/zoom-slider';
+import SdkMousePosition from '@boundlessgeo/sdk/components/map/mouseposition';
+import SdkScaleLine from '@boundlessgeo/sdk/components/map/scaleline';
+import * as printActions from '@boundlessgeo/sdk/actions/print';
 import WMSPopup from './map/wms/wmspopup'
-import LayerListItem from './map/layerlistitem'
 import ZoomControl from './map/zoom-control';
-import { createWMSLayer, createWMSSource } from '../services/wms/wmslayer'
-
 import * as actions from '../actions/map';
-import { store } from '../client';
+import { store } from '../App';
 
-export class Map extends React.Component {
+class Map extends Component {
+
   componentDidMount() {
-    console.log("Map.componentDidMount()");
+    console.log("Map.componentDidMount() this.props=", JSON.stringify(this.props));
     if (this.props.viewparams) {
       this.updateLayer(this.props.viewparams);
     } else {
@@ -31,13 +23,17 @@ export class Map extends React.Component {
     }
   }
   componentWillReceiveProps(nextProps) {
+    console.log("Map.componentWillReceiveProps() props=", JSON.stringify(nextProps));
     if (nextProps.viewparams !== this.props.viewparams) {
-      this.updateLayer(nextProps.viewparams);
+      //this.updateLayer(nextProps.viewparams);
+      setTimeout(function () {
+        console.log('timeout ...');
+        this.updateLayer(nextProps.viewparams);
+      }.bind(this), 500);
     }
   }
   updateLayer(viewparams) {
     console.log("Map.updateLayer()", viewparams);
-    store.dispatch(actions.setViewParams(viewparams));
     this.props.updateLayersWithViewparams(viewparams.split("/"))
   }
   exportMapImage(blob) {
@@ -52,9 +48,7 @@ export class Map extends React.Component {
   render() {
     console.log("Map.render()");
     let token = this.props.mapConfig.basemap === 'mapbox' ? this.props.mapConfig.mapbox.token : '';
-    let layerListStyle = {
-      margin: 0
-    }
+
     return (
       <div className="client-map">
         <SdkMap
@@ -65,13 +59,15 @@ export class Map extends React.Component {
           onClick={(map, xy, featuresPromise) => {
             featuresPromise.then((featureGroups) => {
               let items = [];
-              for (let g = 0, gg = featureGroups.length; g < gg; g++) {
-                const layers = Object.keys(featureGroups[g]);
-                for (let l = 0, ll = layers.length; l < ll; l++) {
-                  const layer = layers[l];
-                  items.push({ layer: layer, features: featureGroups[g][layer] });
-                }
-              }
+              featureGroups.forEach((feature, index) => {
+                const layers = Object.keys(feature);
+                layers.forEach((layer) => {
+                  console.log("SdkMap.onClick()=", layer, featureGroups[index][layer]);
+                  if (featureGroups[index][layer].length>0) {
+                    items.push({ layer: layer, features: featureGroups[index][layer] });
+                  }
+                });
+              });
               if (items.length > 0) {
                 map.addPopup(
                   <WMSPopup
@@ -83,7 +79,10 @@ export class Map extends React.Component {
               }
             });
           }}>
+          <SdkScaleLine />
+          <SdkMousePosition style={{ position: 'absolute', top: 20, right: 12, zIndex: 1, width: '5em' }} />
           <ZoomControl />
+          <SdkZoomSlider />
         </SdkMap>
       </div>
     )
@@ -95,4 +94,5 @@ const mapStateToProps = (state, { match }) => {
     mapConfig: state.local.mapConfig
   }
 }
+
 export default withRouter(connect(mapStateToProps, actions)(Map));

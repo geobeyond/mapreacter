@@ -1,6 +1,6 @@
 import { createStore } from 'redux';
 
-const initialState = { };
+const initialState = {};
 
 const NEWDATA = "NEWDATA";
 
@@ -18,8 +18,8 @@ const tassonomiareducer = (state = initialState, action) => {
                 _data: action.payload._data,
             });
             break;
-    }
-    return state;
+        default:
+            return state;
 }
 
 export const tassonomiastore = createStore(tassonomiareducer, initialState);

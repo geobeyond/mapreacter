@@ -1,5 +1,5 @@
 
-import * as mapbox from '../../src/services/mapbox';
+import * as mapbox from '../../services/mapbox';
 
 describe('#createRasterSourceFromStyle', () => {
   it('returns mapboxgl source object of type raster', () => {
