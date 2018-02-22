@@ -20,6 +20,8 @@ import Download from 'material-ui/svg-icons/file/file-download';
 import { cyan500, cyan700, pinkA200, grey300, grey400, grey500, white, darkBlack, fullBlack } from 'material-ui/styles/colors';
 import { fade } from 'material-ui/utils/colorManipulator';
 import spacing from 'material-ui/styles/spacing';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 import { createWMSLayer, createWMSSourceWithLayerName } from './services/wms/wmslayer'
 import { createVectorSourceFromStyle, createRasterSourceFromStyle } from './services/mapbox'
 import MapReducer from './reducers/map';
@@ -46,14 +48,14 @@ export const themiddleware = store => next => action => {
     if (store.getState().local['viewparams']) {
       const _index = store.getState().local.mapConfig.routing.length;
       const _array = store.getState().local.viewparams.split("/");
-      while (_array.length < (_index+4)) {
+      while (_array.length < (_index + 4)) {
         _array.push('*');
       }
 
       _array[_index] = store.getState().map.zoom;
-      _array[_index+1] = '' + Math.round(store.getState().map.center[0] * 100) / 100;
-      _array[_index+2] = '' + Math.round(store.getState().map.center[1] * 100) / 100;
-      _array[_index+3] = store.getState().map.bearing;
+      _array[_index + 1] = '' + Math.round(store.getState().map.center[0] * 100) / 100;
+      _array[_index + 2] = '' + Math.round(store.getState().map.center[1] * 100) / 100;
+      _array[_index + 3] = store.getState().map.bearing;
       const thehash = '/#/' + _array.join('/');
       console.log('themiddleware()', thehash);
       window.history.pushState(thehash, 'map', thehash);
@@ -102,6 +104,16 @@ const ispraTheme = {
 class App extends Component {
 
   config = {};
+  state = {
+    sharedialog: false,
+  };
+  handleOpenShareDialog = () => {
+    this.setState({ sharedialog: true });
+  };
+
+  handleCloseShareDialog = () => {
+    this.setState({ sharedialog: false });
+  };
 
   constructor(props) {
     super(props);
@@ -162,12 +174,28 @@ class App extends Component {
 
   render() {
     console.log("App.render()");
+    const actions = [
+      <FlatButton
+        label="Chiudi"
+        primary={true}
+        onClick={this.handleCloseShareDialog}
+      />,
+    ];
     return (
       <div>
         <MuiThemeProvider muiTheme={getMuiTheme(ispraTheme)}>
           <Provider store={store}>
             <HashRouter>
               <div>
+                <Dialog
+                  title="per confividere la pagina copia ed invia questo link:"
+                  actions={actions}
+                  modal={false}
+                  open={this.state.sharedialog}
+                  onRequestClose={this.handleCloseShareDialog}
+                >
+                  {window.location.href}
+                </Dialog>
                 <Toolbar>
                   <ToolbarGroup firstChild={true} style={{ margin: '5px' }}>
                     <IconMenu
@@ -182,7 +210,7 @@ class App extends Component {
                         </IconButton>
                       </MenuItem>
 
-                      <MenuItem onClick={(event) => { this.share(); }} >
+                      <MenuItem onClick={(event) => { this.handleOpenShareDialog(); }} >
                         <IconButton>
                           <FontIcon className="material-icons">share</FontIcon>
                         </IconButton>
@@ -300,9 +328,6 @@ class App extends Component {
         'mapbox:group': 'base'
       }
     }));
-  }
-  share() {
-    console.log('share()');
   }
 }
 
