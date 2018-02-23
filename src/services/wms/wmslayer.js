@@ -1,6 +1,3 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-
 export const createWMSSourceWithLayerName = (url, name, options = {tileSize: 256}) => {
   return {
       type: 'raster',

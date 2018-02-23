@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom'
 import AutoComplete from 'material-ui/AutoComplete';
-import { Menu, MenuItem } from 'material-ui/Menu';
+import { MenuItem } from 'material-ui/Menu';
 import Divider from 'material-ui/Divider';
-import Subheader from 'material-ui/Subheader';
 import { tassonomiastore, newDataAction } from './tassonomiaredux';
 
 var axios = require('axios');
@@ -30,11 +29,11 @@ class TassonomiaAutoComplete extends Component {
                 text: routingrecord.routinglevel + element,
                 value: (<MenuItem primaryText={element} />),
               });
-            });            
+            });
           }
         }
       });
-      
+
       this.setState({
         dataSource: _datasource,
       });
@@ -46,7 +45,7 @@ class TassonomiaAutoComplete extends Component {
     this.setState({
       searchText: value,
     });
-    const url =  this.props.config.tassonomiaserviceurl + value;
+    const url = this.props.config.tassonomiaserviceurl + value;
     console.log("GET", url);
     axios.get(url)
       .then((response) => {
@@ -68,20 +67,19 @@ class TassonomiaAutoComplete extends Component {
 
   render() {
     return (
-      <div>
-        <AutoComplete
-          hintText="Tassonomia ..."
-          dataSource={this.state.dataSource}
-          searchText={this.state.searchText}
-          onUpdateInput={this.handleUpdateInput}
-          onNewRequest={this.handleOnNewRequest}
-          filter={AutoComplete.noFilter}
-          openOnFocus={true}
-          maxSearchResults={15}
-          id={'tassonomiaautocomplete'}
-          className={'tassonomiaautocomplete'}
-        />
-      </div>
+      <AutoComplete
+        style={this.props['style'] ? this.props.style : {}}
+        hintText="Tassonomia ..."
+        dataSource={this.state.dataSource}
+        searchText={this.state.searchText}
+        onUpdateInput={this.handleUpdateInput}
+        onNewRequest={this.handleOnNewRequest}
+        filter={AutoComplete.noFilter}
+        openOnFocus={true}
+        maxSearchResults={15}
+        id={'tassonomiaautocomplete'}
+        className={'tassonomiaautocomplete'}
+      />
     );
   }
 

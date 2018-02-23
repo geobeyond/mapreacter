@@ -1,12 +1,6 @@
 import React from 'react';
 import SdkPopup from '@boundlessgeo/sdk/components/map/popup';
 
-import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-
-import Paper from 'material-ui/Paper';
-import {List} from 'material-ui/List';
-import {Tabs, Tab} from 'material-ui/Tabs';
-import {Table, TableHeader, TableRow, TableHeaderColumn} from 'material-ui/Table';
 
 /**
  * Show the WMS GetFeatureInfo feature in a popup.
@@ -33,9 +27,9 @@ export default class WMSPopup extends SdkPopup {
     return rows;
   }
   render() {
+    console.log("WMSPopup.render()", JSON.stringify(this.props.items));
     let content = '';
-    if(this.props.items > 1) {
-    }else {
+    if (this.props.items.length > 0) {
       content = (
         <table>
           <thead className="popup-table-header">
@@ -49,15 +43,16 @@ export default class WMSPopup extends SdkPopup {
             {this._generateTable(this.props.items[0].features)}
           </tbody>
         </table>
-        );
+      );
     }
+    console.log("WMSPopup.render() content:", content);
     return this.renderPopup((
       <div className="sdk-popup-content">
-				<div className="popup-content">
+        <div className="popup-content">
           <div className="popup-body">
             {content}
           </div>
-				</div>
+        </div>
       </div>
     ));
   }
