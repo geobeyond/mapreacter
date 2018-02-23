@@ -4,12 +4,14 @@ import { types, layerListItemSource, layerListItemTarget, collect, collectDrop }
 import SdkLayerListItem from '@boundlessgeo/sdk/components/layer-list-item';
 import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
+import { isLayerVisible } from '@boundlessgeo/sdk/util';
 
 
 class LayerListItem extends SdkLayerListItem {
   render() {
     const layer = this.props.layer;
-    const checkbox = this.getVisibilityControl(layer);
+    //const checkbox = this.getVisibilityControl(layer);
+    const checkbox = (<i className={isLayerVisible(this.props.layer) ? 'fa fa-eye fa-lg' : 'fa fa-eye-slash fa-lg'} onClick={() => { this.toggleVisibility(); }} />);
     const moveButtons = (
       <span>
         <IconButton
