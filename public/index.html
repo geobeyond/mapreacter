@@ -26,58 +26,25 @@
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <style>
-    .ispraheader {
-      position: absolute;
-      right: 0;
-      top: 0;
-      left: 0;
-      padding: 1rem;
-      background-color: #ffffff;
-      text-align: left;
-    }
 
     .isprafooter {
       position: absolute;
       right: 0;
       bottom: 0;
       left: 0;
-      padding: 1rem;
+      padding: 10px;
       background-color: #ffffff;
       text-align: right;
     }
 
   </style>
-  <script>
-    var config = {
-      basemaps: ['mapbox', 'osm'],
-      mapbox: {
-        type: 'raster',
-        style: 'mapbox.satellite',
-        token: 'pk.eyJ1IjoibWlsYWZyZXJpY2hzIiwiYSI6ImNqOHk3YXJibTFwbTkycW9iM2JkMGVzbnEifQ.TKtR_oqVfT3bR7kEAPxK7w',
-      },
-      map: {
-        center: [12, 42],
-        zoom: 6
-      },
-      viewparams: ['phylum', 'famiglia', 'nome_scientifico'],
-      source: 'http://localhost:8080/geoserver/wms?SERVICE=WMS&VERSION=1.1.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true',
-      layers: ['nnb:param_oss_point', 'nnb:param_oss_polig'],
-      tassonomiaserviceurl: 'http://localhost:8080/MyRestServer/tassonomia?name=',
-      geoserverurl: 'http://localhost:8080/geoserver',
-      routing: [
-        { field: 'phylum', label: 'Phylum', routinglevel: '/' },
-        { field: 'famiglia', label: 'Famiglia', routinglevel: '/*/' },
-        { field: 'nome_scientifico', label: 'Specie', routinglevel: '/*/*/' },
-      ],
-    };    
-  </script>
 </head>
 
-<body>
+<body style="display: block; margin:0px">
   <noscript>
     You need to enable JavaScript to run this app.
   </noscript>
-  <div className="ispraheader">
+  <div style="padding: 15px; background-color: #ffffff; text-align: left;">
     <img src="%PUBLIC_URL%/logo.png" alt="ispra ambiente ..." />
   </div>
   <div id="root" style="width: 100%; position:absolute"></div>
