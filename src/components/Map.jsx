@@ -7,6 +7,7 @@ import SdkZoomSlider from '@boundlessgeo/sdk/components/map/zoom-slider';
 import SdkMousePosition from '@boundlessgeo/sdk/components/map/mouseposition';
 import SdkScaleLine from '@boundlessgeo/sdk/components/map/scaleline';
 import * as printActions from '@boundlessgeo/sdk/actions/print';
+import OverviewMap from 'ol/control/overviewmap';
 import WMSPopup from './map/wms/wmspopup'
 import ZoomControl from './map/zoom-control';
 import * as actions from '../actions/map';
@@ -53,6 +54,9 @@ class Map extends Component {
     return (
       <div className="client-map">
         <SdkMap
+          ref={(input) => {
+            input.wrappedInstance.map.addControl(new OverviewMap());
+          }}
           style={{ position: 'relative' }}
           accessToken={token}
           includeFeaturesOnClick
