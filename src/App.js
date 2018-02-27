@@ -27,6 +27,7 @@ import { createVectorSourceFromStyle, createRasterSourceFromStyle } from './serv
 import MapReducer from './reducers/map';
 import * as configActions from './actions/map';
 import Map from './components/Map';
+import TassonomiaReducer from './components/tassonomiaredux';
 import TassonomiaAutoComplete from './components/TassonomiaAutoComplete';
 import LayerListItem from './components/map/LayerListItem';
 import { downloadCSV, downloadShapefile } from './download';
@@ -74,7 +75,8 @@ export const store = createStore(
     map: SdkMapReducer,
     mapinfo: SdkMapInfoReducer,
     print: SdkPrintReducer,
-    local: MapReducer
+    local: MapReducer,
+    tassonomia: TassonomiaReducer,
   }),
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
   applyMiddleware(themiddleware, thunkMiddleware));
