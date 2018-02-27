@@ -79,7 +79,7 @@ class TassonomiaAutoComplete extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log("TassonomiaAutoComplete.mapStateToProps()");
+  //console.log("TassonomiaAutoComplete.mapStateToProps()");
   return {
     tassonomia: state.tassonomia
   }

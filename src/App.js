@@ -36,11 +36,18 @@ import './App.css';
 require('dotenv').config();
 
 export const themiddleware = store => next => action => {
-  if (action.type !== 'MAPINFO.SET_MOUSE_POSITION') {
-    console.log('themiddleware() current action:', JSON.stringify(action, (key, value) => {
-      if (key === 'component') return '...';
-      return value;
-    }));
+  switch (action.type) {
+    case 'MAPINFO.SET_MOUSE_POSITION':
+      break;
+    case 'NEWDATASOURCE':
+      console.log('themiddleware() current action:', action.type);
+      break;
+    default:
+      console.log('themiddleware() current action:', JSON.stringify(action, (key, value) => {
+        if (key === 'component') return '...';
+        return value;
+      }));
+      break;
   }
 
   let result = next(action);
