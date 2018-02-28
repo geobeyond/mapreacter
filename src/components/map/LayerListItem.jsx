@@ -5,6 +5,7 @@ import SdkLayerListItem from '@boundlessgeo/sdk/components/layer-list-item';
 import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
 import { isLayerVisible } from '@boundlessgeo/sdk/util';
+import { fitextent } from '../../actions/map';
 
 
 class LayerListItem extends SdkLayerListItem {
@@ -12,7 +13,22 @@ class LayerListItem extends SdkLayerListItem {
     const layer = this.props.layer;
     //const checkbox = this.getVisibilityControl(layer);
     const checkbox = (<i className={isLayerVisible(this.props.layer) ? 'fa fa-eye fa-lg' : 'fa fa-eye-slash fa-lg'} onClick={() => { this.toggleVisibility(); }} />);
-    const moveButtons = (
+
+    let fitextentbutton = null;
+    if (layer.id === 'osm' || layer.id === 'mapbox') {
+      fitextentbutton = (<span />);
+    } else {
+      fitextentbutton = (
+        <IconButton
+          onClick={() => {
+            this.props.dispatch(fitextent(this.props.layer.id));
+          }}>
+          <FontIcon className="material-icons">fullscreen</FontIcon>
+        </IconButton>
+      );
+    }
+
+    let moveButtons = (
       <span>
         <IconButton
           onClick={() => {
@@ -26,6 +42,7 @@ class LayerListItem extends SdkLayerListItem {
           }}>
           <FontIcon className="material-icons">arrow_downward</FontIcon>
         </IconButton>
+        {fitextentbutton}
       </span>
     );
 
