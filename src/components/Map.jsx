@@ -55,7 +55,9 @@ class Map extends Component {
       <div className="client-map">
         <SdkMap
           ref={(input) => {
-            input.wrappedInstance.map.addControl(new OverviewMap());
+            if (input) {
+              input.wrappedInstance.map.addControl(new OverviewMap());
+            }
           }}
           style={{ position: 'relative' }}
           accessToken={token}
@@ -68,7 +70,7 @@ class Map extends Component {
                 const layers = Object.keys(feature);
                 layers.forEach((layer) => {
                   console.log("SdkMap.onClick()=", layer, featureGroups[index][layer]);
-                  if (featureGroups[index][layer].length>0) {
+                  if (featureGroups[index][layer].length > 0) {
                     items.push({ layer: layer, features: featureGroups[index][layer] });
                   }
                 });
