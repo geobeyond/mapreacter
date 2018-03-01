@@ -5824,7 +5824,7 @@ node-sass@^4.5.3:
     stdout-stream "^1.4.0"
     "true-case-path" "^1.0.2"
 
-"nomnom@>= 1.5.x", nomnom@^1.8.1:
+"nomnom@>= 1.5.x":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/nomnom/-/nomnom-2.0.0.tgz#5ca9db7ec8e7c0911a63dec172c491165414629a"
 
@@ -6979,6 +6979,12 @@ react-event-listener@^0.5.1:
     prop-types "^15.6.0"
     warning "^3.0.0"
 
+react-localization@^0.1.8:
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/react-localization/-/react-localization-0.1.8.tgz#ec0f2a4ebb6e872b451ecd3d13d490479e2c727c"
+  dependencies:
+    react "^16.0.0"
+
 react-reconciler@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/react-reconciler/-/react-reconciler-0.7.0.tgz#9614894103e5f138deeeb5eabaf3ee80eb1d026d"
@@ -7040,7 +7046,7 @@ react-transition-group@^1.2.1:
     prop-types "^15.5.6"
     warning "^3.0.0"
 
-react@^16.2.0:
+react@^16.0.0, react@^16.2.0:
   version "16.2.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.2.0.tgz#a31bd2dab89bff65d42134fa187f24d054c273ba"
   dependencies:
@@ -9112,9 +9118,9 @@ yeoman-environment@^2.0.0:
     text-table "^0.2.0"
     untildify "^3.0.2"
 
-"yeoman-generator@git+https://github.com/ev1stensberg/generator.git#Feature-getArgument":
+"yeoman-generator@https://github.com/ev1stensberg/generator.git#Feature-getArgument":
   version "1.1.1"
-  resolved "git+https://github.com/ev1stensberg/generator.git#9e24fa31c85302ca1145ae34fc68b4f133251ca0"
+  resolved "https://github.com/ev1stensberg/generator.git#9e24fa31c85302ca1145ae34fc68b4f133251ca0"
   dependencies:
     async "^2.0.0"
     chalk "^1.0.0"

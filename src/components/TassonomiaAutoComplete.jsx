@@ -5,13 +5,13 @@ import AutoComplete from 'material-ui/AutoComplete';
 import { MenuItem } from 'material-ui/Menu';
 import Divider from 'material-ui/Divider';
 import { newDataSourceAction } from './tassonomiaredux';
+import { mylocalizedstrings } from '../services/localizedstring';
 
 var axios = require('axios');
 
 class TassonomiaAutoComplete extends Component {
 
   state = {
-    dataSource: [],
     searchText: '',
   };
 
@@ -32,7 +32,11 @@ class TassonomiaAutoComplete extends Component {
               if (_datasource.length > 0) {
                 _datasource.push({ text: '', value: (<Divider />), });
               }
-              _datasource.push({ text: '', value: (<MenuItem primaryText={routingrecord.label} disabled={true} />), });
+              _datasource.push({
+                text: '', value: (
+                  <MenuItem primaryText={mylocalizedstrings.getString(routingrecord.label, mylocalizedstrings.getLanguage())} disabled={true} />
+                ),
+              });
               response.data[routingrecord.field].forEach(element => {
                 _datasource.push({
                   text: routingrecord.routinglevel + element,
@@ -62,7 +66,7 @@ class TassonomiaAutoComplete extends Component {
     return (
       <AutoComplete
         style={this.props['style'] ? this.props.style : {}}
-        hintText="Tassonomia ..."
+        hintText={mylocalizedstrings.tassonomialabel}
         dataSource={this.props.tassonomia.dataSource}
         searchText={this.state.searchText}
         onUpdateInput={this.handleUpdateInput}

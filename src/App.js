@@ -22,6 +22,7 @@ import { fade } from 'material-ui/utils/colorManipulator';
 import spacing from 'material-ui/styles/spacing';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import SelectField from 'material-ui/SelectField';
 import { createWMSLayer, createWMSSourceWithLayerName } from './services/wms/wmslayer'
 import { createVectorSourceFromStyle, createRasterSourceFromStyle } from './services/mapbox'
 import MapReducer from './reducers/map';
@@ -31,6 +32,7 @@ import TassonomiaReducer from './components/tassonomiaredux';
 import TassonomiaAutoComplete from './components/TassonomiaAutoComplete';
 import LayerListItem from './components/map/LayerListItem';
 import { downloadCSV, downloadShapefile } from './download';
+import { mylocalizedstrings } from './services/localizedstring';
 import './App.css';
 //import {} from 'dotenv/config';
 require('dotenv').config();
@@ -212,11 +214,14 @@ class App extends Component {
     this.setState({ sharedialog: false });
   };
 
+  handleChangeLanguage = (event, index, value) => {
+    mylocalizedstrings.setLanguage(value);
+    this.setState({});
+  };
+
   constructor(props) {
     super(props);
     console.log("App()");
-
-    //console.log("window.config=", window.config);
 
     this.config = JSON.parse(process.env.REACT_APP_THECONFIG);
     this.config.wpsserviceurl = process.env.REACT_APP_WPSSERVICEURL;
@@ -274,7 +279,7 @@ class App extends Component {
     console.log("App.render()");
     const actions = [
       <FlatButton
-        label="Chiudi"
+        label={mylocalizedstrings.close}
         primary={true}
         onClick={this.handleCloseShareDialog}
       />,
@@ -286,7 +291,7 @@ class App extends Component {
             <HashRouter>
               <div>
                 <Dialog
-                  title="per confividere la pagina copia ed invia questo link:"
+                  title={mylocalizedstrings.sharetitle}
                   actions={actions}
                   modal={false}
                   open={this.state.sharedialog}
@@ -354,6 +359,17 @@ class App extends Component {
                       </div>
                     </IconMenu>
                     <TassonomiaAutoComplete config={this.config} style={{ margin: '5px' }} />
+                  </ToolbarGroup>
+                  <ToolbarGroup firstChild={false} style={{ margin: '5px' }}>
+                    <SelectField
+                      floatingLabelText={mylocalizedstrings.selectLanguage}
+                      value={mylocalizedstrings.getLanguage()}
+                      onChange={this.handleChangeLanguage}
+                      autoWidth={true}
+                    >
+                      <MenuItem value={'it'} primaryText="Italiano" />
+                      <MenuItem value={'en'} primaryText="English" />
+                    </SelectField>
                   </ToolbarGroup>
                 </Toolbar>
                 <Switch>
