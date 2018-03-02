@@ -69,7 +69,7 @@ export const themiddleware = store => next => action => {
         _array[_index + 1] = '' + Math.round(store.getState().map.center[0] * 100) / 100;
         _array[_index + 2] = '' + Math.round(store.getState().map.center[1] * 100) / 100;
         _array[_index + 3] = store.getState().map.bearing;
-        const thehash = '/#/' + _array.join('/');
+        const thehash = '#/' + _array.join('/');
         console.log('themiddleware()', thehash);
         window.history.pushState(thehash, 'map', thehash);
       }
