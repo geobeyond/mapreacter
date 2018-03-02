@@ -13,6 +13,8 @@ import TassonomiaAutoComplete from '../../components/TassonomiaAutoComplete';
 import { tassonomiastore, newDataAction } from '../../components/tassonomiaredux';
 import { wrap } from 'module';
 import jsdom from 'jsdom';
+import MapReducer from '../../reducers/map';
+import TassonomiaReducer from '../../components/tassonomiaredux';
 
 
 configure({ adapter: new Adapter() });
@@ -34,11 +36,20 @@ const config = {
     ],
 };
 
+export const store = createStore(
+    combineReducers({
+      //map: SdkMapReducer,
+      //mapinfo: SdkMapInfoReducer,
+      //print: SdkPrintReducer,
+      local: MapReducer,
+      tassonomia: TassonomiaReducer,
+    }),
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 test('renders correctly', () => {
     const component = renderer.create(
         <MuiThemeProvider>
-            <Provider store={createStore((state = [], action) => { return state })}>
+            <Provider store={store}>
                 <HashRouter>
                     <TassonomiaAutoComplete config={config} />
                 </HashRouter>
@@ -54,7 +65,7 @@ test('component changes the after click', () => {
 
     const wrapper = mount(
         <MuiThemeProvider>
-            <Provider store={createStore((state = [], action) => { return state })}>
+            <Provider store={store}>
                 <HashRouter>
                     <TassonomiaAutoComplete config={config} />
                 </HashRouter>
@@ -92,11 +103,11 @@ test('component changes the after click', () => {
         ]
     });
 
-    tassonomiastore.subscribe(() => {
+    store.subscribe(() => {
         console.log('---------------------------------------------');
         config.routing.forEach(routingrecord => {
-            if (tassonomiastore.getState()._data[routingrecord.field]) {
-                expect(tassonomiastore.getState()._data[routingrecord.field].length).toBeGreaterThan(1);
+            if (store.getState().tassonomia._data[routingrecord.field]) {
+                expect(store.getState().tassonomia._data[routingrecord.field].length).toBeGreaterThan(1);
             }
         });
         console.log('---------------------------------------------');
