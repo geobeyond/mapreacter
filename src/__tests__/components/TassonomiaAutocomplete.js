@@ -73,9 +73,9 @@ test('component changes the after click', () => {
         </MuiThemeProvider>
     );
 
-    console.log('---------------------------------------------');
-    console.log(wrapper.debug());
-    console.log('---------------------------------------------');
+    //console.log('---------------------------------------------');
+    //console.log(wrapper.debug());
+    //console.log('---------------------------------------------');
 
     var axios = require('axios');
     var MockAdapter = require('axios-mock-adapter');
@@ -104,13 +104,9 @@ test('component changes the after click', () => {
     });
 
     store.subscribe(() => {
-        console.log('---------------------------------------------');
-        config.routing.forEach(routingrecord => {
-            if (store.getState().tassonomia._data[routingrecord.field]) {
-                expect(store.getState().tassonomia._data[routingrecord.field].length).toBeGreaterThan(1);
-            }
-        });
-        console.log('---------------------------------------------');
+        //console.log('---------------------------------------------');
+        expect(store.getState().tassonomia.dataSource.length).toBeGreaterThan(1);
+        //console.log('---------------------------------------------');
     });
 
     //wrapper.find('input').simulate('change', { target: { value: 'a' } });
