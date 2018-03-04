@@ -31,7 +31,7 @@ import Map from './components/Map';
 import TassonomiaReducer from './components/tassonomiaredux';
 import TassonomiaAutoComplete from './components/TassonomiaAutoComplete';
 import LayerListItem from './components/map/LayerListItem';
-import { downloadCSV, downloadShapefile } from './download';
+import { downloadFile } from './services/download';
 import { mylocalizedstrings } from './services/localizedstring';
 import HelpComponent from './components/HelpComponent';
 import './App.css';
@@ -219,6 +219,8 @@ class App extends Component {
 
     this.config = JSON.parse(process.env.REACT_APP_THECONFIG);
     this.config.wpsserviceurl = process.env.REACT_APP_WPSSERVICEURL;
+    this.config.downloadCSVUrlParameters = process.env.REACT_APP_DOWNLOADCSVURLPARAMETERS;
+    this.config.downloadShapefileUrlParameters = process.env.REACT_APP_DOWNLOADSHAPEFILEURLPARAMETERS;
     store.dispatch(configActions.setConfig(this.config));
 
     store.dispatch(mapActions.updateMetadata({
@@ -343,13 +345,13 @@ class App extends Component {
                           <MenuItem
                             primaryText="CSV"
                             onClick={(event) => {
-                              downloadCSV(this.config.geoserverurl, this.config.layers);
+                              downloadFile(this.config.geoserverurl, this.config.layers, this.config.downloadCSVUrlParameters);
                             }}
                           />,
                           <MenuItem
                             primaryText="Shapefile"
                             onClick={(event) => {
-                              downloadShapefile(this.config.geoserverurl, this.config.layers);
+                              downloadFile(this.config.geoserverurl, this.config.layers, this.config.downloadShapefileUrlParameters);
                             }}
                           />
                         ]}
