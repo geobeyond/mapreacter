@@ -33,6 +33,7 @@ import TassonomiaAutoComplete from './components/TassonomiaAutoComplete';
 import LayerListItem from './components/map/LayerListItem';
 import { downloadCSV, downloadShapefile } from './download';
 import { mylocalizedstrings } from './services/localizedstring';
+import HelpComponent from './components/HelpComponent';
 import './App.css';
 //import {} from 'dotenv/config';
 require('dotenv').config();
@@ -206,13 +207,6 @@ class App extends Component {
   state = {
     sharedialog: false,
   };
-  handleOpenShareDialog = () => {
-    this.setState({ sharedialog: true });
-  };
-
-  handleCloseShareDialog = () => {
-    this.setState({ sharedialog: false });
-  };
 
   handleChangeLanguage = (event, index, value) => {
     mylocalizedstrings.setLanguage(value);
@@ -277,13 +271,6 @@ class App extends Component {
 
   render() {
     console.log("App.render()");
-    const actions = [
-      <FlatButton
-        label={mylocalizedstrings.close}
-        primary={true}
-        onClick={this.handleCloseShareDialog}
-      />,
-    ];
     return (
       <div>
         <MuiThemeProvider muiTheme={getMuiTheme(ispraTheme)}>
@@ -291,11 +278,37 @@ class App extends Component {
             <HashRouter>
               <div>
                 <Dialog
+                  title={mylocalizedstrings.helptitle}
+                  actions={[
+                    <FlatButton
+                      label={mylocalizedstrings.close}
+                      primary={true}
+                      onClick={() => { this.setState({ helpdialog: false }); }}
+                    />,
+                  ]}
+                  modal={false}
+                  open={this.state.helpdialog}
+                  onRequestClose={() => { this.setState({ helpdialog: false }); }}
+                  autoScrollBodyContent={true}
+                  contentStyle={{
+                    width: '90%',
+                    maxWidth: 'none',
+                  }}
+                >
+                  <HelpComponent />
+                </Dialog>
+                <Dialog
                   title={mylocalizedstrings.sharetitle}
-                  actions={actions}
+                  actions={[
+                    <FlatButton
+                      label={mylocalizedstrings.close}
+                      primary={true}
+                      onClick={() => { this.setState({ sharedialog: false }); }}
+                    />,
+                  ]}
                   modal={false}
                   open={this.state.sharedialog}
-                  onRequestClose={this.handleCloseShareDialog}
+                  onRequestClose={() => { this.setState({ sharedialog: false }); }}
                 >
                   {window.location.href}
                 </Dialog>
@@ -307,13 +320,13 @@ class App extends Component {
                         <FontIcon className="material-icons">more_vert</FontIcon>
                       }
                     >
-                      <MenuItem onClick={(event) => { console.log("finestra modale"); }} >
+                      <MenuItem onClick={(event) => { this.setState({ helpdialog: true }); }} >
                         <IconButton>
                           <FontIcon className="material-icons">help</FontIcon>
                         </IconButton>
                       </MenuItem>
 
-                      <MenuItem onClick={(event) => { this.handleOpenShareDialog(); }} >
+                      <MenuItem onClick={(event) => { this.setState({ sharedialog: true }); }} >
                         <IconButton>
                           <FontIcon className="material-icons">share</FontIcon>
                         </IconButton>
