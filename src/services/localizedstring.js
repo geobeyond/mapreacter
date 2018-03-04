@@ -1,7 +1,10 @@
 //import React, { Component } from 'react';
 import LocalizedStrings from 'react-localization';
+require('dotenv').config();
 
-export const mylocalizedstrings = new LocalizedStrings({
+const theprops = JSON.parse(process.env.REACT_APP_MESSAGES);
+
+/*export const mylocalizedstrings = new LocalizedStrings({
   it: {
     selectLanguage: "lingua selezionata :",
     tassonomialabel: "Tassonomia ...",
@@ -22,6 +25,8 @@ export const mylocalizedstrings = new LocalizedStrings({
     famiglialabel: "Family",
     specielabel: "Species",
   },
-});
+});*/
+
+export const mylocalizedstrings = new LocalizedStrings(theprops);
 
 mylocalizedstrings.setLanguage('it');  
