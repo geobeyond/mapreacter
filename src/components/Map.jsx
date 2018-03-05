@@ -11,6 +11,7 @@ import OverviewMap from 'ol/control/overviewmap';
 import FullScreen from 'ol/control/fullscreen';
 import WMSPopup from './map/wms/wmspopup'
 import ZoomControl from './map/zoom-control';
+import MeasureComponent from './MeasureComponent';
 import * as actions from '../actions/map';
 import { store } from '../App';
 
@@ -92,6 +93,7 @@ class Map extends Component {
           <SdkMousePosition style={{ position: 'absolute', top: 10, right: 40, zIndex: 1, width: '5em' }} />
           <ZoomControl />
           <SdkZoomSlider />
+          <MeasureComponent />
         </SdkMap>
       </div>
     )

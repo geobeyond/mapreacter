@@ -9,6 +9,10 @@ import SdkLayerList from '@boundlessgeo/sdk/components/layer-list';
 import * as printActions from '@boundlessgeo/sdk/actions/print';
 import SdkPrintReducer from '@boundlessgeo/sdk/reducers/print';
 import SdkMapInfoReducer from '@boundlessgeo/sdk/reducers/mapinfo';
+import SdkDrawingReducer from '@boundlessgeo/sdk/reducers/drawing';
+import * as drawingActions from '@boundlessgeo/sdk/actions/drawing';
+import { INTERACTIONS } from '@boundlessgeo/sdk/constants';
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import IconMenu from 'material-ui/IconMenu';
@@ -16,13 +20,13 @@ import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
 import { MenuItem } from 'material-ui/Menu';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
-import Download from 'material-ui/svg-icons/file/file-download';
 import { cyan500, cyan700, pinkA200, grey300, grey400, grey500, white, darkBlack, fullBlack } from 'material-ui/styles/colors';
 import { fade } from 'material-ui/utils/colorManipulator';
 import spacing from 'material-ui/styles/spacing';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import SelectField from 'material-ui/SelectField';
+
 import { createWMSLayer, createWMSSourceWithLayerName } from './services/wms/wmslayer'
 import { createVectorSourceFromStyle, createRasterSourceFromStyle } from './services/mapbox'
 import MapReducer from './reducers/map';
@@ -43,6 +47,7 @@ var axios = require('axios');
 export const themiddleware = store => next => action => {
   switch (action.type) {
     case 'MAPINFO.SET_MOUSE_POSITION':
+    case 'DRAWING_SET_MEASURE_FEATURE':
       break;
     case 'NEWDATASOURCE':
       console.log('themiddleware() current action:', action.type);
@@ -157,6 +162,11 @@ export const themiddleware = store => next => action => {
           console.error(error);
         });
       break;
+
+    case 'DRAWING_FINALIZE_MEASURE_FEATURE':
+      store.dispatch(drawingActions.endDrawing());
+      break;
+
     default:
       break;
   }
@@ -173,6 +183,7 @@ export const store = createStore(
     map: SdkMapReducer,
     mapinfo: SdkMapInfoReducer,
     print: SdkPrintReducer,
+    drawing: SdkDrawingReducer,
     local: MapReducer,
     tassonomia: TassonomiaReducer,
   }),
@@ -323,15 +334,11 @@ class App extends Component {
                       }
                     >
                       <MenuItem onClick={(event) => { this.setState({ helpdialog: true }); }} >
-                        <IconButton>
-                          <FontIcon className="material-icons">help</FontIcon>
-                        </IconButton>
+                        <i class="material-icons">help</i>
                       </MenuItem>
 
                       <MenuItem onClick={(event) => { this.setState({ sharedialog: true }); }} >
-                        <IconButton>
-                          <FontIcon className="material-icons">share</FontIcon>
-                        </IconButton>
+                        <i class="material-icons">share</i>
                       </MenuItem>
 
                       <MenuItem
@@ -356,10 +363,28 @@ class App extends Component {
                           />
                         ]}
                       >
-                        <IconButton>
-                          <Download />
-                        </IconButton>
+                        <i class="material-icons">file_download</i>
                       </MenuItem>
+
+                      <MenuItem
+                        menuItems={[
+                          <MenuItem
+                            primaryText="Linea"
+                            onClick={(event) => {
+                              store.dispatch(drawingActions.startMeasure(INTERACTIONS.measure_line));
+                            }}
+                          />,
+                          <MenuItem
+                            primaryText="Poligono"
+                            onClick={(event) => {
+                              store.dispatch(drawingActions.startMeasure(INTERACTIONS.measure_polygon));
+                            }}
+                          />
+                        ]}
+                      >
+                        <i class="material-icons">photo_size_select_small</i>
+                      </MenuItem>
+
                     </IconMenu>
                     <IconMenu
                       style={{ margin: '5px' }}
