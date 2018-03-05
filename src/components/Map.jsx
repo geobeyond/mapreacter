@@ -8,6 +8,7 @@ import SdkMousePosition from '@boundlessgeo/sdk/components/map/mouseposition';
 import SdkScaleLine from '@boundlessgeo/sdk/components/map/scaleline';
 import * as printActions from '@boundlessgeo/sdk/actions/print';
 import OverviewMap from 'ol/control/overviewmap';
+import FullScreen from 'ol/control/fullscreen';
 import WMSPopup from './map/wms/wmspopup'
 import ZoomControl from './map/zoom-control';
 import * as actions from '../actions/map';
@@ -57,6 +58,7 @@ class Map extends Component {
           ref={(input) => {
             if (input) {
               input.wrappedInstance.map.addControl(new OverviewMap());
+              input.wrappedInstance.map.addControl(new FullScreen());
             }
           }}
           style={{ position: 'relative' }}
@@ -87,7 +89,7 @@ class Map extends Component {
             });
           }}>
           <SdkScaleLine />
-          <SdkMousePosition style={{ position: 'absolute', top: 20, right: 12, zIndex: 1, width: '5em' }} />
+          <SdkMousePosition style={{ position: 'absolute', top: 10, right: 40, zIndex: 1, width: '5em' }} />
           <ZoomControl />
           <SdkZoomSlider />
         </SdkMap>
