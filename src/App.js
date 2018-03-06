@@ -20,6 +20,8 @@ import Download from 'material-ui/svg-icons/file/file-download';
 import { cyan500, cyan700, pinkA200, grey300, grey400, grey500, white, darkBlack, fullBlack } from 'material-ui/styles/colors';
 import { fade } from 'material-ui/utils/colorManipulator';
 import spacing from 'material-ui/styles/spacing';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 import { createWMSLayer, createWMSSourceWithLayerName } from './services/wms/wmslayer'
 import { createVectorSourceFromStyle, createRasterSourceFromStyle } from './services/mapbox'
 import MapReducer from './reducers/map';
@@ -32,6 +34,41 @@ import './App.css';
 //import {} from 'dotenv/config';
 require('dotenv').config();
 
+export const themiddleware = store => next => action => {
+  if (action.type !== 'MAPINFO.SET_MOUSE_POSITION') {
+    console.log('themiddleware() current action:', JSON.stringify(action, (key, value) => {
+      if (key === 'component') return '...';
+      return value;
+    }));
+  }
+
+  let result = next(action);
+
+  if (action.type === 'MAP_SET_VIEW') {
+    if (store.getState().local['viewparams']) {
+      const _index = store.getState().local.mapConfig.routing.length;
+      const _array = store.getState().local.viewparams.split("/");
+      while (_array.length < (_index + 4)) {
+        _array.push('*');
+      }
+
+      _array[_index] = store.getState().map.zoom;
+      _array[_index + 1] = '' + Math.round(store.getState().map.center[0] * 100) / 100;
+      _array[_index + 2] = '' + Math.round(store.getState().map.center[1] * 100) / 100;
+      _array[_index + 3] = store.getState().map.bearing;
+      const thehash = '/#/' + _array.join('/');
+      console.log('themiddleware()', thehash);
+      window.history.pushState(thehash, 'map', thehash);
+    }
+  }
+
+  /*console.log('themiddleware() current state:', JSON.stringify(store.getState(), (key, value) => {
+    if (key === 'component') return '...';
+    return value;
+  })); */
+  return result;
+}
+
 export const store = createStore(
   combineReducers({
     map: SdkMapReducer,
@@ -40,7 +77,7 @@ export const store = createStore(
     local: MapReducer
   }),
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-  applyMiddleware(thunkMiddleware));
+  applyMiddleware(themiddleware, thunkMiddleware));
 
 
 const ispraTheme = {
@@ -67,12 +104,22 @@ const ispraTheme = {
 class App extends Component {
 
   config = {};
+  state = {
+    sharedialog: false,
+  };
+  handleOpenShareDialog = () => {
+    this.setState({ sharedialog: true });
+  };
+
+  handleCloseShareDialog = () => {
+    this.setState({ sharedialog: false });
+  };
 
   constructor(props) {
     super(props);
-    console.log("App()", JSON.stringify(process.env));
+    console.log("App()");
 
-    console.log("window.config=", window.config);
+    //console.log("window.config=", window.config);
 
     this.config = JSON.parse(process.env.REACT_APP_THECONFIG);
     store.dispatch(configActions.setConfig(this.config));
@@ -107,7 +154,15 @@ class App extends Component {
     if (this.config.source && this.config.layers) {
       this._createLayers(this.config.source, this.config.layers);
     }
-    if (this.config.map && this.config.map.center) {
+
+    const _array = window.location.hash.split("/");
+    if (_array.length === 8) {
+      const _map = {
+        center: [Number(_array[5]), Number(_array[6])],
+        zoom: Number(_array[4])
+      };
+      store.dispatch(mapActions.setView(_map.center, _map.zoom));
+    } else if (this.config.map && this.config.map.center) {
       let zoom = this.config.map.zoom || 2;
       store.dispatch(mapActions.setView(this.config.map.center, zoom));
     }
@@ -119,12 +174,28 @@ class App extends Component {
 
   render() {
     console.log("App.render()");
+    const actions = [
+      <FlatButton
+        label="Chiudi"
+        primary={true}
+        onClick={this.handleCloseShareDialog}
+      />,
+    ];
     return (
       <div>
         <MuiThemeProvider muiTheme={getMuiTheme(ispraTheme)}>
           <Provider store={store}>
             <HashRouter>
               <div>
+                <Dialog
+                  title="per confividere la pagina copia ed invia questo link:"
+                  actions={actions}
+                  modal={false}
+                  open={this.state.sharedialog}
+                  onRequestClose={this.handleCloseShareDialog}
+                >
+                  {window.location.href}
+                </Dialog>
                 <Toolbar>
                   <ToolbarGroup firstChild={true} style={{ margin: '5px' }}>
                     <IconMenu
@@ -136,6 +207,12 @@ class App extends Component {
                       <MenuItem onClick={(event) => { console.log("finestra modale"); }} >
                         <IconButton>
                           <FontIcon className="material-icons">help</FontIcon>
+                        </IconButton>
+                      </MenuItem>
+
+                      <MenuItem onClick={(event) => { this.handleOpenShareDialog(); }} >
+                        <IconButton>
+                          <FontIcon className="material-icons">share</FontIcon>
                         </IconButton>
                       </MenuItem>
 

@@ -33,7 +33,7 @@ class TassonomiaAutoComplete extends Component {
           }
         }
       });
-
+      
       this.setState({
         dataSource: _datasource,
       });
@@ -67,19 +67,19 @@ class TassonomiaAutoComplete extends Component {
 
   render() {
     return (
-      <AutoComplete
+        <AutoComplete
         style={this.props['style'] ? this.props.style : {}}
         hintText="Tassonomia ..."
-        dataSource={this.state.dataSource}
-        searchText={this.state.searchText}
-        onUpdateInput={this.handleUpdateInput}
-        onNewRequest={this.handleOnNewRequest}
-        filter={AutoComplete.noFilter}
+          dataSource={this.state.dataSource}
+          searchText={this.state.searchText}
+          onUpdateInput={this.handleUpdateInput}
+          onNewRequest={this.handleOnNewRequest}
+          filter={AutoComplete.noFilter}
         openOnFocus={true}
         maxSearchResults={15}
         id={'tassonomiaautocomplete'}
         className={'tassonomiaautocomplete'}
-      />
+        />
     );
   }
 

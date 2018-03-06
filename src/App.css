@@ -227,75 +227,45 @@ li.sdk-layer {
   background-color: transparent; }
 
 .sdk-popup {
-  background-color: #fff;
-  -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  position: absolute;
+  background-color: white;
   -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
   filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
-  padding: 5px;
+  padding: 18px 15px 15px;
   border-radius: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #cccccc;
   bottom: 12px;
   left: -50px;
-  max-height: 350px; }
+  width: 500px; }
 
-.popup-content {
-  height: 300px;
-  background: #fff; }
+.sdk-popup:after, .sdk-popup:before {
+  top: 100%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute; }
 
-.popup-content.auto {
-  height: auto; }
+.sdk-popup:after {
+  border-top-color: white;
+  border-width: 10px;
+  left: 48px;
+  margin-left: -10px; }
 
-.popup-header {
-  height: 80px; }
+.sdk-popup:before {
+  border-top-color: #cccccc;
+  border-width: 11px;
+  left: 48px;
+  margin-left: -11px; }
 
-.popup-body {
-  height: 100%;
-  overflow: hidden; }
+.sdk-popup #sdk-popup-container {
+  max-height: 240px;
+  overflow: auto; }
 
-.popup-table-header {
-  position: relative; }
-
-/* First list-entry should always be fixed */
-.popup-body > div:first-of-type .popup-table-header {
+.sdk-popup-closer {
+  text-decoration: none;
   position: absolute;
-  width: calc(100% - 10px);
-  top: 0px;
-  left: 0px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  padding: 5px;
-  border-bottom-width: 0px !important; }
-
-.popup-body > div:first-of-type .popup-table-header tr {
-  width: 100%;
-  display: table; }
-
-.popup-body > div:first-of-type .popup-table-header th {
-  width: auto; }
-
-/* Subsequent list-entries are only fixed if their class is set */
-.popup-table-header.popup-header-fixed {
-  position: absolute;
-  width: calc(100% - 10px);
-  top: 0px;
-  left: 0px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  padding: 5px;
-  border-bottom-width: 0px !important; }
-
-.popup-table-header.popup-header-fixed tr {
-  width: 100%;
-  display: table; }
-
-.popup-table-header.popup-header-fixed th {
-  width: auto; }
-
-.popup-table-headerpadding {
-  height: 0px !important; }
-
-.popup-table-headerpadding.popup-body-noheader {
-  height: 119px !important; }
-
-.popup table {
-  margin-left: 20px; }
+  top: 7px;
+  right: 8px;
+  cursor: pointer; }

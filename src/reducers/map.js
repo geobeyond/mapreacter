@@ -1,19 +1,20 @@
-
-
 let defaultState = {
-  mapConfig: {}
+  mapConfig: {},
+  viewparams: ''
 };
 
 export default function MapReducer(state = defaultState, action) {
   switch (action.type) {
     case 'SET_CONFIG':
-      //const newMapConfig = Object.assign({}, action.config);
-      //return { mapConfig: newMapConfig };
+      const newMapConfig = Object.assign({}, action.config);
+      return { mapConfig: newMapConfig };
 
+    case 'SET_VIEWPARAMS':
       state = Object.assign({}, state, {
-        mapConfig: action.config,
+        viewparams: action.payload['viewparams']
       });
       return state;
+
     default:
       return state;
   }
