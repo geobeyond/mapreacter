@@ -37,7 +37,7 @@ import TassonomiaAutoComplete from './components/TassonomiaAutoComplete';
 import LayerListItem from './components/map/LayerListItem';
 import { downloadFile } from './services/download';
 import { mylocalizedstrings } from './services/localizedstring';
-import HelpComponent from './components/HelpComponent';
+
 import './App.css';
 //import {} from 'dotenv/config';
 require('dotenv').config();
@@ -291,26 +291,6 @@ class App extends Component {
             <HashRouter>
               <div>
                 <Dialog
-                  title={mylocalizedstrings.helptitle}
-                  actions={[
-                    <FlatButton
-                      label={mylocalizedstrings.close}
-                      primary={true}
-                      onClick={() => { this.setState({ helpdialog: false }); }}
-                    />,
-                  ]}
-                  modal={false}
-                  open={this.state.helpdialog}
-                  onRequestClose={() => { this.setState({ helpdialog: false }); }}
-                  autoScrollBodyContent={true}
-                  contentStyle={{
-                    width: '90%',
-                    maxWidth: 'none',
-                  }}
-                >
-                  <HelpComponent />
-                </Dialog>
-                <Dialog
                   title={mylocalizedstrings.sharetitle}
                   actions={[
                     <FlatButton
@@ -333,7 +313,7 @@ class App extends Component {
                         <FontIcon className="material-icons">more_vert</FontIcon>
                       }
                     >
-                      <MenuItem onClick={(event) => { this.setState({ helpdialog: true }); }} >
+                      <MenuItem onClick={(event) => {  }} >
                         <i class="material-icons">help</i>
                       </MenuItem>
 
