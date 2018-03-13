@@ -232,6 +232,9 @@ class App extends Component {
     this.config.wpsserviceurl = process.env.REACT_APP_WPSSERVICEURL;
     this.config.downloadCSVUrlParameters = process.env.REACT_APP_DOWNLOADCSVURLPARAMETERS;
     this.config.downloadShapefileUrlParameters = process.env.REACT_APP_DOWNLOADSHAPEFILEURLPARAMETERS;
+    this.config.helpUrl = process.env.REACT_APP_HELPURL;
+    this.config.helpDoc = process.env.REACT_APP_HELPDOC;
+
     store.dispatch(configActions.setConfig(this.config));
 
     store.dispatch(mapActions.updateMetadata({
@@ -313,7 +316,11 @@ class App extends Component {
                         <FontIcon className="material-icons">more_vert</FontIcon>
                       }
                     >
-                      <MenuItem onClick={(event) => {  }} >
+                      <MenuItem onClick={(event) => {  
+                        let url = this.config.helpUrl + mylocalizedstrings.getLanguage() + this.config.helpDoc;
+                        let win = window.open(url, '_blank');
+                        win.focus();                        
+                      }} >
                         <i class="material-icons">help</i>
                       </MenuItem>
 
