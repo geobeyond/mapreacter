@@ -86,6 +86,7 @@ class Map extends Component {
                     coordinate={xy}
                     closeable
                     items={items}
+                    ispraTheme={this.props.mapConfig.ispraTheme}
                   />
                 );
               }

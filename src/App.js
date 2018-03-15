@@ -20,9 +20,6 @@ import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
 import { MenuItem } from 'material-ui/Menu';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
-import { cyan500, cyan700, pinkA200, grey300, grey400, grey500, white, darkBlack, fullBlack } from 'material-ui/styles/colors';
-import { fade } from 'material-ui/utils/colorManipulator';
-import spacing from 'material-ui/styles/spacing';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import SelectField from 'material-ui/SelectField';
@@ -199,28 +196,6 @@ export const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
   applyMiddleware(themiddleware, thunkMiddleware));
 
-
-export const ispraTheme = {
-  spacing: spacing,
-  fontFamily: 'Roboto, sans-serif',
-  palette: {
-    primary1Color: '#00601d',
-    primary2Color: cyan700,
-    primary3Color: grey400,
-    accent1Color: pinkA200,
-    accent2Color: '#00601d', //grey100,
-    accent3Color: grey500,
-    textColor: white, //darkBlack,
-    alternateTextColor: white,
-    canvasColor: '#00601d', //white,
-    borderColor: grey300,
-    disabledColor: fade(white, 0.3), //fade(darkBlack, 0.3),
-    pickerHeaderColor: cyan500,
-    clockCircleColor: fade(darkBlack, 0.07),
-    shadowColor: fullBlack,
-  },
-};
-
 class App extends Component {
 
   config = {};
@@ -237,13 +212,7 @@ class App extends Component {
     super(props);
     console.log("App()");
 
-    this.config = JSON.parse(process.env.REACT_APP_THECONFIG);
-    this.config.wpsserviceurl = process.env.REACT_APP_WPSSERVICEURL;
-    this.config.downloadCSVUrlParameters = process.env.REACT_APP_DOWNLOADCSVURLPARAMETERS;
-    this.config.downloadShapefileUrlParameters = process.env.REACT_APP_DOWNLOADSHAPEFILEURLPARAMETERS;
-    this.config.helpUrl = process.env.REACT_APP_HELPURL;
-    this.config.helpDoc = process.env.REACT_APP_HELPDOC;
-
+    this.config = window.config;
     store.dispatch(configActions.setConfig(this.config));
 
     store.dispatch(mapActions.updateMetadata({
@@ -298,7 +267,7 @@ class App extends Component {
     console.log("App.render()");
     return (
       <div>
-        <MuiThemeProvider muiTheme={getMuiTheme(ispraTheme)}>
+        <MuiThemeProvider muiTheme={getMuiTheme(this.config.ispraTheme)}>
           <Provider store={store}>
             <HashRouter>
               <div>

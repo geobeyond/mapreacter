@@ -3,7 +3,6 @@ import { Tabs, Tab } from 'material-ui/Tabs';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import SdkPopup from '@boundlessgeo/sdk/components/map/popup';
-import { ispraTheme } from '../../../App';
 
 
 function TabList(props) {
@@ -54,7 +53,7 @@ export default class WMSPopup extends SdkPopup {
   render() {
     console.log("WMSPopup.render()", JSON.stringify(this.props.items));
     return this.renderPopup(
-      <MuiThemeProvider muiTheme={getMuiTheme(ispraTheme)}>
+      <MuiThemeProvider muiTheme={getMuiTheme(this.props.ispraTheme)}>
         <TabList items={this.props.items} />
       </MuiThemeProvider>
     );

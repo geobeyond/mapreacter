@@ -38,6 +38,68 @@
     }
 
   </style>
+  <script>
+        var config = {
+          basemaps: ['mapbox', 'osm'],
+          mapbox: {
+            type: 'raster',
+            style: 'mapbox.satellite',
+            token: 'pk.eyJ1IjoibWlsYWZyZXJpY2hzIiwiYSI6ImNqOHk3YXJibTFwbTkycW9iM2JkMGVzbnEifQ.TKtR_oqVfT3bR7kEAPxK7w',
+          },
+          map: {
+            center: [12, 42],
+            zoom: 6
+          },
+          viewparams: ['order_', 'family', 'genus', 'nome_scientifico'],
+          source: 'http://localhost:8080/geoserver/wms?SERVICE=WMS&VERSION=1.1.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true',
+          layers: ['nnb:param_oss_point3', 'nnb:param_oss_polig3', 'nnb:param_dist_geom3'],
+          tassonomiaserviceurl: 'http://localhost:8080/MyRestServer/tassonomia?name=',
+          geoserverurl: 'http://localhost:8080/geoserver',
+          routing: [
+            { field: 'order_', label: 'orderlabel', routinglevel: '/' },
+            { field: 'family', label: 'familylabel', routinglevel: '/*/' },
+            { field: 'genus', label: 'genuslabel', routinglevel: '/*/*/' },
+            { field: 'nome_scientifico', label: 'specielabel', routinglevel: '/*/*/*/' },
+          ],
+          wpsserviceurl: 'http://localhost:8080/geoserver/ows?strict:true',
+          downloadCSVUrlParameters: '&outputFormat=CSV&PropertyName=nome_scientifico,anno,lat,lon',
+          downloadShapefileUrlParameters: '&outputFormat=shape-zip',
+          helpUrl: 'http://localhost:8080/mapreacter-help/docs/',
+          helpDoc: '/doc_mapreacter.html',
+          ispraTheme: {
+            spacing: {
+              iconSize: 24,
+              desktopGutter: 24,
+              desktopGutterMore: 32,
+              desktopGutterLess: 16,
+              desktopGutterMini: 8,
+              desktopKeylineIncrement: 64,
+              desktopDropDownMenuItemHeight: 32,
+              desktopDropDownMenuFontSize: 15,
+              desktopDrawerMenuItemHeight: 48,
+              desktopSubheaderHeight: 48,
+              desktopToolbarHeight: 56
+            },
+            fontFamily: 'Roboto, sans-serif',
+            palette: {
+              primary1Color: '#00601d',
+              primary2Color: '#0097a7',
+              primary3Color: '#bdbdbd',
+              accent1Color: '#ff4081',
+              accent2Color: '#00601d',
+              accent3Color: '#9e9e9e',
+              textColor: '#ffffff',
+              alternateTextColor: '#ffffff',
+              canvasColor: '#00601d',
+              borderColor: '#e0e0e0',
+              disabledColor: '#ffffff4d',
+              pickerHeaderColor: '#00bcd4',
+              clockCircleColor: '#ffffffde',
+              shadowColor: 'rgba(0, 0, 0, 1)',
+            },
+          }
+        };    
+  </script>  
 </head>
 
 <body style="display: block; margin:0px; overflow:scroll">
