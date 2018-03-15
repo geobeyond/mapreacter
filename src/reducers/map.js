@@ -1,7 +1,8 @@
 let defaultState = {
   mapConfig: {},
   viewparams: '',
-  refreshIndicator: { status: 'hide' }
+  refreshIndicator: { status: 'hide' },
+  measureComponent: { open: false }
 };
 
 export default function MapReducer(state = defaultState, action) {
@@ -21,6 +22,12 @@ export default function MapReducer(state = defaultState, action) {
     case 'LOCAL.CHANGEREFRESHINDICATOR':
       state = Object.assign({}, state, {
         refreshIndicator: action.payload['refreshIndicator']
+      });
+      return state;
+
+    case 'LOCAL.CHANGEMEASURECOMPONENT':
+      state = Object.assign({}, state, {
+        measureComponent: action.payload['measureComponent']
       });
       return state;
 

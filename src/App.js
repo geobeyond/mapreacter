@@ -38,6 +38,7 @@ import LayerListItem from './components/map/LayerListItem';
 import { downloadFile } from './services/download';
 import { mylocalizedstrings } from './services/localizedstring';
 import RefreshIndicatorComponent from './components/RefreshIndicatorComponent';
+import MeasureComponent from './components/MeasureComponent';
 
 import './App.css';
 //import {} from 'dotenv/config';
@@ -169,6 +170,10 @@ export const themiddleware = store => next => action => {
 
     case 'DRAWING_FINALIZE_MEASURE_FEATURE':
       store.dispatch(drawingActions.endDrawing());
+      setTimeout(function () {
+        console.log('timeout ...');
+        store.dispatch(configActions.changeMeasureComponent({ open: false }));
+      }.bind(this), 2000);      
       break;
 
     default:
@@ -313,6 +318,7 @@ class App extends Component {
                   {window.location.href}
                 </Dialog>
                 <RefreshIndicatorComponent/>
+                <MeasureComponent />
                 <Toolbar>
                   <ToolbarGroup firstChild={true} style={{ margin: '5px' }}>
                     <IconMenu
@@ -364,12 +370,14 @@ class App extends Component {
                             primaryText="Linea"
                             onClick={(event) => {
                               store.dispatch(drawingActions.startMeasure(INTERACTIONS.measure_line));
+                              store.dispatch(configActions.changeMeasureComponent({ open: true }));
                             }}
                           />,
                           <MenuItem
                             primaryText="Poligono"
                             onClick={(event) => {
                               store.dispatch(drawingActions.startMeasure(INTERACTIONS.measure_polygon));
+                              store.dispatch(configActions.changeMeasureComponent({ open: true }));
                             }}
                           />
                         ]}

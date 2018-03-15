@@ -68,3 +68,12 @@ export const changerefreshindicator = (refreshIndicator) => {
     }
   };
 }
+
+export const changeMeasureComponent = (measureComponent) => {
+  return {
+    type: 'LOCAL.CHANGEMEASURECOMPONENT',
+    payload: {
+      measureComponent: measureComponent
+    }
+  };
+}

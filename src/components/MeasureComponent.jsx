@@ -4,54 +4,70 @@ import { withRouter } from 'react-router-dom'
 //import LineString from 'ol/geom/linestring';
 //import Polygon from 'ol/geom/polygon';
 //import { mylocalizedstrings } from '../services/localizedstring';
+import Paper from 'material-ui/Paper';
 
+const style = {
+    zIndex: 1,
+    display: 'inline-block',
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    padding: 20,
+    textAlign: 'center',
+};
 
 class MeasureComponent extends Component {
 
     state = {
-        searchText: '',
+        output: '',
     };
 
-
-    render() {
-        if (this.props.feature) {
-            if (this.props.feature.type === "Feature") {
-                //console.log("MeasureComponent.render() coordinates=", this.props.feature.geometry.coordinates);
-                if (this.props.feature.geometry.type === "LineString") {
-                    //let _geom = new LineString(this.props.feature.geometry.coordinates);
+    componentWillReceiveProps(nextProps) {
+        console.log("MeasureComponent.componentWillReceiveProps() props=", JSON.stringify(nextProps));
+        let output = '';
+        if (nextProps.feature) {
+            if (nextProps.feature.type === "Feature") {
+                if (nextProps.feature.geometry.type === "LineString") {
                     let _length = 0;
-                    if (this.props.segments) {
-                        for (let i = 0; i < this.props.segments.length; i++) {
-                            _length += this.props.segments[i];
+                    if (nextProps.segments) {
+                        for (let i = 0; i < nextProps.segments.length; i++) {
+                            _length += nextProps.segments[i];
                         }
                     }
-                    let output;
                     if (_length > 1000) {
-                        output = (Math.round(_length * 100 / 1000) / 100) + ' km';
+                        output = <span>{new Intl.NumberFormat().format(Math.round(_length * 100 / 1000) / 100) + ' km'}</span>;
                     } else {
-                        output = (Math.round(_length * 100) / 100) + ' m';
+                        output = <span>{new Intl.NumberFormat().format(Math.round(_length * 100) / 100) + ' m'}</span>;
                     }
-                    console.log("MeasureComponent.render() length=", output);
 
-                } else if (this.props.feature.geometry.type === "Polygon") {
-                    //let _geom = new Polygon(this.props.feature.geometry.coordinates);
+                } else if (nextProps.feature.geometry.type === "Polygon") {
                     let _area = 0;
-                    if (this.props.segments) {
-                        for (let i = 0; i < this.props.segments.length; i++) {
-                            _area += this.props.segments[i];
+                    if (nextProps.segments) {
+                        for (let i = 0; i < nextProps.segments.length; i++) {
+                            _area += nextProps.segments[i];
                         }
                     }
-                    let output;
                     if (_area > 1000) {
-                        output = (Math.round(_area * 100 / 1000) / 100) + ' kmq';
+                        output = <span>{new Intl.NumberFormat().format(Math.round(_area * 100 / 1000) / 100) + ' km'}<sup>2</sup></span>;
                     } else {
-                        output = (Math.round(_area * 100) / 100) + ' mq';
+                        output = <span>{new Intl.NumberFormat().format(Math.round(_area * 100) / 100) + ' m'}<sup>2</sup></span>;
                     }
-                    console.log("MeasureComponent.render() area=", output);
                 }
             }
+            this.setState({ output: output });
         }
-        return (<span />);
+    }
+
+    render() {
+        console.log("MeasureComponent.render()", JSON.stringify(this.props.measureComponent));
+        if (!this.props.measureComponent.open) {
+            return null;
+        }
+        return (
+            <Paper style={style} zDepth={3} rounded={true} circle={false}>
+                {this.state.output}
+            </Paper>
+        );
     }
 
 }
@@ -60,6 +76,7 @@ const mapStateToProps = (state) => {
     return {
         feature: state.drawing.measureFeature,
         segments: state.drawing.measureSegments,
+        measureComponent: state.local.measureComponent,
     }
 }
 
