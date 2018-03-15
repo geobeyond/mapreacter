@@ -37,6 +37,7 @@ import TassonomiaAutoComplete from './components/TassonomiaAutoComplete';
 import LayerListItem from './components/map/LayerListItem';
 import { downloadFile } from './services/download';
 import { mylocalizedstrings } from './services/localizedstring';
+import RefreshIndicatorComponent from './components/RefreshIndicatorComponent';
 
 import './App.css';
 //import {} from 'dotenv/config';
@@ -129,6 +130,7 @@ export const themiddleware = store => next => action => {
 
       const _data = _dataheader + _datafilter + _datafooter;
       const url = store.getState().local.mapConfig.wpsserviceurl;
+      store.dispatch(configActions.changerefreshindicator({ status: "loading" }));
       console.log("POST", url, _data);
       axios({
         method: 'post',
@@ -157,9 +159,11 @@ export const themiddleware = store => next => action => {
               store.dispatch(mapActions.fitExtent(_extent, store.getState().mapinfo.size, "EPSG:4326"));
             }
           }
+          store.dispatch(configActions.changerefreshindicator({ status: "hide" }));
         })
         .catch((error) => {
           console.error(error);
+          store.dispatch(configActions.changerefreshindicator({ status: "hide" }));
         });
       break;
 
@@ -308,6 +312,7 @@ class App extends Component {
                 >
                   {window.location.href}
                 </Dialog>
+                <RefreshIndicatorComponent/>
                 <Toolbar>
                   <ToolbarGroup firstChild={true} style={{ margin: '5px' }}>
                     <IconMenu
@@ -316,10 +321,10 @@ class App extends Component {
                         <FontIcon className="material-icons">more_vert</FontIcon>
                       }
                     >
-                      <MenuItem onClick={(event) => {  
+                      <MenuItem onClick={(event) => {
                         let url = this.config.helpUrl + mylocalizedstrings.getLanguage() + this.config.helpDoc;
                         let win = window.open(url, '_blank');
-                        win.focus();                        
+                        win.focus();
                       }} >
                         <i class="material-icons">help</i>
                       </MenuItem>

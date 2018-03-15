@@ -37,8 +37,9 @@ class Map extends Component {
   }
   updateLayer(viewparams) {
     console.log("Map.updateLayer()", viewparams);
-    store.dispatch(actions.setViewParams(viewparams));
-    this.props.updateLayersWithViewparams(viewparams.split("/"))
+    //store.dispatch(actions.setViewParams(viewparams));
+    this.props.setViewParams(viewparams);
+    this.props.updateLayersWithViewparams(viewparams.split("/"));
   }
   exportMapImage(blob) {
     console.log("Map.exportMapImage()", blob);
@@ -48,6 +49,7 @@ class Map extends Component {
     hiddenElement.download = 'map.png';
     hiddenElement.click();
     store.dispatch(printActions.receiveMapImage());
+    //this.props.receiveMapImage();
   };
   render() {
     console.log("Map.render()");
@@ -67,6 +69,7 @@ class Map extends Component {
           includeFeaturesOnClick
           onExportImage={this.exportMapImage}
           onClick={(map, xy, featuresPromise) => {
+            this.props.changerefreshindicator({ status: "loading" });
             featuresPromise.then((featureGroups) => {
               let items = [];
               featureGroups.forEach((feature, index) => {
@@ -87,6 +90,7 @@ class Map extends Component {
                   />
                 );
               }
+              this.props.changerefreshindicator({ status: "hide" });
             });
           }}>
           <SdkScaleLine />
@@ -106,4 +110,22 @@ const mapStateToProps = (state, { match }) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, actions)(Map));
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateLayersWithViewparams: (params) => {
+      dispatch(actions.updateLayersWithViewparams(params));
+    },
+    setViewParams: (params) => {
+      dispatch(actions.setViewParams(params));
+    },
+    changerefreshindicator: (params) => {
+      dispatch(actions.changerefreshindicator(params));
+    },
+    receiveMapImage: () => {
+      dispatch(printActions.receiveMapImage());
+    },
+  };
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Map));
