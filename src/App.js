@@ -336,14 +336,14 @@ class App extends Component {
                       <MenuItem
                         menuItems={[
                           <MenuItem
-                            primaryText="Linea"
+                            primaryText={mylocalizedstrings.line}
                             onClick={(event) => {
                               store.dispatch(drawingActions.startMeasure(INTERACTIONS.measure_line));
                               store.dispatch(configActions.changeMeasureComponent({ open: true }));
                             }}
                           />,
                           <MenuItem
-                            primaryText="Poligono"
+                            primaryText={mylocalizedstrings.polygon}
                             onClick={(event) => {
                               store.dispatch(drawingActions.startMeasure(INTERACTIONS.measure_polygon));
                               store.dispatch(configActions.changeMeasureComponent({ open: true }));
