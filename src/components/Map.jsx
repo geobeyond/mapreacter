@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import SdkMap from '@boundlessgeo/sdk/components/map';
 //import SdkZoomControl from '@boundlessgeo/sdk/components/map/zoom-control';
-import SdkZoomSlider from '@boundlessgeo/sdk/components/map/zoom-slider';
+//import SdkZoomSlider from '@boundlessgeo/sdk/components/map/zoom-slider';
 import SdkMousePosition from '@boundlessgeo/sdk/components/map/mouseposition';
 import SdkScaleLine from '@boundlessgeo/sdk/components/map/scaleline';
 import * as printActions from '@boundlessgeo/sdk/actions/print';
@@ -95,7 +95,7 @@ class Map extends Component {
           <SdkScaleLine />
           <SdkMousePosition style={{ position: 'absolute', top: 10, right: 40, zIndex: 1, width: '5em' }} />
           <ZoomControl />
-          <SdkZoomSlider />
+          {/* <SdkZoomSlider /> */}
         </SdkMap>
       </div>
     )
