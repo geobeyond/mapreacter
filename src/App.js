@@ -173,7 +173,7 @@ export const themiddleware = store => next => action => {
       setTimeout(function () {
         console.log('timeout ...');
         store.dispatch(configActions.changeMeasureComponent({ open: false }));
-      }.bind(this), 2000);      
+      }, 2000);      
       break;
 
     default:
