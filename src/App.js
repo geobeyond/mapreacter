@@ -200,11 +200,11 @@ export const store = createStore(
   applyMiddleware(themiddleware, thunkMiddleware));
 
 
-const ispraTheme = {
+export const ispraTheme = {
   spacing: spacing,
   fontFamily: 'Roboto, sans-serif',
   palette: {
-    primary1Color: cyan500,
+    primary1Color: '#00601d',
     primary2Color: cyan700,
     primary3Color: grey400,
     accent1Color: pinkA200,
