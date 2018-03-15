@@ -59,3 +59,12 @@ export const fitextent = (layername) => {
     }
   };
 }
+
+export const changerefreshindicator = (refreshIndicator) => {
+  return {
+    type: 'LOCAL.CHANGEREFRESHINDICATOR',
+    payload: {
+      refreshIndicator: refreshIndicator
+    }
+  };
+}
