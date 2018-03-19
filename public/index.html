@@ -51,20 +51,20 @@
         zoom: 6
       },
       viewparams: ['order_', 'family', 'genus', 'nome_scientifico'],
-      source: 'http://localhost:8080/geoserver/wms?SERVICE=WMS&VERSION=1.1.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true',
-      layers: ['nnb:param_oss_point3', 'nnb:param_oss_polig3', 'nnb:param_dist_geom3'],
-      tassonomiaserviceurl: 'http://localhost:8080/MyRestServer/tassonomia?name=',
-      geoserverurl: 'http://localhost:8080/geoserver',
+      source: 'http://193.206.192.107/geoserver/wms?SERVICE=WMS&VERSION=1.1.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true',
+      layers: ['nnb:param_oss_polig4', 'nnb:param_dist_geom4','nnb:param_oss_point4'],
+      tassonomiaserviceurl: 'http://193.206.192.107/MyRestServer/tassonomia?name=',
+      geoserverurl: 'http://193.206.192.107/geoserver',
       routing: [
         { field: 'order_', label: 'orderlabel', routinglevel: '/' },
         { field: 'family', label: 'familylabel', routinglevel: '/*/' },
         { field: 'genus', label: 'genuslabel', routinglevel: '/*/*/' },
         { field: 'nome_scientifico', label: 'specielabel', routinglevel: '/*/*/*/' },
       ],
-      wpsserviceurl: 'http://localhost:8080/geoserver/ows?strict:true',
+      wpsserviceurl: 'http://193.206.192.107/geoserver/ows?strict:true',
       downloadCSVUrlParameters: '&outputFormat=CSV&PropertyName=nome_scientifico,anno,lat,lon',
       downloadShapefileUrlParameters: '&outputFormat=shape-zip',
-      helpUrl: 'http://localhost:8080/mapreacter-help/docs/',
+      helpUrl: 'http://193.206.192.107/mapreacter-help/docs/',
       helpDoc: '/doc_mapreacter.html',
       messages: {
         it: {
