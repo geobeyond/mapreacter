@@ -23,6 +23,7 @@ class RefreshIndicatorComponent extends Component {
                 size={60}
                 left={10}
                 top={10}
+                loadingColor="#ffffff"
                 status={this.props.refreshIndicator.status}
                 style={{ display: 'inline-block', position: 'absolute' }}
             />
