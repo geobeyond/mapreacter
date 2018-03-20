@@ -226,6 +226,10 @@ li.sdk-layer {
 .sdk-zoom-control {
   background-color: transparent; }
 
+.sdk-map {
+  width: 100%;
+  height: calc(100% - 60px); }
+
 .sdk-popup {
   font-size: 14px;
   position: absolute;

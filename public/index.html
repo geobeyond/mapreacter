@@ -52,7 +52,7 @@
       },
       viewparams: ['order_', 'family', 'genus', 'nome_scientifico'],
       source: 'http://193.206.192.107/geoserver/wms?SERVICE=WMS&VERSION=1.1.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true',
-      layers: ['nnb:param_oss_polig4', 'nnb:param_dist_geom4','nnb:param_oss_point4'],
+      layers: ['nnb:param_oss_polig4', 'nnb:param_dist_geom4', 'nnb:param_oss_point4'],
       tassonomiaserviceurl: 'http://193.206.192.107/MyRestServer/tassonomia?name=',
       geoserverurl: 'http://193.206.192.107/geoserver',
       routing: [
@@ -126,21 +126,18 @@
           shadowColor: 'rgba(0, 0, 0, 1)',
         },
       }
-    };    
+    };  
   </script>
 </head>
 
-<body style="display: block; margin:0px; overflow:scroll">
+<body style="display: block; margin:0px; overflow:hidden">
   <noscript>
     You need to enable JavaScript to run this app.
   </noscript>
-  <div style="padding: 15px; background-color: #ffffff; text-align: left;">
-    <img src="%PUBLIC_URL%/logo.png" alt="ispra ambiente ..." />
+  <div style="padding: 10px; background-color: #ffffff; text-align: left; position:absolute; left:0px; top:0px; height: 60px; width: 100%">
+    <img src="%PUBLIC_URL%/logo.png" alt="logo.png" height="60px" />
   </div>
-  <div id="root" style="width: 100%; position:absolute"></div>
-  <!--div className="isprafooter">
-      <img src="%PUBLIC_URL%/logo.png" alt="ispra ambiente ..." />
-    </div-->
+  <div id="root" style="position:absolute; left:0px; top:80px; width: 100%; height: calc(100% - 80px)"></div>
 </body>
 
 </html>

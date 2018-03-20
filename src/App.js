@@ -170,7 +170,7 @@ export const themiddleware = store => next => action => {
       setTimeout(function () {
         console.log('timeout ...');
         store.dispatch(configActions.changeMeasureComponent({ open: false }));
-      }, 2000);      
+      }, 2000);
       break;
 
     default:
@@ -266,11 +266,11 @@ class App extends Component {
   render() {
     console.log("App.render()");
     return (
-      <div>
+      <div style={{ width: '100%', height: '100%' }}>
         <MuiThemeProvider muiTheme={getMuiTheme(this.config.ispraTheme)}>
           <Provider store={store}>
             <HashRouter>
-              <div>
+              <div style={{ width: '100%', height: '100%' }}>
                 <Dialog
                   title={mylocalizedstrings.sharetitle}
                   actions={[
@@ -286,9 +286,9 @@ class App extends Component {
                 >
                   {window.location.href}
                 </Dialog>
-                <RefreshIndicatorComponent/>
+                <RefreshIndicatorComponent />
                 <MeasureComponent />
-                <Toolbar>
+                <Toolbar style={{ height: '60px' }}>
                   <ToolbarGroup firstChild={true} style={{ margin: '5px' }}>
                     <IconMenu
                       style={{ margin: '5px' }}

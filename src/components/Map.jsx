@@ -55,7 +55,7 @@ class Map extends Component {
     let token = this.props.mapConfig.basemap === 'mapbox' ? this.props.mapConfig.mapbox.token : '';
 
     return (
-      <div className="client-map">
+      <div className="client-map" style={{ width: '100%', height: '100%' }}>
         <SdkMap
           ref={(input) => {
             if (input) {
