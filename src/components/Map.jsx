@@ -94,7 +94,7 @@ class Map extends Component {
             });
           }}>
           <SdkScaleLine />
-          <SdkMousePosition style={{ position: 'absolute', top: 10, right: 40, zIndex: 1, width: '5em' }} />
+          <SdkMousePosition style={window.config.SdkMousePosition.style} />
           <ZoomControl />
           {/* <SdkZoomSlider /> */}
         </SdkMap>
