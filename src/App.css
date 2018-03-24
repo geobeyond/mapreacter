@@ -277,3 +277,11 @@ li.sdk-layer {
 .ol-overviewmap {
   left: 0.5em;
   bottom: 2em; }
+
+.name {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 14px;
+  white-space: pre; }
+
+.name::after {
+  content: "\0020"; }
