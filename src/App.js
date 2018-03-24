@@ -353,7 +353,12 @@ class App extends Component {
                       >
                         <i class="material-icons">photo_size_select_small</i>
                       </MenuItem>
-
+                      <MenuItem onClick={(event) => {
+                        let zoom = this.config.map.zoom || 2;
+                        store.dispatch(mapActions.setView(this.config.map.center, zoom));
+                      }} >
+                        <i class="material-icons">fullscreen</i>
+                      </MenuItem>
                     </IconMenu>
                     <IconMenu
                       style={{ margin: '5px' }}
