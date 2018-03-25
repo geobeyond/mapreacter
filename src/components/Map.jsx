@@ -3,11 +3,12 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import SdkMap from '@boundlessgeo/sdk/components/map';
 //import SdkZoomControl from '@boundlessgeo/sdk/components/map/zoom-control';
-import SdkZoomSlider from '@boundlessgeo/sdk/components/map/zoom-slider';
+//import SdkZoomSlider from '@boundlessgeo/sdk/components/map/zoom-slider';
 import SdkMousePosition from '@boundlessgeo/sdk/components/map/mouseposition';
 import SdkScaleLine from '@boundlessgeo/sdk/components/map/scaleline';
 import * as printActions from '@boundlessgeo/sdk/actions/print';
 import OverviewMap from 'ol/control/overviewmap';
+//import FullScreen from 'ol/control/fullscreen';
 import WMSPopup from './map/wms/wmspopup'
 import ZoomControl from './map/zoom-control';
 import * as actions from '../actions/map';
@@ -35,8 +36,9 @@ class Map extends Component {
   }
   updateLayer(viewparams) {
     console.log("Map.updateLayer()", viewparams);
-    store.dispatch(actions.setViewParams(viewparams));
-    this.props.updateLayersWithViewparams(viewparams.split("/"))
+    //store.dispatch(actions.setViewParams(viewparams));
+    this.props.setViewParams(viewparams);
+    this.props.updateLayersWithViewparams(viewparams.split("/"));
   }
   exportMapImage(blob) {
     console.log("Map.exportMapImage()", blob);
@@ -46,17 +48,19 @@ class Map extends Component {
     hiddenElement.download = 'map.png';
     hiddenElement.click();
     store.dispatch(printActions.receiveMapImage());
+    //this.props.receiveMapImage();
   };
   render() {
     console.log("Map.render()");
     let token = this.props.mapConfig.basemap === 'mapbox' ? this.props.mapConfig.mapbox.token : '';
 
     return (
-      <div className="client-map">
+      <div className="client-map" style={{ width: '100%', height: '100%' }}>
         <SdkMap
           ref={(input) => {
             if (input) {
               input.wrappedInstance.map.addControl(new OverviewMap());
+              //input.wrappedInstance.map.addControl(new FullScreen());
             }
           }}
           style={{ position: 'relative' }}
@@ -64,6 +68,7 @@ class Map extends Component {
           includeFeaturesOnClick
           onExportImage={this.exportMapImage}
           onClick={(map, xy, featuresPromise) => {
+            this.props.changerefreshindicator({ status: "loading" });
             featuresPromise.then((featureGroups) => {
               let items = [];
               featureGroups.forEach((feature, index) => {
@@ -81,15 +86,17 @@ class Map extends Component {
                     coordinate={xy}
                     closeable
                     items={items}
+                    ispraTheme={this.props.mapConfig.ispraTheme}
                   />
                 );
               }
+              this.props.changerefreshindicator({ status: "hide" });
             });
           }}>
           <SdkScaleLine />
-          <SdkMousePosition style={{ position: 'absolute', top: 20, right: 12, zIndex: 1, width: '5em' }} />
+          <SdkMousePosition style={window.config.SdkMousePosition.style} />
           <ZoomControl />
-          <SdkZoomSlider />
+          {/* <SdkZoomSlider /> */}
         </SdkMap>
       </div>
     )
@@ -102,4 +109,22 @@ const mapStateToProps = (state, { match }) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, actions)(Map));
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateLayersWithViewparams: (params) => {
+      dispatch(actions.updateLayersWithViewparams(params));
+    },
+    setViewParams: (params) => {
+      dispatch(actions.setViewParams(params));
+    },
+    changerefreshindicator: (params) => {
+      dispatch(actions.changerefreshindicator(params));
+    },
+    receiveMapImage: () => {
+      dispatch(printActions.receiveMapImage());
+    },
+  };
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Map));

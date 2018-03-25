@@ -29,7 +29,8 @@ export const updateLayersWithViewparams = (params) => {
       let source = createWMSSourceWithLayerName(sourceUrl, layerName);
       const sourceId = 'source_' + i + local.mapConfig.viewparams[0] + (Math.floor(Math.random() * 1000) + 1);
       dispatch(mapActions.addSource(sourceId, source));
-      dispatch(mapActions.updateLayer(layerName, createWMSLayer(sourceId, layerName, layerName)))
+      dispatch(mapActions.updateLayer(layerName, createWMSLayer(sourceId, layerName, layerName)));
+      dispatch(mapActions.orderLayer(layerName));
     })
   }
 }
@@ -56,6 +57,24 @@ export const fitextent = (layername) => {
     type: 'LOCAL.FITEXTENT',
     payload: {
       layername: layername
+    }
+  };
+}
+
+export const changerefreshindicator = (refreshIndicator) => {
+  return {
+    type: 'LOCAL.CHANGEREFRESHINDICATOR',
+    payload: {
+      refreshIndicator: refreshIndicator
+    }
+  };
+}
+
+export const changeMeasureComponent = (measureComponent) => {
+  return {
+    type: 'LOCAL.CHANGEMEASURECOMPONENT',
+    payload: {
+      measureComponent: measureComponent
     }
   };
 }
