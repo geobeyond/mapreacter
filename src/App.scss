@@ -4,6 +4,11 @@
     background-color: transparent; 
 }
 
+.sdk-map {
+  //position: relative; 
+  width: 100%;
+  height: calc(100% - 60px); }
+
 .sdk-popup {
     font-size: 14px;
     position: absolute;
@@ -15,7 +20,7 @@
     border: 1px solid #cccccc;
     bottom: 12px;
     left: -50px; 
-    width: 500px;}
+    width: 700px;}
     .sdk-popup:after, .sdk-popup:before {
       top: 100%;
       border: solid transparent;
@@ -45,3 +50,17 @@
     right: 8px;
     cursor: pointer; }
 
+.ol-overviewmap {
+    left: 0.5em;
+    bottom: 2em;
+}    
+
+.name {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 14px;
+  white-space: pre;
+}
+
+.name::after {
+  content: "\0020";
+}

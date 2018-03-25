@@ -13,6 +13,8 @@ import TassonomiaAutoComplete from '../../components/TassonomiaAutoComplete';
 import { tassonomiastore, newDataAction } from '../../components/tassonomiaredux';
 import { wrap } from 'module';
 import jsdom from 'jsdom';
+import MapReducer from '../../reducers/map';
+import TassonomiaReducer from '../../components/tassonomiaredux';
 
 
 configure({ adapter: new Adapter() });
@@ -34,11 +36,20 @@ const config = {
     ],
 };
 
+export const store = createStore(
+    combineReducers({
+      //map: SdkMapReducer,
+      //mapinfo: SdkMapInfoReducer,
+      //print: SdkPrintReducer,
+      local: MapReducer,
+      tassonomia: TassonomiaReducer,
+    }),
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 test('renders correctly', () => {
     const component = renderer.create(
         <MuiThemeProvider>
-            <Provider store={createStore((state = [], action) => { return state })}>
+            <Provider store={store}>
                 <HashRouter>
                     <TassonomiaAutoComplete config={config} />
                 </HashRouter>
@@ -54,7 +65,7 @@ test('component changes the after click', () => {
 
     const wrapper = mount(
         <MuiThemeProvider>
-            <Provider store={createStore((state = [], action) => { return state })}>
+            <Provider store={store}>
                 <HashRouter>
                     <TassonomiaAutoComplete config={config} />
                 </HashRouter>
@@ -62,9 +73,9 @@ test('component changes the after click', () => {
         </MuiThemeProvider>
     );
 
-    console.log('---------------------------------------------');
-    console.log(wrapper.debug());
-    console.log('---------------------------------------------');
+    //console.log('---------------------------------------------');
+    //console.log(wrapper.debug());
+    //console.log('---------------------------------------------');
 
     var axios = require('axios');
     var MockAdapter = require('axios-mock-adapter');
@@ -92,14 +103,10 @@ test('component changes the after click', () => {
         ]
     });
 
-    tassonomiastore.subscribe(() => {
-        console.log('---------------------------------------------');
-        config.routing.forEach(routingrecord => {
-            if (tassonomiastore.getState()._data[routingrecord.field]) {
-                expect(tassonomiastore.getState()._data[routingrecord.field].length).toBeGreaterThan(1);
-            }
-        });
-        console.log('---------------------------------------------');
+    store.subscribe(() => {
+        //console.log('---------------------------------------------');
+        expect(store.getState().tassonomia.dataSource.length).toBeGreaterThan(1);
+        //console.log('---------------------------------------------');
     });
 
     //wrapper.find('input').simulate('change', { target: { value: 'a' } });

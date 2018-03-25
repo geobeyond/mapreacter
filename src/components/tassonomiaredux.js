@@ -1,31 +1,22 @@
-import { createStore } from 'redux';
+const initialState = { dataSource: [] };
 
-const initialState = {};
+const NEWDATASOURCE = "NEWDATASOURCE";
 
-const NEWDATA = "NEWDATA";
-
-export const newDataAction = (_data) => {
+export const newDataSourceAction = (dataSource) => {
     return {
-        type: NEWDATA,
-        payload: { _data: _data }
+        type: NEWDATASOURCE,
+        payload: { dataSource: dataSource }
     };
 }
 
-const tassonomiareducer = (state = initialState, action) => {
+export default function TassonomiaReducer(state = initialState, action) {
     switch (action.type) {
-        case NEWDATA:
+        case NEWDATASOURCE:
             state = Object.assign({}, state, {
-                _data: action.payload._data,
+                dataSource: action.payload.dataSource,
             });
             return state;
         default:
             return state;
     }
 }
-
-export const tassonomiastore = createStore(tassonomiareducer, initialState);
-
-tassonomiastore.subscribe(() => {
-    console.log("tassonomiastore.getState():", JSON.stringify(tassonomiastore.getState()))
-});
-
