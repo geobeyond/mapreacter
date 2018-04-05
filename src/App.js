@@ -304,7 +304,18 @@ class App extends Component {
                         <i class="material-icons">help</i>
                       </MenuItem>
 
-                      <MenuItem onClick={(event) => { this.setState({ sharedialog: true }); }} >
+                      <MenuItem
+                        onClick={(event) => {
+                          var _txt = document.createElement('textarea');
+                          _txt.value = window.location.href; //chrome
+                          _txt.textContent = window.location.href; //firefox
+                          document.body.appendChild(_txt);
+                          _txt.select();
+                          document.execCommand('copy');
+                          console.log(_txt);
+                          document.body.removeChild(_txt);
+                          this.setState({ sharedialog: true });
+                        }} >
                         <i class="material-icons">share</i>
                       </MenuItem>
 
