@@ -385,9 +385,18 @@ class App extends Component {
                         </IconButton>
                       }
                     >
-                      <div className="sdk-layerlist">
-                        <SdkLayerList layerClass={LayerListItem} />
-                      </div>
+                      <ul className="sdk-layer-list" >
+                        <li className="sdk-layer" >
+                          <div className="toc-container">
+                            <div className="div1"><span className="name">{mylocalizedstrings.layer}</span> </div>
+                            <div className="div2"><span className="name">{mylocalizedstrings.onoff}</span> </div>
+                            <div className="div3"><span className="name">{mylocalizedstrings.updown}</span> </div>
+                            <div className="div4"><span className="name">{mylocalizedstrings.legend}</span> </div>
+                          </div>
+                        </li>
+                      </ul>
+                      <hr/>
+                      <SdkLayerList layerClass={LayerListItem} />
                     </IconMenu>
                     <TassonomiaAutoComplete config={this.config} style={{ margin: '5px' }} />
                   </ToolbarGroup>
@@ -396,7 +405,7 @@ class App extends Component {
                       floatingLabelText={mylocalizedstrings.selectLanguage}
                       value={mylocalizedstrings.getLanguage()}
                       onChange={this.handleChangeLanguage}
-                      style={{width: '140px'}}
+                      style={{ width: '140px' }}
                     >
                       <MenuItem value={'it'} primaryText="Italiano" />
                       <MenuItem value={'en'} primaryText="English" />

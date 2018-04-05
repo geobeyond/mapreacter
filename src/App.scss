@@ -55,12 +55,34 @@
     bottom: 2em;
 }    
 
-.name {
-  font-family: "Courier New", Courier, monospace;
-  font-size: 14px;
-  white-space: pre;
+
+
+li {
+  list-style: none;
 }
 
-.name::after {
-  content: "\0020";
+.toc-container {
+  display: grid;
+  grid-template-columns: 200px 50px 110px 90px;
+}
+
+.toc-container .div1 {
+  text-align: left;
+}
+
+.toc-container .div2 {
+  text-align: center;
+}
+
+.toc-container .div3 {
+  text-align: center;
+}
+
+.toc-container .div4 {
+  text-align: center;
+}
+
+.toc-container .name {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 14px;
 }

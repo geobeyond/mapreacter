@@ -16,7 +16,7 @@ class LayerListItem extends SdkLayerListItem {
     //const checkbox = (<i className={isLayerVisible(this.props.layer) ? 'fa fa-eye fa-lg' : 'fa fa-eye-slash fa-lg'} onClick={() => { this.toggleVisibility(); }} />);
 
     let fitextentbutton = null;
-    if(layer.type !== "raster") {
+    if (layer.type !== "raster") {
       fitextentbutton = (
         <IconButton
           onClick={() => {
@@ -46,16 +46,18 @@ class LayerListItem extends SdkLayerListItem {
     );
 
     let legend = null;
-    if(layer.type !== "raster") {
-      legend = (<SdkLegend style={{display:'inline'}} key={layer.id} layerId={layer.id} />);
+    if (layer.type !== "raster") {
+      legend = (<SdkLegend style={{ display: 'inline' }} key={layer.id} layerId={layer.id} />);
     }
 
     return this.props.connectDragSource(this.props.connectDropTarget((
-      <li className="layer">
-        <span className="name">{layer.id}</span>
-        {checkbox}
-        {moveButtons}
-        {legend}
+      <li className="sdk-layer">
+        <div className="toc-container">
+          <div className="div1"><span className="name">{layer.id}</span> </div>
+          <div className="div2">{checkbox} </div>
+          <div className="div3">{moveButtons}</div>
+          <div className="div4">{legend}</div>
+        </div>
       </li>
     )));
   }
