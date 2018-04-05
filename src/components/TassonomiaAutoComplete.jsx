@@ -62,7 +62,7 @@ class TassonomiaAutoComplete extends Component {
   }
 
   render() {
-    console.log("TassonomiaAutoComplete.render()");
+    console.log("TassonomiaAutoComplete.render()",this.props['style']);
     return (
       <AutoComplete
         style={this.props['style'] ? this.props.style : {}}
@@ -74,6 +74,7 @@ class TassonomiaAutoComplete extends Component {
         filter={AutoComplete.noFilter}
         openOnFocus={true}
         maxSearchResults={15}
+        fullWidth={true}
         id={'tassonomiaautocomplete'}
         className={'tassonomiaautocomplete'}
       />

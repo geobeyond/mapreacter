@@ -395,17 +395,19 @@ class App extends Component {
                           </div>
                         </li>
                       </ul>
-                      <hr/>
+                      <hr />
                       <SdkLayerList layerClass={LayerListItem} />
                     </IconMenu>
-                    <TassonomiaAutoComplete config={this.config} style={{ margin: '5px' }} />
+                    <TassonomiaAutoComplete config={this.config} style={
+                      window.screen.width <= 480 ? { margin: '5px', width: '140px' } : { margin: '5px', width: '400px' }
+                    } />
                   </ToolbarGroup>
                   <ToolbarGroup firstChild={false} style={{ margin: '5px' }}>
                     <SelectField
                       floatingLabelText={mylocalizedstrings.selectLanguage}
                       value={mylocalizedstrings.getLanguage()}
                       onChange={this.handleChangeLanguage}
-                      style={{ width: '140px' }}
+                      style={{ width: '100px' }}
                     >
                       <MenuItem value={'it'} primaryText="Italiano" />
                       <MenuItem value={'en'} primaryText="English" />
