@@ -444,7 +444,7 @@ class App extends Component {
       const sourceId = 'source_' + i;
       store.dispatch(mapActions.addSource(sourceId, source));
       let _layer = createWMSLayer(sourceId, layerName, layerName);
-      //_layer.layout = { visibility: 'none' };
+      _layer.layout = { visibility: 'visible' };
       store.dispatch(mapActions.addLayer(_layer));
     });
   }

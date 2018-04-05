@@ -55,14 +55,12 @@ class TassonomiaAutoComplete extends Component {
 
   handleOnNewRequest = (chosenRequest, index) => {
     console.log("TassonomiaAutoComplete.handleOnNewRequest()", chosenRequest, index);
-    this.setState({
-      searchText: '',
-    });
+    //this.setState({  searchText: ''  });
     this.props.history.push(chosenRequest.text);
   }
 
   render() {
-    console.log("TassonomiaAutoComplete.render()",this.props['style']);
+    console.log("TassonomiaAutoComplete.render()", this.props['style']);
     return (
       <AutoComplete
         style={this.props['style'] ? this.props.style : {}}
