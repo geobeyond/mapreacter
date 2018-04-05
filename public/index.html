@@ -138,12 +138,20 @@
   <noscript>
     You need to enable JavaScript to run this app.
   </noscript>
-  <div style="padding: 10px; background-color: #ffffff; text-align: left; position:absolute; left:0px; top:0px; height: 60px; width: 100%">
+  <div id="ispraheader" style="padding: 10px; background-color: #ffffff; text-align: left; position:absolute; left:0px; top:0px; height: 60px; width: 100%">
     <img src="%PUBLIC_URL%/logo_MATTM.jpg" alt="logo_MATTM.jpg" height="60px" />
     <img src="%PUBLIC_URL%/logoNaturaitalia.png" alt="logoNaturaitalia.png" height="60px" style="padding-left: 20px;"/>
     <img src="%PUBLIC_URL%/logo.png" alt="logo.png" height="60px" style="padding-left: 20px;" />
   </div>
   <div id="root" style="position:absolute; left:0px; top:80px; width: 100%; height: calc(100% - 80px)"></div>
+  <script>
+      if( screen.width <= 480 ) {     
+        document.getElementById("ispraheader").innerHTML = 
+           "<img src='%PUBLIC_URL%/logo_MATTM.jpg'       alt='logo_MATTM.jpg'       style='height: 40px; padding: 10px;' />"+
+           "<img src='%PUBLIC_URL%/logoNaturaitalia.png' alt='logoNaturaitalia.png' style='height: 40px; padding: 10px;' />"+
+           "<img src='%PUBLIC_URL%/logo.png'             alt='logo.png'             style='height: 40px; padding: 10px;' />";
+      }
+    </script>
 </body>
 
 </html>
