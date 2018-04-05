@@ -319,13 +319,19 @@ class App extends Component {
                           <MenuItem
                             primaryText="CSV"
                             onClick={(event) => {
-                              downloadFile(this.config.geoserverurl, this.config.layers, this.config.downloadCSVUrlParameters);
+                              downloadFile(this.config.downloadCSVUrl, this.getActiveLayers(), '.csv');
                             }}
                           />,
                           <MenuItem
                             primaryText="Shapefile"
                             onClick={(event) => {
-                              downloadFile(this.config.geoserverurl, this.config.layers, this.config.downloadShapefileUrlParameters);
+                              downloadFile(this.config.downloadShapefileUrl, this.getActiveLayers(), '.zip');
+                            }}
+                          />,
+                          <MenuItem
+                            primaryText="Pdf"
+                            onClick={(event) => {
+                              downloadFile(this.config.downloadPdfUrl, this.getActiveLayers(), '.pdf');
                             }}
                           />
                         ]}
@@ -458,6 +464,17 @@ class App extends Component {
         'mapbox:group': 'base'
       }
     }));
+  }
+  getActiveLayers() {
+    let _array = [];
+    store.getState().map.layers.forEach((rec) => {
+      if (rec['layout']) {
+        if (rec.layout.visibility === 'visible') {
+          _array.push(rec.id);
+        }
+      }
+    });
+    return _array;
   }
 }
 
