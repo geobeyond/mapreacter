@@ -396,7 +396,7 @@ class App extends Component {
                       floatingLabelText={mylocalizedstrings.selectLanguage}
                       value={mylocalizedstrings.getLanguage()}
                       onChange={this.handleChangeLanguage}
-                      autoWidth={true}
+                      style={{width: '140px'}}
                     >
                       <MenuItem value={'it'} primaryText="Italiano" />
                       <MenuItem value={'en'} primaryText="English" />
