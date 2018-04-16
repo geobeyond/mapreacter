@@ -5,6 +5,7 @@ import SdkLayerList from '@boundlessgeo/sdk/components/layer-list';
 import LayerListItem from './map/LayerListItem';
 import Menu from 'material-ui/Menu';
 import IconButton from 'material-ui/IconButton';
+import Tooltip from 'material-ui/Tooltip';
 import { mylocalizedstrings } from '../services/localizedstring';
 
 class TocComponent extends Component {
@@ -31,9 +32,11 @@ class TocComponent extends Component {
         const { anchorEl } = this.state;
         return (
             <div>
-                <IconButton onClick={this.handleOpenMenu}>
-                    <i className="material-icons">folder_open</i>
-                </IconButton>
+                <Tooltip title={mylocalizedstrings.toc}>
+                    <IconButton onClick={this.handleOpenMenu}>
+                        <i className="material-icons">folder_open</i>
+                    </IconButton>
+                </Tooltip>
                 <Menu
                     id="menu-toc"
                     anchorEl={anchorEl}

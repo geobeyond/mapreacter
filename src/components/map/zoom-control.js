@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import * as mapActions from '@boundlessgeo/sdk/actions/map';
 import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
+import Tooltip from 'material-ui/Tooltip';
 
 const styles = theme => ({
   container: {
@@ -21,26 +22,28 @@ class ZoomControl extends React.Component {
 
     return (
       <div className={classes.container}>
-        <Button 
-          onClick={this.props.zoomIn}
-          variant="fab"
-          color="primary"
-          label={this.props.zoomInTitle}
-          mini={true}
-          className='sdk-zoom-in'
-        >
-          <i className="material-icons">add</i>
-        </Button>
-        <Button
-          onClick={this.props.zoomOut}
-          variant="fab"
-          color="primary"
-          label={this.props.zoomOutTitle}
-          mini={true}
-          className='sdk-zoom-out'
-        >
-          <i className="material-icons">remove</i>
-        </Button>
+        <Tooltip title={this.props.zoomInTitle}>
+          <Button
+            onClick={this.props.zoomIn}
+            variant="fab"
+            color="primary"
+            mini={true}
+            className='sdk-zoom-in'
+          >
+            <i className="material-icons">add</i>
+          </Button>
+        </Tooltip>
+        <Tooltip title={this.props.zoomOutTitle}>
+          <Button
+            onClick={this.props.zoomOut}
+            variant="fab"
+            color="primary"
+            mini={true}
+            className='sdk-zoom-out'
+          >
+            <i className="material-icons">remove</i>
+          </Button>
+        </Tooltip>
       </div>
     );
   }
