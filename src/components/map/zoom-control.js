@@ -2,28 +2,58 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import * as mapActions from '@boundlessgeo/sdk/actions/map';
+import { withStyles } from 'material-ui/styles';
+import Button from 'material-ui/Button';
 
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
-import ContentRemove from 'material-ui/svg-icons/content/remove';
+const styles = theme => ({
+  container: {
+    position: 'absolute',
+    zIndex: 1,
+    top: 10,
+    left: 10,
+  },
+});
 
 class ZoomControl extends React.Component {
   render() {
-    let className = 'sdk-zoom-control';
+    const { classes } = this.props;
+    console.log("ZoomControl.render()", classes);
+
+    /*let className = 'sdk-zoom-control';
     if (this.props.className) {
       className += ' ' + this.props.className;
-    }
+    }*/
     return (
-      <div className={className} style={this.props.style}>
-        <FloatingActionButton className='sdk-zoom-in' onClick={this.props.zoomIn} title={this.props.zoomInTitle} mini={true} ><ContentAdd /></FloatingActionButton>
-        <FloatingActionButton className='sdk-zoom-out' onClick={this.props.zoomOut} title={this.props.zoomOutTitle} mini={true} ><ContentRemove /></FloatingActionButton>
+      <div className={classes.container}>
+        <Button
+          onClick={this.props.zoomIn}
+          variant="fab"
+          color="primary"
+          //aria-label="add"
+          label={this.props.zoomInTitle}
+          //mini={true}
+          className='sdk-zoom-in'
+        >
+          <i className="material-icons">add</i>
+        </Button>
+        <Button
+          onClick={this.props.zoomOut}
+          variant="fab"
+          color="primary"
+          //aria-label="remove"
+          label={this.props.zoomOutTitle}
+          //mini={true}
+          className='sdk-zoom-out'
+        >
+          <i className="material-icons">remove</i>
+        </Button>
       </div>
     );
   }
 }
 
 ZoomControl.propTypes = {
-  className: PropTypes.string,
+  classes: PropTypes.object.isRequired,
   style: PropTypes.object,
   zoomInTitle: PropTypes.string,
   zoomOutTitle: PropTypes.string,
@@ -45,4 +75,4 @@ function mapDispatchToProps(dispatch) {
   };
 };
 
-export default connect(null, mapDispatchToProps)(ZoomControl);
+export default connect(null, mapDispatchToProps)((withStyles(styles)(ZoomControl)));

@@ -223,9 +223,6 @@ li.sdk-layer {
   width: 100%;
   height: 100%; }
 
-.sdk-zoom-control {
-  background-color: transparent; }
-
 .sdk-map {
   width: 100%;
   height: calc(100% - 60px); }
