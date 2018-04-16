@@ -17,21 +17,16 @@ const styles = theme => ({
 class ZoomControl extends React.Component {
   render() {
     const { classes } = this.props;
-    console.log("ZoomControl.render()", classes);
+    console.log("ZoomControl.render()");
 
-    /*let className = 'sdk-zoom-control';
-    if (this.props.className) {
-      className += ' ' + this.props.className;
-    }*/
     return (
       <div className={classes.container}>
-        <Button
+        <Button 
           onClick={this.props.zoomIn}
           variant="fab"
           color="primary"
-          //aria-label="add"
           label={this.props.zoomInTitle}
-          //mini={true}
+          mini={true}
           className='sdk-zoom-in'
         >
           <i className="material-icons">add</i>
@@ -40,9 +35,8 @@ class ZoomControl extends React.Component {
           onClick={this.props.zoomOut}
           variant="fab"
           color="primary"
-          //aria-label="remove"
           label={this.props.zoomOutTitle}
-          //mini={true}
+          mini={true}
           className='sdk-zoom-out'
         >
           <i className="material-icons">remove</i>
@@ -54,7 +48,6 @@ class ZoomControl extends React.Component {
 
 ZoomControl.propTypes = {
   classes: PropTypes.object.isRequired,
-  style: PropTypes.object,
   zoomInTitle: PropTypes.string,
   zoomOutTitle: PropTypes.string,
 };
