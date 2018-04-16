@@ -28,7 +28,7 @@ class TocComponent extends Component {
     }
 
     render() {
-        console.log("TocComponent.render()", this.props['style']);
+        console.log("TocComponent.render()");
         const { anchorEl } = this.state;
         return (
             <div>
