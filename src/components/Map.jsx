@@ -52,7 +52,7 @@ class Map extends Component {
   };
   render() {
     console.log("Map.render()");
-    let token = this.props.mapConfig.basemap === 'mapbox' ? this.props.mapConfig.mapbox.token : '';
+    let token = this.props.local.mapConfig.basemap === 'mapbox' ? this.props.local.mapConfig.mapbox.token : '';
 
     return (
       <div className="client-map" style={{ width: '100%', height: '100%' }}>
@@ -86,7 +86,7 @@ class Map extends Component {
                     coordinate={xy}
                     closeable
                     items={items}
-                    ispraTheme={this.props.mapConfig.ispraTheme}
+                    ispraTheme={this.props.local.mapConfig.ispraTheme}
                   />
                 );
               }
@@ -105,7 +105,7 @@ class Map extends Component {
 const mapStateToProps = (state, { match }) => {
   return {
     viewparams: match.params.viewparams,
-    mapConfig: state.local.mapConfig
+    local: state.local
   }
 }
 

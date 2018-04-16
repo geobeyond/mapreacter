@@ -4,7 +4,6 @@ import { types, layerListItemSource, layerListItemTarget, collect, collectDrop }
 import SdkLayerListItem from '@boundlessgeo/sdk/components/layer-list-item';
 import SdkLegend from '@boundlessgeo/sdk/components/legend';
 import IconButton from 'material-ui/IconButton';
-import FontIcon from 'material-ui/FontIcon';
 //import { isLayerVisible } from '@boundlessgeo/sdk/util';
 import { fitextent } from '../../actions/map';
 
@@ -22,24 +21,24 @@ class LayerListItem extends SdkLayerListItem {
           onClick={() => {
             this.props.dispatch(fitextent(this.props.layer.id));
           }}>
-          <FontIcon className="material-icons">fullscreen</FontIcon>
+          <i className="material-icons">fullscreen</i>
         </IconButton>
       );
     }
 
     let moveButtons = (
-      <span className="btn-container">
+      <span className="btn-container" style={{width: '100%'}}>
         <IconButton
           onClick={() => {
             this.moveLayerUp();
           }}>
-          <FontIcon className="material-icons">arrow_upward</FontIcon>
+          <i className="material-icons">arrow_upward</i>
         </IconButton>
         <IconButton
           onClick={() => {
             this.moveLayerDown();
           }}>
-          <FontIcon className="material-icons">arrow_downward</FontIcon>
+          <i className="material-icons">arrow_downward</i>
         </IconButton>
         {fitextentbutton}
       </span>

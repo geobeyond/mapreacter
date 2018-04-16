@@ -5,37 +5,28 @@ import thunkMiddleware from 'redux-thunk';
 import { Provider } from 'react-redux';
 import SdkMapReducer from '@boundlessgeo/sdk/reducers/map';
 import * as mapActions from '@boundlessgeo/sdk/actions/map';
-import SdkLayerList from '@boundlessgeo/sdk/components/layer-list';
-import * as printActions from '@boundlessgeo/sdk/actions/print';
 import SdkPrintReducer from '@boundlessgeo/sdk/reducers/print';
 import SdkMapInfoReducer from '@boundlessgeo/sdk/reducers/mapinfo';
 import SdkDrawingReducer from '@boundlessgeo/sdk/reducers/drawing';
 import * as drawingActions from '@boundlessgeo/sdk/actions/drawing';
-import { INTERACTIONS } from '@boundlessgeo/sdk/constants';
 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import IconMenu from 'material-ui/IconMenu';
-import IconButton from 'material-ui/IconButton';
-import FontIcon from 'material-ui/FontIcon';
-import { MenuItem } from 'material-ui/Menu';
-import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import SelectField from 'material-ui/SelectField';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import AppBar from 'material-ui/AppBar';
+import Toolbar from 'material-ui/Toolbar';
 
 import { createWMSLayer, createWMSSourceWithLayerName } from './services/wms/wmslayer'
 import { createVectorSourceFromStyle, createRasterSourceFromStyle } from './services/mapbox'
 import MapReducer from './reducers/map';
 import * as configActions from './actions/map';
 import Map from './components/Map';
-import TassonomiaReducer from './components/tassonomiaredux';
 import TassonomiaAutoComplete from './components/TassonomiaAutoComplete';
-import LayerListItem from './components/map/LayerListItem';
-import { downloadFile } from './services/download';
-import { mylocalizedstrings } from './services/localizedstring';
+//import { mylocalizedstrings } from './services/localizedstring';
 import RefreshIndicatorComponent from './components/RefreshIndicatorComponent';
 import MeasureComponent from './components/MeasureComponent';
+import TocComponent from './components/TocComponent';
+import LangComponent from './components/LangComponent';
+import ConfComponent from './components/ConfComponent';
+
 
 import './App.css';
 //import {} from 'dotenv/config';
@@ -191,7 +182,6 @@ export const store = createStore(
     print: SdkPrintReducer,
     drawing: SdkDrawingReducer,
     local: MapReducer,
-    tassonomia: TassonomiaReducer,
   }),
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
   applyMiddleware(themiddleware, thunkMiddleware));
@@ -201,11 +191,6 @@ class App extends Component {
   config = {};
   state = {
     sharedialog: false,
-  };
-
-  handleChangeLanguage = (event, index, value) => {
-    mylocalizedstrings.setLanguage(value);
-    this.setState({});
   };
 
   constructor(props) {
@@ -267,153 +252,28 @@ class App extends Component {
     console.log("App.render()");
     return (
       <div style={{ width: '100%', height: '100%' }}>
-        <MuiThemeProvider muiTheme={getMuiTheme(this.config.ispraTheme)}>
+        <MuiThemeProvider theme={createMuiTheme(this.config.ispraTheme)}>
           <Provider store={store}>
             <HashRouter>
               <div style={{ width: '100%', height: '100%' }}>
-                <Dialog
-                  title={mylocalizedstrings.sharetitle}
-                  actions={[
-                    <FlatButton
-                      label={mylocalizedstrings.close}
-                      primary={true}
-                      onClick={() => { this.setState({ sharedialog: false }); }}
-                    />,
-                  ]}
-                  modal={false}
-                  open={this.state.sharedialog}
-                  onRequestClose={() => { this.setState({ sharedialog: false }); }}
-                >
-                  {window.location.href}
-                </Dialog>
+
                 <RefreshIndicatorComponent />
                 <MeasureComponent />
-                <Toolbar style={{ height: '60px' }}>
-                  <ToolbarGroup firstChild={true} style={{ margin: '5px' }}>
-                    <IconMenu
-                      style={{ margin: '5px' }}
-                      iconButtonElement={
-                        <FontIcon className="material-icons">more_vert</FontIcon>
-                      }
-                    >
-                      <MenuItem onClick={(event) => {
-                        let url = this.config.helpUrl + mylocalizedstrings.getLanguage() + this.config.helpDoc;
-                        let win = window.open(url, '_blank');
-                        win.focus();
-                      }} >
-                        <i class="material-icons">help</i>
-                      </MenuItem>
 
-                      <MenuItem
-                        onClick={(event) => {
-                          var _txt = document.createElement('textarea');
-                          _txt.value = window.location.href; //chrome
-                          _txt.textContent = window.location.href; //firefox
-                          document.body.appendChild(_txt);
-                          _txt.select();
-                          document.execCommand('copy');
-                          console.log(_txt);
-                          document.body.removeChild(_txt);
-                          this.setState({ sharedialog: true });
-                        }} >
-                        <i class="material-icons">share</i>
-                      </MenuItem>
+                <AppBar position="static">
+                  <Toolbar style={{ height: '60px' }}>
 
-                      <MenuItem
-                        menuItems={[
-                          <MenuItem
-                            primaryText="PNG"
-                            onClick={(event) => {
-                              store.dispatch(printActions.exportMapImage());
-                            }}
-                          />,
-                          <MenuItem
-                            primaryText="CSV"
-                            onClick={(event) => {
-                              downloadFile(this.config.downloadCSVUrl, this.getActiveLayers(), '.csv');
-                            }}
-                          />,
-                          <MenuItem
-                            primaryText="Shapefile"
-                            onClick={(event) => {
-                              downloadFile(this.config.downloadShapefileUrl, this.getActiveLayers(), '.zip');
-                            }}
-                          />,
-                          <MenuItem
-                            primaryText="Pdf"
-                            onClick={(event) => {
-                              downloadFile(this.config.downloadPdfUrl, this.getActiveLayers(), '.pdf');
-                            }}
-                          />
-                        ]}
-                      >
-                        <i class="material-icons">file_download</i>
-                      </MenuItem>
+                    <ConfComponent />
 
-                      <MenuItem
-                        menuItems={[
-                          <MenuItem
-                            primaryText={mylocalizedstrings.line}
-                            onClick={(event) => {
-                              store.dispatch(drawingActions.startMeasure(INTERACTIONS.measure_line));
-                              store.dispatch(configActions.changeMeasureComponent({ open: true }));
-                            }}
-                          />,
-                          <MenuItem
-                            primaryText={mylocalizedstrings.polygon}
-                            onClick={(event) => {
-                              store.dispatch(drawingActions.startMeasure(INTERACTIONS.measure_polygon));
-                              store.dispatch(configActions.changeMeasureComponent({ open: true }));
-                            }}
-                          />
-                        ]}
-                      >
-                        <i class="material-icons">photo_size_select_small</i>
-                      </MenuItem>
-                      <MenuItem onClick={(event) => {
-                        let zoom = this.config.map.zoom || 2;
-                        store.dispatch(mapActions.setView(this.config.map.center, zoom));
-                      }} >
-                        <i class="material-icons">fullscreen</i>
-                      </MenuItem>
-                    </IconMenu>
-                    <IconMenu
-                      style={{ margin: '5px' }}
-                      iconButtonElement={
-                        <IconButton>
-                          <FontIcon className="material-icons">folder_open</FontIcon>
-                        </IconButton>
-                      }
-                    >
-                      <ul className="sdk-layer-list" >
-                        <li className="sdk-layer" >
-                          <div className="toc-container">
-                            <div className="div1"><span className="name">{mylocalizedstrings.layer}</span> </div>
-                            <div className="div2"><span className="name">{mylocalizedstrings.onoff}</span> </div>
-                            <div className="div3"><span className="name">{mylocalizedstrings.updown}</span> </div>
-                            <div className="div4"><span className="name">{mylocalizedstrings.legend}</span> </div>
-                          </div>
-                        </li>
-                      </ul>
-                      <hr />
-                      <SdkLayerList layerClass={LayerListItem} />
-                    </IconMenu>
-                    <TassonomiaAutoComplete config={this.config} style={
-                      window.screen.width <= 480 ? { margin: '5px', width: '140px' } : { margin: '5px', width: '400px' }
-                    } />
-                  </ToolbarGroup>
-                  <ToolbarGroup firstChild={false} style={{ margin: '5px' }}>
-                    <SelectField
-                      floatingLabelText={mylocalizedstrings.selectLanguage}
-                      value={mylocalizedstrings.getLanguage()}
-                      onChange={this.handleChangeLanguage}
-                      style={{ width: '100px' }}
-                    >
-                      <MenuItem value={'it'} primaryText="Italiano" />
-                      <MenuItem value={'en'} primaryText="English" />
-                    </SelectField>
-                  </ToolbarGroup>
-                </Toolbar>
+                    <TocComponent />
+
+                    <TassonomiaAutoComplete />
+
+                    <LangComponent style={{ position: 'absolute', right: 40, width: '70px', color: 'currentColor' }} />
+
+                  </Toolbar>
+                </AppBar>
+
                 <Switch>
                   <Route path="/:viewparams+" render={(props) => (
                     <Map {...props} />
@@ -486,17 +346,6 @@ class App extends Component {
         'mapbox:group': 'base'
       }
     }));
-  }
-  getActiveLayers() {
-    let _array = [];
-    store.getState().map.layers.forEach((rec) => {
-      if (rec['layout']) {
-        if (rec.layout.visibility === 'visible') {
-          _array.push(rec.id);
-        }
-      }
-    });
-    return _array;
   }
 }
 

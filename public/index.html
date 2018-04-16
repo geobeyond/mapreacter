@@ -22,9 +22,8 @@
     -->
   <title>mapreacter</title>
 
-  <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Intl.~locale.en,Object.assign"></script>
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <style>
 
     .isprafooter {
@@ -64,11 +63,11 @@
       wpsserviceurl: 'http://193.206.192.107/geoserver/ows?strict:true',
       downloadCSVUrl: 'http://193.206.192.107/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=CSV&typeName=<LAYER>&viewparams=<VIEWPARAMS>&PropertyName=nome_scientifico,anno,lat,lon',
       downloadShapefileUrl: 'http://193.206.192.107/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=shape-zip&typeName=<LAYER>&viewparams=<VIEWPARAMS>',
-      downloadPdfUrl:  'http://193.206.192.107/geoserver/nnb/wms?service=WMS&version=1.1.0&request=GetMap&format=application/pdf&width=768&height=384&bbox=-180.0,-90.0,180.0,90.0&srs=EPSG:4326&layers=<LAYER>&viewparams=<VIEWPARAMS>',
+      downloadPdfUrl: 'http://193.206.192.107/geoserver/nnb/wms?service=WMS&version=1.1.0&request=GetMap&format=application/pdf&width=768&height=384&bbox=-180.0,-90.0,180.0,90.0&srs=EPSG:4326&layers=<LAYER>&viewparams=<VIEWPARAMS>',
       helpUrl: 'http://193.206.192.107/mapreacter-help/docs/',
       helpDoc: '/doc_mapreacter.html',
       SdkMousePosition: {
-        style: { position: 'absolute', top: 10, right: 40, zIndex: 1, width: '5em', color:'#00ffff' }
+        style: { position: 'absolute', top: 10, right: 40, zIndex: 1, width: '5em', color: '#00ffff' }
       },
       messages: {
         it: {
@@ -107,35 +106,14 @@
         }
       },
       ispraTheme: {
-        spacing: {
-          iconSize: 18,
-          desktopGutter: 24,
-          desktopGutterMore: 32,
-          desktopGutterLess: 16,
-          desktopGutterMini: 8,
-          desktopKeylineIncrement: 64,
-          desktopDropDownMenuItemHeight: 32,
-          desktopDropDownMenuFontSize: 15,
-          desktopDrawerMenuItemHeight: 48,
-          desktopSubheaderHeight: 48,
-          desktopToolbarHeight: 56
-        },
-        fontFamily: 'Roboto, sans-serif',
         palette: {
-          primary1Color: '#00601d',
-          primary2Color: '#0097a7',
-          primary3Color: '#bdbdbd',
-          accent1Color: '#ff4081',
-          accent2Color: '#00601d',
-          accent3Color: '#9e9e9e',
-          textColor: '#ffffff',
-          alternateTextColor: '#ffffff',
-          canvasColor: '#00601d',
-          borderColor: '#e0e0e0',
-          disabledColor: '#ffffff4d',
-          pickerHeaderColor: '#00bcd4',
-          clockCircleColor: '#ffffffde',
-          shadowColor: 'rgba(0, 0, 0, 1)',
+          type: 'dark',
+          primary: {
+            main: '#00601d',
+          },
+          background: {
+            paper: "#00601d",
+          },
         },
       }
     };  
@@ -148,18 +126,18 @@
   </noscript>
   <div id="ispraheader" style="padding: 10px; background-color: #ffffff; text-align: left; position:absolute; left:0px; top:0px; height: 60px; width: 100%">
     <img src="%PUBLIC_URL%/logo_MATTM.jpg" alt="logo_MATTM.jpg" height="60px" />
-    <img src="%PUBLIC_URL%/logoNaturaitalia.png" alt="logoNaturaitalia.png" height="60px" style="padding-left: 20px;"/>
+    <img src="%PUBLIC_URL%/logoNaturaitalia.png" alt="logoNaturaitalia.png" height="60px" style="padding-left: 20px;" />
     <img src="%PUBLIC_URL%/logo.png" alt="logo.png" height="60px" style="padding-left: 20px;" />
   </div>
   <div id="root" style="position:absolute; left:0px; top:80px; width: 100%; height: calc(100% - 80px)"></div>
   <script>
-      if( screen.width <= 480 ) {     
-        document.getElementById("ispraheader").innerHTML = 
-           "<img src='%PUBLIC_URL%/logo_MATTM.jpg'       alt='logo_MATTM.jpg'       style='height: 40px; padding: 10px;' />"+
-           "<img src='%PUBLIC_URL%/logoNaturaitalia.png' alt='logoNaturaitalia.png' style='height: 40px; padding: 10px;' />"+
-           "<img src='%PUBLIC_URL%/logo.png'             alt='logo.png'             style='height: 40px; padding: 10px;' />";
-      }
-    </script>
+    if (screen.width <= 480) {
+      document.getElementById("ispraheader").innerHTML =
+        "<img src='%PUBLIC_URL%/logo_MATTM.jpg'       alt='logo_MATTM.jpg'       style='height: 40px; padding: 10px;' />" +
+        "<img src='%PUBLIC_URL%/logoNaturaitalia.png' alt='logoNaturaitalia.png' style='height: 40px; padding: 10px;' />" +
+        "<img src='%PUBLIC_URL%/logo.png'             alt='logo.png'             style='height: 40px; padding: 10px;' />";
+    }
+  </script>
 </body>
 
 </html>

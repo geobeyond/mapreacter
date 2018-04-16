@@ -31,6 +31,12 @@ export default function MapReducer(state = defaultState, action) {
       });
       return state;
 
+    case 'LOCAL.CHANGELANG':
+      state = Object.assign({}, state, {
+        lang: action.payload['lang'],
+      });
+      return state;
+
     default:
       return state;
   }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import RefreshIndicator from 'material-ui/RefreshIndicator';
+import { CircularProgress } from 'material-ui/Progress';
 
 class RefreshIndicatorComponent extends Component {
 
@@ -19,13 +19,9 @@ class RefreshIndicatorComponent extends Component {
             return null;
         }
         return (
-            <RefreshIndicator
-                size={60}
-                left={10}
-                top={10}
-                loadingColor="#ffffff"
-                status={this.props.refreshIndicator.status}
-                style={{ display: 'inline-block', position: 'absolute' }}
+            <CircularProgress
+                size={90}
+                style={{ position: 'absolute', top: 10, left: 40, zIndex: 1, color: '#ffffff' }}
             />
         );
     }

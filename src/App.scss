@@ -1,7 +1,7 @@
 @import "@boundlessgeo/sdk/stylesheet/sdk.scss";
 
 .sdk-zoom-control {
-    background-color: transparent; 
+    //background-color: transparent; 
 }
 
 .sdk-map {
@@ -63,7 +63,7 @@ li {
 
 .toc-container {
   display: grid;
-  grid-template-columns: 200px 50px 110px 90px;
+  grid-template-columns: 200px 50px 180px 90px;
 }
 
 .toc-container .div1 {
