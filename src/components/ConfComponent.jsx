@@ -9,7 +9,12 @@ import { INTERACTIONS } from '@boundlessgeo/sdk/constants';
 
 import Menu, { MenuItem } from 'material-ui/Menu';
 import IconButton from 'material-ui/IconButton';
-import Dialog, { DialogTitle } from 'material-ui/Dialog';
+import Dialog, {
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+} from 'material-ui/Dialog';
 import Button from 'material-ui/Button';
 
 import * as configActions from '../actions/map';
@@ -58,13 +63,21 @@ class ConfComponent extends Component {
                 </IconButton>
 
                 <Dialog
-                    actions={[
-                        <Button onClick={() => { this.setState({ sharedialog: false }); }}>{mylocalizedstrings.close}</Button>,
-                    ]}
                     open={this.state.sharedialog}
                     onClose={() => { this.setState({ sharedialog: false }); }}
                 >
                     <DialogTitle>{mylocalizedstrings.sharetitle}</DialogTitle>
+                    {/* 
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            {mylocalizedstrings.sharetitle}
+                        </DialogContentText>
+                    </DialogContent> */}
+                    <DialogActions>
+                        <Button onClick={() => { this.setState({ sharedialog: false }); }}>
+                            {mylocalizedstrings.close}
+                        </Button>,
+                    </DialogActions>
                 </Dialog>
 
                 <Menu
