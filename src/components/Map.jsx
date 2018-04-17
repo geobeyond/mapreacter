@@ -35,7 +35,7 @@ class Map extends Component {
   }
   updateLayer(_viewparams) {
     var viewparams=_viewparams.replace(",", "\\,").replace(";", "\\;");
-    console.log("Map.updateLayer()", _viewparams, viewparams);
+    console.log("Map.updateLayer()", viewparams);
     //store.dispatch(actions.setViewParams(viewparams));
     this.props.setViewParams(viewparams);
     this.props.updateLayersWithViewparams(viewparams.split("/"));
