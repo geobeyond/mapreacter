@@ -11,8 +11,8 @@ import Menu, { MenuItem } from 'material-ui/Menu';
 import IconButton from 'material-ui/IconButton';
 import Dialog, {
     DialogActions,
-    DialogContent,
-    DialogContentText,
+    //DialogContent,
+    //DialogContentText,
     DialogTitle,
 } from 'material-ui/Dialog';
 import Button from 'material-ui/Button';
