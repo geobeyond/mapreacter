@@ -9,7 +9,6 @@ import SdkScaleLine from '@boundlessgeo/sdk/components/map/scaleline';
 import * as printActions from '@boundlessgeo/sdk/actions/print';
 import OverviewMap from 'ol/control/overviewmap';
 //import FullScreen from 'ol/control/fullscreen';
-import WMSPopup from './map/wms/wmspopup'
 import ZoomControl from './map/zoom-control';
 import * as actions from '../actions/map';
 import { store } from '../App';
@@ -17,7 +16,7 @@ import { store } from '../App';
 class Map extends Component {
 
   componentDidMount() {
-    console.log("Map.componentDidMount() this.props=", JSON.stringify(this.props));
+    console.log("Map.componentDidMount()");
     if (this.props.viewparams) {
       this.updateLayer(this.props.viewparams);
     } else {
@@ -25,7 +24,7 @@ class Map extends Component {
     }
   }
   componentWillReceiveProps(nextProps) {
-    console.log("Map.componentWillReceiveProps() props=", JSON.stringify(nextProps));
+    console.log("Map.componentWillReceiveProps()");
     if (nextProps.viewparams !== this.props.viewparams) {
       //this.updateLayer(nextProps.viewparams);
       setTimeout(function () {
@@ -67,8 +66,8 @@ class Map extends Component {
           accessToken={token}
           includeFeaturesOnClick
           onExportImage={this.exportMapImage}
-          onClick={(map, xy, featuresPromise) => {
-            this.props.changerefreshindicator({ status: "loading" });
+          onClick={(map, xy, featuresPromise) => {            
+            //this.props.changerefreshindicator({ status: "loading" });
             featuresPromise.then((featureGroups) => {
               let items = [];
               featureGroups.forEach((feature, index) => {
@@ -81,16 +80,9 @@ class Map extends Component {
                 });
               });
               if (items.length > 0) {
-                map.addPopup(
-                  <WMSPopup
-                    coordinate={xy}
-                    closeable
-                    items={items}
-                    ispraTheme={this.props.local.mapConfig.ispraTheme}
-                  />
-                );
+                this.props.changeFeatureInfoComponent({ open: true, items: items });
               }
-              this.props.changerefreshindicator({ status: "hide" });
+              //this.props.changerefreshindicator({ status: "hide" });
             });
           }}>
           <SdkScaleLine />
@@ -123,6 +115,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     receiveMapImage: () => {
       dispatch(printActions.receiveMapImage());
+    },
+    changeFeatureInfoComponent: (params) => {
+      dispatch(actions.changeFeatureInfoComponent(params));
     },
   };
 };
