@@ -161,13 +161,10 @@ class TassonomiaAutoComplete extends React.Component {
       selectedItem,
     });
 
-    suggestions.forEach(_record => {
-      if (_record.label === item) {
-        selectedRecord = [...selectedRecord, _record];
-        this.setState({ selectedRecord });
-        this.props.history.push(_record.routingrecord.routinglevel + _record.label);
-      }
-    });
+    let _selectedRecord = suggestions.filter(_record => _record.label === item)[0];
+    this.props.history.push(_selectedRecord.routingrecord.routinglevel + _selectedRecord.label);
+    selectedRecord = [...selectedRecord, _selectedRecord];
+    this.setState({ selectedRecord });
 
     console.log("TassonomiaAutoComplete.handleChange()", selectedItem, JSON.stringify(selectedRecord));
   };
@@ -177,15 +174,7 @@ class TassonomiaAutoComplete extends React.Component {
     selectedItem.splice(selectedItem.indexOf(item), 1);
     this.setState({ selectedItem });
 
-    const selectedRecord = this.state.selectedRecord.filter( _record => { 
-      if (_record.label === item) {
-        console.log("TassonomiaAutoComplete.handleDelete() scarto il record", _record.label);
-        return false
-      } else {
-        console.log("TassonomiaAutoComplete.handleDelete() mantengo il record", _record.label);
-        return true        
-      }
-    });
+    const selectedRecord = this.state.selectedRecord.filter(_record => _record.label !== item);
     this.setState({ selectedRecord });
 
     if (selectedRecord[0]) {
