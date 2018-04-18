@@ -162,30 +162,39 @@ class TassonomiaAutoComplete extends React.Component {
     });
 
     let _selectedRecord = suggestions.filter(_record => _record.label === item)[0];
-    this.props.history.push(_selectedRecord.routingrecord.routinglevel + _selectedRecord.label);
+    //this.props.history.push(_selectedRecord.routingrecord.routinglevel + _selectedRecord.label);
     selectedRecord = [...selectedRecord, _selectedRecord];
     this.setState({ selectedRecord });
-
     console.log("TassonomiaAutoComplete.handleChange()", selectedItem, JSON.stringify(selectedRecord));
+    this.handlePermalink(selectedRecord);
   };
 
   handleDelete = item => () => {
     const selectedItem = [...this.state.selectedItem];
     selectedItem.splice(selectedItem.indexOf(item), 1);
     this.setState({ selectedItem });
-
     const selectedRecord = this.state.selectedRecord.filter(_record => _record.label !== item);
     this.setState({ selectedRecord });
-
-    if (selectedRecord[0]) {
-      let _record = selectedRecord[0];
-      this.props.history.push(_record.routingrecord.routinglevel + _record.label);
-    } else {
-      this.props.history.push('/none');
-    }
-
     console.log("TassonomiaAutoComplete.handleDelete()", item, selectedItem, JSON.stringify(selectedRecord));
+    this.handlePermalink(selectedRecord);
   };
+
+  handlePermalink(selectedRecord) {
+    console.log("TassonomiaAutoComplete.handlePermalink() selectedRecord:", JSON.stringify(selectedRecord));
+    let permalink = this.props.local.mapConfig.permalink;
+    console.log("TassonomiaAutoComplete.handlePermalink() permalink:", permalink);
+    selectedRecord.forEach( (_record, index) => {
+      permalink = permalink.replace(_record.routingrecord.mask, _record.label);
+      console.log("TassonomiaAutoComplete.handlePermalink() permalink:", permalink);
+    });
+    //permalink = permalink.replace(/\<.*\>/, '*');
+    permalink = permalink.replace(/<ORDER>/g,'*');
+    permalink = permalink.replace(/<GENUS>/g,'*');
+    permalink = permalink.replace(/<FAMILY>/g,'*');
+    permalink = permalink.replace(/<SPECIES>/g,'*');
+    console.log("TassonomiaAutoComplete.handlePermalink() permalink:", permalink);
+    this.props.history.push(permalink);
+  }
 
   render() {
     console.log("TassonomiaAutoComplete.render()");
