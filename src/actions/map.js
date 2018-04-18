@@ -19,7 +19,8 @@ export const updateLayersWithViewparams = (params) => {
     viewparams.length = 0;
     params.forEach((param, i) => {
       if (param !== '*') {
-        viewparams.push(local.mapConfig.viewparams[i] + ':' + param);
+        let paramEscaped = param.replace(",", "\\,").replace(";", "\\;");
+        viewparams.push(local.mapConfig.viewparams[i] + ':' + paramEscaped);
       }
     });
 
