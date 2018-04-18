@@ -80,7 +80,7 @@ function renderSuggestion({ suggestion, index, itemProps, highlightedIndex, sele
         {suggestion.label}
       </Typography>
       &nbsp;
-      <Typography variant="caption" style={{fontStyle: 'italic',}}>
+      <Typography variant="caption" style={{ fontStyle: 'italic', }}>
         {mylocalizedstrings.getString(suggestion.routingrecord.label, mylocalizedstrings.getLanguage())}
       </Typography>
     </MenuItem>
@@ -106,6 +106,7 @@ class TassonomiaAutoComplete extends React.Component {
   state = {
     inputValue: '',
     selectedItem: [],
+    selectedRecord: []
   };
 
   handleKeyDown = event => {
@@ -149,32 +150,52 @@ class TassonomiaAutoComplete extends React.Component {
   };
 
   handleChange = item => {
-    let { selectedItem } = this.state;
+    let { selectedItem, selectedRecord } = this.state;
 
     if (selectedItem.indexOf(item) === -1) {
       selectedItem = [...selectedItem, item];
     }
-
-    console.log("TassonomiaAutoComplete.handleChange() item:", item, "selectedItem:", selectedItem);
 
     this.setState({
       inputValue: '',
       selectedItem,
     });
 
-    suggestions.forEach(element => {
-      if (element.label === item) {
-        console.log("TassonomiaAutoComplete.handleChange() elemento originale:", element);
-        this.props.history.push(element.routingrecord.routinglevel + element.label);
+    suggestions.forEach(_record => {
+      if (_record.label === item) {
+        selectedRecord = [...selectedRecord, _record];
+        this.setState({ selectedRecord });
+        this.props.history.push(_record.routingrecord.routinglevel + _record.label);
       }
     });
+
+    console.log("TassonomiaAutoComplete.handleChange()", selectedItem, JSON.stringify(selectedRecord));
   };
 
   handleDelete = item => () => {
-    console.log("TassonomiaAutoComplete.handleDelete()", item);
     const selectedItem = [...this.state.selectedItem];
     selectedItem.splice(selectedItem.indexOf(item), 1);
     this.setState({ selectedItem });
+
+    const selectedRecord = this.state.selectedRecord.filter( _record => { 
+      if (_record.label === item) {
+        console.log("TassonomiaAutoComplete.handleDelete() scarto il record", _record.label);
+        return false
+      } else {
+        console.log("TassonomiaAutoComplete.handleDelete() mantengo il record", _record.label);
+        return true        
+      }
+    });
+    this.setState({ selectedRecord });
+
+    if (selectedRecord[0]) {
+      let _record = selectedRecord[0];
+      this.props.history.push(_record.routingrecord.routinglevel + _record.label);
+    } else {
+      this.props.history.push('/none');
+    }
+
+    console.log("TassonomiaAutoComplete.handleDelete()", item, selectedItem, JSON.stringify(selectedRecord));
   };
 
   render() {
