@@ -50,6 +50,9 @@
     right: 8px;
     cursor: pointer; }
 
+.sdk-legend-image {
+  vertical-align: middle; }
+
 .ol-overviewmap {
     left: 0.5em;
     bottom: 2em;
@@ -68,18 +71,26 @@ li {
 
 .toc-container .div1 {
   text-align: left;
+  height: 40px; 
+  line-height: 40px;
 }
 
 .toc-container .div2 {
   text-align: center;
+  height: 40px; 
+  line-height: 40px;
 }
 
 .toc-container .div3 {
   text-align: center;
+  height: 40px; 
+  line-height: 40px;
 }
 
 .toc-container .div4 {
   text-align: center;
+  height: 40px; 
+  line-height: 40px;
 }
 
 .toc-container .name {
