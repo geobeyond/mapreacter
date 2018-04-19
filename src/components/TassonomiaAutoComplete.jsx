@@ -12,6 +12,7 @@ import Chip from 'material-ui/Chip';
 import Typography from 'material-ui/Typography';
 
 import { mylocalizedstrings } from '../services/localizedstring';
+import * as actions from '../actions/map';
 
 var axios = require('axios');
 
@@ -165,8 +166,8 @@ class TassonomiaAutoComplete extends React.Component {
     //this.props.history.push(_selectedRecord.routingrecord.routinglevel + _selectedRecord.label);
     selectedRecord = [...selectedRecord, _selectedRecord];
     this.setState({ selectedRecord });
-    console.log("TassonomiaAutoComplete.handleChange()", selectedItem, JSON.stringify(selectedRecord));
-    this.handlePermalink(selectedRecord);
+    console.log("TassonomiaAutoComplete.handleChange()", JSON.stringify(selectedRecord));
+    this.handlePermalinkMask(selectedRecord);
   };
 
   handleDelete = item => () => {
@@ -175,25 +176,39 @@ class TassonomiaAutoComplete extends React.Component {
     this.setState({ selectedItem });
     const selectedRecord = this.state.selectedRecord.filter(_record => _record.label !== item);
     this.setState({ selectedRecord });
-    console.log("TassonomiaAutoComplete.handleDelete()", item, selectedItem, JSON.stringify(selectedRecord));
-    this.handlePermalink(selectedRecord);
+    console.log("TassonomiaAutoComplete.handleDelete()", item);
+    this.handlePermalinkMask(selectedRecord);
   };
 
-  handlePermalink(selectedRecord) {
-    console.log("TassonomiaAutoComplete.handlePermalink() selectedRecord:", JSON.stringify(selectedRecord));
-    let permalink = this.props.local.mapConfig.permalink;
-    console.log("TassonomiaAutoComplete.handlePermalink() permalink:", permalink);
-    selectedRecord.forEach( (_record, index) => {
-      permalink = permalink.replace(_record.routingrecord.mask, _record.label);
-      console.log("TassonomiaAutoComplete.handlePermalink() permalink:", permalink);
+  handlePermalinkMask(selectedRecord) {
+    console.log("TassonomiaAutoComplete.handlePermalinkMask()", JSON.stringify(selectedRecord));
+    let permalinkmask = this.props.local.mapConfig.permalinkmask;
+    console.log("TassonomiaAutoComplete.handlePermalinkMask() permalinkmask:", permalinkmask);
+    selectedRecord.forEach((_record, index) => {
+      permalinkmask = permalinkmask.replace(_record.routingrecord.mask, _record.label);
+      console.log("TassonomiaAutoComplete.handlePermalinkMask() permalinkmask:", permalinkmask);
     });
-    //permalink = permalink.replace(/\<.*\>/, '*');
-    permalink = permalink.replace(/<ORDER>/g,'*');
-    permalink = permalink.replace(/<GENUS>/g,'*');
-    permalink = permalink.replace(/<FAMILY>/g,'*');
-    permalink = permalink.replace(/<SPECIES>/g,'*');
-    console.log("TassonomiaAutoComplete.handlePermalink() permalink:", permalink);
-    this.props.history.push(permalink);
+    //permalinkmask = permalinkmask.replace(/\<.*\>/, '*');
+    permalinkmask = permalinkmask.replace(/<ORDER>/g, '*');
+    permalinkmask = permalinkmask.replace(/<GENUS>/g, '*');
+    permalinkmask = permalinkmask.replace(/<FAMILY>/g, '*');
+    permalinkmask = permalinkmask.replace(/<SPECIES>/g, '*');
+    console.log("TassonomiaAutoComplete.handlePermalinkMask() permalinkmask:", permalinkmask);
+
+    try {
+      let _array = [
+        this.props.map.zoom,
+        '' + Math.round(this.props.map.center[0] * 100) / 100,
+        '' + Math.round(this.props.map.center[1] * 100) / 100,
+        this.props.map.bearing
+      ];
+      permalinkmask += '/' + _array.join('/');
+      console.log("TassonomiaAutoComplete.handlePermalinkMask() permalinkmask:", permalinkmask);
+    } catch (error) {
+      console.error(error);
+    }
+
+    this.props.history.push(permalinkmask);
   }
 
   render() {
@@ -260,12 +275,17 @@ TassonomiaAutoComplete.propTypes = {
 const mapStateToProps = (state) => {
   //console.log("TassonomiaAutoComplete.mapStateToProps()");
   return {
+    map: state.map,
     local: state.local,
-    tassonomia: state.tassonomia,
   }
 }
 
-const mapDispatchToProps = {
-}
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setViewParams: (params) => {
+      dispatch(actions.setViewParams(params));
+    },
+  };
+};
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(TassonomiaAutoComplete)));

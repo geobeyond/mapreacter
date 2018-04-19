@@ -26,7 +26,7 @@ import MeasureComponent from './components/MeasureComponent';
 import TocComponent from './components/TocComponent';
 import LangComponent from './components/LangComponent';
 import ConfComponent from './components/ConfComponent';
-import FeatureInfoComponent  from './components/FeatureInfoComponent';
+import FeatureInfoComponent from './components/FeatureInfoComponent';
 
 
 import './App.css';
@@ -56,7 +56,8 @@ export const themiddleware = store => next => action => {
   switch (action.type) {
     case 'MAP_SET_VIEW':
       if (store.getState().local['viewparams']) {
-        const _index = store.getState().local.mapConfig.routing.length;
+        //const _index = store.getState().local.mapConfig.routing.length;
+        const _index = store.getState().local.mapConfig.permalinkmasklength;
         const _array = store.getState().local.viewparams.split("/");
         while (_array.length < (_index + 4)) {
           _array.push('*');
@@ -233,12 +234,13 @@ class App extends Component {
     }
 
     const _array = window.location.hash.split("/");
-    if (_array.length === 8) {
+    const _index = store.getState().local.mapConfig.permalinkmasklength;
+    if (_array.length === _index+5) {
       const _map = {
-        center: [Number(_array[5]), Number(_array[6])],
-        zoom: Number(_array[4])
+        center: [Number(_array[_index+2]), Number(_array[_index+3])],
+        zoom: Number(_array[_index+1])
       };
-      store.dispatch(mapActions.setView(_map.center, _map.zoom));
+      store.dispatch(mapActions.setView(_map.center, _map.zoom));  
     } else if (this.config.map && this.config.map.center) {
       let zoom = this.config.map.zoom || 2;
       store.dispatch(mapActions.setView(this.config.map.center, zoom));
