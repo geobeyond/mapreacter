@@ -43,7 +43,7 @@ const styles = theme => ({
   },
 });
 
-let suggestions = [];
+
 
 function renderInput(inputProps) {
   const { InputProps, classes, ref, ...other } = inputProps;
@@ -95,19 +95,14 @@ renderSuggestion.propTypes = {
   suggestion: PropTypes.shape({ label: PropTypes.string }).isRequired,
 };
 
-function getSuggestions(inputValue) {
-  console.log("TassonomiaAutoComplete.getSuggestions()", inputValue);
-  let count = 0;
-  return suggestions.filter(suggestion => {
-    return (count++ < 12)
-  });
-}
+
 
 class TassonomiaAutoComplete extends React.Component {
   state = {
     inputValue: '',
     selectedItem: [],
-    selectedRecord: []
+    selectedRecord: [],
+    suggestions: []
   };
 
   handleKeyDown = event => {
@@ -122,7 +117,7 @@ class TassonomiaAutoComplete extends React.Component {
 
   handleInputChange = event => {
     console.log("TassonomiaAutoComplete.handleInputChange()", event.target.value);
-    this.setState({ _inputValue: event.target.value });
+    this.setState({ inputValue: event.target.value });
 
     const url = this.props.local.mapConfig.tassonomiaserviceurl + event.target.value;
     console.log("GET", url);
@@ -142,8 +137,7 @@ class TassonomiaAutoComplete extends React.Component {
             }
           }
         });
-        suggestions = _datasource;
-        this.setState({ inputValue: this.state._inputValue });
+        this.setState({ suggestions: _datasource });
       })
       .catch((error) => {
         console.error(error);
@@ -151,7 +145,7 @@ class TassonomiaAutoComplete extends React.Component {
   };
 
   handleChange = item => {
-    let { selectedItem, selectedRecord } = this.state;
+    let { selectedItem, selectedRecord, suggestions } = this.state;
 
     if (selectedItem.indexOf(item) === -1) {
       selectedItem = [...selectedItem, item];
@@ -211,6 +205,14 @@ class TassonomiaAutoComplete extends React.Component {
     this.props.history.push(permalinkmask);
   }
 
+  getSuggestions(inputValue) {
+    console.log("TassonomiaAutoComplete.getSuggestions()", inputValue);
+    let count = 0;
+    return this.state.suggestions.filter(suggestion => {
+      return (count++ < 12)
+    });
+  }
+
   render() {
     console.log("TassonomiaAutoComplete.render()");
     const { classes } = this.props;
@@ -249,7 +251,7 @@ class TassonomiaAutoComplete extends React.Component {
                 })}
                 {isOpen ? (
                   <Paper className={classes.paper} square>
-                    {getSuggestions(inputValue2).map((suggestion, index) =>
+                    {this.getSuggestions(inputValue2).map((suggestion, index) =>
                       renderSuggestion({
                         suggestion,
                         index,
