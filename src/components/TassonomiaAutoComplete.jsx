@@ -186,14 +186,19 @@ class TassonomiaAutoComplete extends React.Component {
     let permalinkmask = this.props.local.mapConfig.permalinkmask;
     console.log("TassonomiaAutoComplete.handlePermalinkMask() permalinkmask:", permalinkmask);
     selectedRecord.forEach((_record, index) => {
-      permalinkmask = permalinkmask.replace(_record.routingrecord.mask, _record.label);
+      let _mask = _record.routingrecord.mask.replace(/xx/g,''+(index+1));
+      permalinkmask = permalinkmask.replace(_mask, _record.label);
       console.log("TassonomiaAutoComplete.handlePermalinkMask() permalinkmask:", permalinkmask);
     });
     //permalinkmask = permalinkmask.replace(/\<.*\>/, '*');
-    permalinkmask = permalinkmask.replace(/<ORDER>/g, '*');
-    permalinkmask = permalinkmask.replace(/<GENUS>/g, '*');
-    permalinkmask = permalinkmask.replace(/<FAMILY>/g, '*');
-    permalinkmask = permalinkmask.replace(/<SPECIES>/g, '*');
+    permalinkmask = permalinkmask.replace(/<ORDER1>/g, '*');
+    permalinkmask = permalinkmask.replace(/<GENUS1>/g, '*');
+    permalinkmask = permalinkmask.replace(/<FAMILY1>/g, '*');
+    permalinkmask = permalinkmask.replace(/<SPECIES1>/g, '*');
+    permalinkmask = permalinkmask.replace(/<ORDER2>/g, '*');
+    permalinkmask = permalinkmask.replace(/<GENUS2>/g, '*');
+    permalinkmask = permalinkmask.replace(/<FAMILY2>/g, '*');
+    permalinkmask = permalinkmask.replace(/<SPECIES2>/g, '*');
     console.log("TassonomiaAutoComplete.handlePermalinkMask() permalinkmask:", permalinkmask);
 
     try {
