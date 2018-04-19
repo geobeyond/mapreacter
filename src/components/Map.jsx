@@ -20,7 +20,7 @@ class Map extends Component {
     if (this.props.viewparams) {
       this.updateLayer(this.props.viewparams);
     } else {
-      this.updateLayer('none');
+      this.updateLayer('*');
     }
   }
   componentWillReceiveProps(nextProps) {
