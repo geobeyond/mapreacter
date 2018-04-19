@@ -304,7 +304,18 @@ class App extends Component {
                         <i class="material-icons">help</i>
                       </MenuItem>
 
-                      <MenuItem onClick={(event) => { this.setState({ sharedialog: true }); }} >
+                      <MenuItem
+                        onClick={(event) => {
+                          var _txt = document.createElement('textarea');
+                          _txt.value = window.location.href; //chrome
+                          _txt.textContent = window.location.href; //firefox
+                          document.body.appendChild(_txt);
+                          _txt.select();
+                          document.execCommand('copy');
+                          console.log(_txt);
+                          document.body.removeChild(_txt);
+                          this.setState({ sharedialog: true });
+                        }} >
                         <i class="material-icons">share</i>
                       </MenuItem>
 
@@ -319,13 +330,19 @@ class App extends Component {
                           <MenuItem
                             primaryText="CSV"
                             onClick={(event) => {
-                              downloadFile(this.config.geoserverurl, this.config.layers, this.config.downloadCSVUrlParameters);
+                              downloadFile(this.config.downloadCSVUrl, this.getActiveLayers(), '.csv');
                             }}
                           />,
                           <MenuItem
                             primaryText="Shapefile"
                             onClick={(event) => {
-                              downloadFile(this.config.geoserverurl, this.config.layers, this.config.downloadShapefileUrlParameters);
+                              downloadFile(this.config.downloadShapefileUrl, this.getActiveLayers(), '.zip');
+                            }}
+                          />,
+                          <MenuItem
+                            primaryText="Pdf"
+                            onClick={(event) => {
+                              downloadFile(this.config.downloadPdfUrl, this.getActiveLayers(), '.pdf');
                             }}
                           />
                         ]}
@@ -368,18 +385,29 @@ class App extends Component {
                         </IconButton>
                       }
                     >
-                      <div className="sdk-layerlist">
-                        <SdkLayerList layerClass={LayerListItem} />
-                      </div>
+                      <ul className="sdk-layer-list" >
+                        <li className="sdk-layer" >
+                          <div className="toc-container">
+                            <div className="div1"><span className="name">{mylocalizedstrings.layer}</span> </div>
+                            <div className="div2"><span className="name">{mylocalizedstrings.onoff}</span> </div>
+                            <div className="div3"><span className="name">{mylocalizedstrings.updown}</span> </div>
+                            <div className="div4"><span className="name">{mylocalizedstrings.legend}</span> </div>
+                          </div>
+                        </li>
+                      </ul>
+                      <hr />
+                      <SdkLayerList layerClass={LayerListItem} />
                     </IconMenu>
-                    <TassonomiaAutoComplete config={this.config} style={{ margin: '5px' }} />
+                    <TassonomiaAutoComplete config={this.config} style={
+                      window.screen.width <= 480 ? { margin: '5px', width: '140px' } : { margin: '5px', width: '400px' }
+                    } />
                   </ToolbarGroup>
                   <ToolbarGroup firstChild={false} style={{ margin: '5px' }}>
                     <SelectField
                       floatingLabelText={mylocalizedstrings.selectLanguage}
                       value={mylocalizedstrings.getLanguage()}
                       onChange={this.handleChangeLanguage}
-                      autoWidth={true}
+                      style={{ width: '100px' }}
                     >
                       <MenuItem value={'it'} primaryText="Italiano" />
                       <MenuItem value={'en'} primaryText="English" />
@@ -416,7 +444,7 @@ class App extends Component {
       const sourceId = 'source_' + i;
       store.dispatch(mapActions.addSource(sourceId, source));
       let _layer = createWMSLayer(sourceId, layerName, layerName);
-      _layer.layout = { visibility: 'none' };
+      _layer.layout = { visibility: 'visible' };
       store.dispatch(mapActions.addLayer(_layer));
     });
   }
@@ -458,6 +486,17 @@ class App extends Component {
         'mapbox:group': 'base'
       }
     }));
+  }
+  getActiveLayers() {
+    let _array = [];
+    store.getState().map.layers.forEach((rec) => {
+      if (rec['layout']) {
+        if (rec.layout.visibility === 'visible') {
+          _array.push(rec.id);
+        }
+      }
+    });
+    return _array;
   }
 }
 

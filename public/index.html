@@ -62,8 +62,9 @@
         { field: 'nome_scientifico', label: 'specielabel', routinglevel: '/*/*/*/' },
       ],
       wpsserviceurl: 'http://193.206.192.107/geoserver/ows?strict:true',
-      downloadCSVUrlParameters: '&outputFormat=CSV&PropertyName=nome_scientifico,anno,lat,lon',
-      downloadShapefileUrlParameters: '&outputFormat=shape-zip',
+      downloadCSVUrl: 'http://193.206.192.107/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=CSV&typeName=<LAYER>&viewparams=<VIEWPARAMS>&PropertyName=nome_scientifico,anno,lat,lon',
+      downloadShapefileUrl: 'http://193.206.192.107/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=shape-zip&typeName=<LAYER>&viewparams=<VIEWPARAMS>',
+      downloadPdfUrl:  'http://193.206.192.107/geoserver/nnb/wms?service=WMS&version=1.1.0&request=GetMap&format=application/pdf&width=768&height=384&bbox=-180.0,-90.0,180.0,90.0&srs=EPSG:4326&layers=<LAYER>&viewparams=<VIEWPARAMS>',
       helpUrl: 'http://193.206.192.107/mapreacter-help/docs/',
       helpDoc: '/doc_mapreacter.html',
       SdkMousePosition: {
@@ -71,9 +72,9 @@
       },
       messages: {
         it: {
-          selectLanguage: 'lingua selezionata :',
+          selectLanguage: 'lingua:',
           tassonomialabel: 'Tassonomia ...',
-          sharetitle: 'per condividere la pagina, copia ed invia questo link:',
+          sharetitle: 'Il link della pagina è stato copiato negli appunti ...',
           helptitle: 'Guida in linea',
           close: 'CHIUDI',
           orderlabel: 'Ordine',
@@ -81,12 +82,16 @@
           genuslabel: 'Genere',
           specielabel: 'Specie',
           line: 'Linea',
-          polygon: 'Poligono'
+          polygon: 'Poligono',
+          layer: 'Layer',
+          onoff: 'on/off',
+          updown: 'su giù',
+          legend: 'Legenda'
         },
         en: {
-          selectLanguage: 'language selected:',
+          selectLanguage: 'language:',
           tassonomialabel: 'Taxonomy ...',
-          sharetitle: 'in order to share the page, copy and send this link:',
+          sharetitle: 'The page link has been copied to clipboard ...',
           helptitle: 'Help on line',
           close: 'CLOSE',
           orderlabel: 'Order',
@@ -94,7 +99,11 @@
           genuslabel: 'Genus',
           specielabel: 'Species',
           line: 'Line',
-          polygon: 'Polygon'
+          polygon: 'Polygon',
+          layer: 'Layer',
+          onoff: 'on/off',
+          updown: 'up down',
+          legend: 'Legend'
         }
       },
       ispraTheme: {
@@ -137,10 +146,20 @@
   <noscript>
     You need to enable JavaScript to run this app.
   </noscript>
-  <div style="padding: 10px; background-color: #ffffff; text-align: left; position:absolute; left:0px; top:0px; height: 60px; width: 100%">
-    <img src="%PUBLIC_URL%/logo.png" alt="logo.png" height="60px" />
+  <div id="ispraheader" style="padding: 10px; background-color: #ffffff; text-align: left; position:absolute; left:0px; top:0px; height: 60px; width: 100%">
+    <img src="%PUBLIC_URL%/logo_MATTM.jpg" alt="logo_MATTM.jpg" height="60px" />
+    <img src="%PUBLIC_URL%/logoNaturaitalia.png" alt="logoNaturaitalia.png" height="60px" style="padding-left: 20px;"/>
+    <img src="%PUBLIC_URL%/logo.png" alt="logo.png" height="60px" style="padding-left: 20px;" />
   </div>
   <div id="root" style="position:absolute; left:0px; top:80px; width: 100%; height: calc(100% - 80px)"></div>
+  <script>
+      if( screen.width <= 480 ) {     
+        document.getElementById("ispraheader").innerHTML = 
+           "<img src='%PUBLIC_URL%/logo_MATTM.jpg'       alt='logo_MATTM.jpg'       style='height: 40px; padding: 10px;' />"+
+           "<img src='%PUBLIC_URL%/logoNaturaitalia.png' alt='logoNaturaitalia.png' style='height: 40px; padding: 10px;' />"+
+           "<img src='%PUBLIC_URL%/logo.png'             alt='logo.png'             style='height: 40px; padding: 10px;' />";
+      }
+    </script>
 </body>
 
 </html>

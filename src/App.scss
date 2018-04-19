@@ -50,17 +50,50 @@
     right: 8px;
     cursor: pointer; }
 
+.sdk-legend-image {
+  vertical-align: middle; }
+
 .ol-overviewmap {
     left: 0.5em;
     bottom: 2em;
 }    
 
-.name {
-  font-family: "Courier New", Courier, monospace;
-  font-size: 14px;
-  white-space: pre;
+
+
+li {
+  list-style: none;
 }
 
-.name::after {
-  content: "\0020";
+.toc-container {
+  display: grid;
+  grid-template-columns: 200px 50px 110px 90px;
+}
+
+.toc-container .div1 {
+  text-align: left;
+  height: 40px; 
+  line-height: 40px;
+}
+
+.toc-container .div2 {
+  text-align: center;
+  height: 40px; 
+  line-height: 40px;
+}
+
+.toc-container .div3 {
+  text-align: center;
+  height: 40px; 
+  line-height: 40px;
+}
+
+.toc-container .div4 {
+  text-align: center;
+  height: 40px; 
+  line-height: 40px;
+}
+
+.toc-container .name {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 14px;
 }
