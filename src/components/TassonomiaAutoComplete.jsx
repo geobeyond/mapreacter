@@ -151,6 +151,10 @@ class TassonomiaAutoComplete extends React.Component {
       selectedItem = [...selectedItem, item];
     }
 
+    if (selectedItem.length>2) {
+      selectedItem = selectedItem.slice(1,3);
+    }
+
     this.setState({
       inputValue: '',
       selectedItem,
@@ -159,6 +163,9 @@ class TassonomiaAutoComplete extends React.Component {
     let _selectedRecord = suggestions.filter(_record => _record.label === item)[0];
     //this.props.history.push(_selectedRecord.routingrecord.routinglevel + _selectedRecord.label);
     selectedRecord = [...selectedRecord, _selectedRecord];
+    if (selectedRecord.length>2) {
+      selectedRecord = selectedRecord.slice(1,3);
+    }    
     this.setState({ selectedRecord });
     console.log("TassonomiaAutoComplete.handleChange()", JSON.stringify(selectedRecord));
     this.handlePermalinkMask(selectedRecord);
