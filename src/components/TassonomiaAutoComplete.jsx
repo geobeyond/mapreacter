@@ -98,12 +98,35 @@ renderSuggestion.propTypes = {
 
 
 class TassonomiaAutoComplete extends React.Component {
-  state = {
-    inputValue: '',
-    selectedItem: [],
-    selectedRecord: [],
-    suggestions: []
-  };
+
+
+  constructor(props) {
+    super(props);
+    let selectedItem = [];
+    let selectedRecord = [];
+    let _array = decodeURIComponent(window.location.hash).replace(/#\//, '').split('/');
+    console.log("TassonomiaAutoComplete()", JSON.stringify(_array));
+    _array.forEach((_record, index) => {
+      if (index < 8) {
+        if (_record !== '*') {
+          selectedItem = [...selectedItem, _record];
+
+          let _selectedRecord = {
+            routingrecord: this.props.local.mapConfig.routing[index % 4],
+            label: _record,
+          };
+          selectedRecord = [...selectedRecord, _selectedRecord];
+        }
+      }
+    });
+    this.state = {
+      inputValue: '',
+      selectedItem: selectedItem,
+      selectedRecord: selectedRecord,
+      suggestions: []
+    };
+    console.log("TassonomiaAutoComplete()", JSON.stringify(this.state));
+  }
 
   handleKeyDown = event => {
     console.log("TassonomiaAutoComplete.handleKeyDown()");
@@ -151,8 +174,8 @@ class TassonomiaAutoComplete extends React.Component {
       selectedItem = [...selectedItem, item];
     }
 
-    if (selectedItem.length>2) {
-      selectedItem = selectedItem.slice(1,3);
+    if (selectedItem.length > 2) {
+      selectedItem = selectedItem.slice(1, 3);
     }
 
     this.setState({
@@ -163,9 +186,9 @@ class TassonomiaAutoComplete extends React.Component {
     let _selectedRecord = suggestions.filter(_record => _record.label === item)[0];
     //this.props.history.push(_selectedRecord.routingrecord.routinglevel + _selectedRecord.label);
     selectedRecord = [...selectedRecord, _selectedRecord];
-    if (selectedRecord.length>2) {
-      selectedRecord = selectedRecord.slice(1,3);
-    }    
+    if (selectedRecord.length > 2) {
+      selectedRecord = selectedRecord.slice(1, 3);
+    }
     this.setState({ selectedRecord });
     console.log("TassonomiaAutoComplete.handleChange()", JSON.stringify(selectedRecord));
     this.handlePermalinkMask(selectedRecord);
@@ -186,7 +209,7 @@ class TassonomiaAutoComplete extends React.Component {
     let permalinkmask = this.props.local.mapConfig.permalinkmask;
     console.log("TassonomiaAutoComplete.handlePermalinkMask() permalinkmask:", permalinkmask);
     selectedRecord.forEach((_record, index) => {
-      let _mask = _record.routingrecord.mask.replace(/xx/g,''+(index+1));
+      let _mask = _record.routingrecord.mask.replace(/xx/g, '' + (index + 1));
       permalinkmask = permalinkmask.replace(_mask, _record.label);
       console.log("TassonomiaAutoComplete.handlePermalinkMask() permalinkmask:", permalinkmask);
     });
@@ -220,6 +243,8 @@ class TassonomiaAutoComplete extends React.Component {
       return (count++ < 12)
     });
   }
+
+
 
   render() {
     console.log("TassonomiaAutoComplete.render()");
