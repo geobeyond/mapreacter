@@ -45,7 +45,7 @@ class FeatureInfoComponent extends Component {
     }
 
     render() {
-        console.log("FeatureInfoComponent.render()",this.props.featureInfoComponent.open);
+        console.log("FeatureInfoComponent.render()", this.props.featureInfoComponent.open);
         const { value } = this.state;
         if (!this.props.featureInfoComponent.open) { return null }
         return (
@@ -74,6 +74,10 @@ class FeatureInfoComponent extends Component {
                 </DialogActions>
             </Dialog>
         )
+    }
+
+    componentDidCatch(error, info) {
+        console.error(error, info);
     }
 }
 
