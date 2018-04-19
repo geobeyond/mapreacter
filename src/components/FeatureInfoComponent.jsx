@@ -23,8 +23,8 @@ class FeatureInfoComponent extends Component {
         this.props.changeFeatureInfoComponent({ open: false });
     };
 
-    renderBody(value) {
-        console.log("FeatureInfoComponent.renderBody() value=", value);
+    renderTableBodyContent(value) {
+        console.log("FeatureInfoComponent.renderTableBodyContent() value=", value);
         let rows = [];
         try {
             this.props.featureInfoComponent.items[value].features.forEach((feature, index) => {
@@ -66,7 +66,7 @@ class FeatureInfoComponent extends Component {
                         }
                     </Tabs>
                     <Table>
-                        <TableBody>{this.renderBody(value)}</TableBody>
+                        <TableBody>{this.renderTableBodyContent(value)}</TableBody>
                     </Table>
                 </DialogContent>
                 <DialogActions>
