@@ -105,14 +105,12 @@ class TassonomiaAutoComplete extends React.Component {
     let selectedItem = [];
     let selectedRecord = [];
     let thehash = decodeURIComponent(window.location.hash).replace(/#\//, '');
-    console.log("TassonomiaAutoComplete() window.location.hash:", thehash);
     let _array = thehash.split('/');
-    console.log("TassonomiaAutoComplete() ->", JSON.stringify(_array));
+    console.log("TassonomiaAutoComplete()", thehash, JSON.stringify(_array));
     _array.forEach((_record, index) => {
       if (index < 8) {
-        if (_record !== '*') {
+        if (_record !== '*' && _record !== '') {
           selectedItem = [...selectedItem, _record];
-
           let _selectedRecord = {
             routingrecord: this.props.local.mapConfig.routing[index % 4],
             label: _record,
