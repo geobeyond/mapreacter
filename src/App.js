@@ -109,16 +109,18 @@ export const themiddleware = store => next => action => {
         '</wps:Execute>\n';
 
       const _array = store.getState().local.viewparams.split("/");
-      store.getState().local.mapConfig.routing.forEach((record, index) => {
-        if (_array[index] && _array[index] !== '*') {
-          _datafilter +=
+      _array.forEach((_record, index) => {
+        if (index < 8) {
+          if (_record !== '*' && _record !== '') {
+            _datafilter +=
             '                <ogc:PropertyIsEqualTo>\n' +
-            '                  <ogc:PropertyName>' + record.field + '</ogc:PropertyName>\n' +
-            '                  <ogc:Literal>' + _array[index] + '</ogc:Literal>\n' +
+            '                  <ogc:PropertyName>' + store.getState().local.mapConfig.routing[index % 4].field + '</ogc:PropertyName>\n' +
+            '                  <ogc:Literal>' + _record + '</ogc:Literal>\n' +
             '                </ogc:PropertyIsEqualTo>\n';
+          }
         }
       });
-
+      
       const _data = _dataheader + _datafilter + _datafooter;
       const url = store.getState().local.mapConfig.wpsserviceurl;
       store.dispatch(configActions.changerefreshindicator({ status: "loading" }));
