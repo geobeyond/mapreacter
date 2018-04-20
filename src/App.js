@@ -265,7 +265,7 @@ class App extends Component {
                 <FeatureInfoComponent />
 
                 <AppBar position="static">
-                  <Toolbar style={{ height: '60px' }}>
+                  <Toolbar style={{ height: '80px' }}>
 
                     <ConfComponent />
 

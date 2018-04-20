@@ -104,8 +104,10 @@ class TassonomiaAutoComplete extends React.Component {
     super(props);
     let selectedItem = [];
     let selectedRecord = [];
-    let _array = decodeURIComponent(window.location.hash).replace(/#\//, '').split('/');
-    console.log("TassonomiaAutoComplete()", JSON.stringify(_array));
+    let thehash = decodeURIComponent(window.location.hash).replace(/#\//, '');
+    console.log("TassonomiaAutoComplete() window.location.hash:", thehash);
+    let _array = thehash.split('/');
+    console.log("TassonomiaAutoComplete() ->", JSON.stringify(_array));
     _array.forEach((_record, index) => {
       if (index < 8) {
         if (_record !== '*') {
@@ -115,6 +117,7 @@ class TassonomiaAutoComplete extends React.Component {
             routingrecord: this.props.local.mapConfig.routing[index % 4],
             label: _record,
           };
+          console.log("TassonomiaAutoComplete() -> ", JSON.stringify(_selectedRecord));
           selectedRecord = [...selectedRecord, _selectedRecord];
         }
       }
@@ -125,7 +128,7 @@ class TassonomiaAutoComplete extends React.Component {
       selectedRecord: selectedRecord,
       suggestions: []
     };
-    console.log("TassonomiaAutoComplete()", JSON.stringify(this.state));
+    console.log("TassonomiaAutoComplete() this.state:", JSON.stringify(this.state));
   }
 
   handleKeyDown = event => {
