@@ -318,9 +318,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setViewParams: (params) => {
-      dispatch(actions.setViewParams(params));
-    },
   };
 };
 
