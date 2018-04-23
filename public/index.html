@@ -25,7 +25,6 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <style>
-
     .isprafooter {
       position: absolute;
       right: 0;
@@ -35,7 +34,6 @@
       background-color: #ffffff;
       text-align: right;
     }
-
   </style>
   <script>
     var config = {
@@ -49,13 +47,25 @@
         center: [12, 42],
         zoom: 6
       },
-      viewparams: ['order_', 'family', 'genus', 'nome_scientifico','order_2', 'family2', 'genus2', 'nome_scientifico2'],
-      source: 'http://193.206.192.107/geoserver/wms?SERVICE=WMS&VERSION=1.1.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true',
+      viewparams: ['order_', 'family', 'genus', 'nome_scientifico', 'order_2', 'family2', 'genus2', 'nome_scientifico2'],
+      source: 'http://localhost:8080/geoserver/wms?SERVICE=WMS&VERSION=1.1.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true',
       layers: ['nnb:param_oss_polig4b', 'nnb:param_dist_geom4b', 'nnb:param_oss_point4b'],
-      tassonomiaserviceurl: 'http://193.206.192.107/MyRestServer/tassonomia?name=',
-      geoserverurl: 'http://193.206.192.107/geoserver',
-      permalinkmask: '/<ORDER1>/<FAMILY1>/<GENUS1>/<SPECIES1>/<ORDER2>/<FAMILY2>/<GENUS2>/<SPECIES2>',
-      permalinkmasklength: 8,
+      tassonomiaserviceurl: 'http://localhost:8080/MyRestServer/tassonomia?name=',
+      geoserverurl: 'http://localhost:8080/geoserver',
+      permalinkmask: '/<ORDER1>/<FAMILY1>/<GENUS1>/<SPECIES1>/<ORDER2>/<FAMILY2>/<GENUS2>/<SPECIES2>/<HABITAT>/<REGPROV>',
+      permalinkmasklength: 10,
+      regprovconf: [
+        {
+          url: 'http://localhost:8080/geoserver/wfs?service=wfs&version=2.0.0&request=GetFeature&typeNames=nnb:Reg_2016_WGS84_g',
+          propertyname: 'REGIONE',  //&propertyName=REGIONE
+          label: 'reglabel'
+        },
+        {
+          url: 'http://localhost:8080/geoserver/wfs?service=wfs&version=2.0.0&request=GetFeature&typeNames=nnb:CMprov2016_WGS84',
+          propertyname: 'PROVINCIA',
+          label: 'provlabel'
+        }
+      ],
 
       routing: [
         { field: 'order_', label: 'orderlabel', mask: '<ORDERxx>' },
@@ -63,11 +73,11 @@
         { field: 'genus', label: 'genuslabel', mask: '<GENUSxx>' },
         { field: 'nome_scientifico', label: 'specielabel', mask: '<SPECIESxx>' },
       ],
-      wpsserviceurl: 'http://193.206.192.107/geoserver/ows?strict:true',
-      downloadCSVUrl: 'http://193.206.192.107/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=CSV&typeName=<LAYER>&viewparams=<VIEWPARAMS>&PropertyName=nome_scientifico,anno,lat,lon',
-      downloadShapefileUrl: 'http://193.206.192.107/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=shape-zip&typeName=<LAYER>&viewparams=<VIEWPARAMS>',
-      downloadPdfUrl: 'http://193.206.192.107/geoserver/nnb/wms?service=WMS&version=1.1.0&request=GetMap&format=application/pdf&width=768&height=384&bbox=-180.0,-90.0,180.0,90.0&srs=EPSG:4326&layers=<LAYER>&viewparams=<VIEWPARAMS>',
-      helpUrl: 'http://193.206.192.107/mapreacter-help/docs/',
+      wpsserviceurl: 'http://localhost:8080/geoserver/ows?strict:true',
+      downloadCSVUrl: 'http://localhost:8080/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=CSV&typeName=<LAYER>&viewparams=<VIEWPARAMS>&PropertyName=nome_scientifico,anno,lat,lon',
+      downloadShapefileUrl: 'http://localhost:8080/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=shape-zip&typeName=<LAYER>&viewparams=<VIEWPARAMS>',
+      downloadPdfUrl: 'http://localhost:8080/geoserver/nnb/wms?service=WMS&version=1.1.0&request=GetMap&format=application/pdf&width=768&height=384&bbox=-180.0,-90.0,180.0,90.0&srs=EPSG:4326&layers=<LAYER>&viewparams=<VIEWPARAMS>',
+      helpUrl: 'http://localhost:8080/mapreacter-help/docs/',
       helpDoc: '/doc_mapreacter.html',
       SdkMousePosition: {
         style: { position: 'absolute', top: 10, right: 40, zIndex: 1, width: '5em', color: '#00ffff' }
@@ -89,7 +99,10 @@
           onoff: 'on/off',
           updown: 'su giù',
           legend: 'Legenda',
-          toc: 'TOC: elenco dei layer presenti in mappa'
+          toc: 'TOC: elenco dei layer presenti in mappa',
+          regprovlabel: 'Regione, Provincia ...',
+          REGIONE: 'REGIONE',
+          PROVINCIA: 'PROVINCIA'
         },
         en: {
           selectLanguage: 'language:',
@@ -107,7 +120,10 @@
           onoff: 'on/off',
           updown: 'up down',
           legend: 'Legend',
-          toc: 'TOC: layers list'
+          toc: 'TOC: layers list',
+          regprovlabel: 'Region, Province ...',
+          REGIONE: 'REGION',
+          PROVINCIA: 'PROVINCE'
         }
       },
       ispraTheme: {

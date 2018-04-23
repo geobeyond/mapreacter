@@ -53,8 +53,13 @@ export const updateLayersWithViewparams = (params) => {
       viewparams.push(_item);
     }
 
+    let cql_filter='';
+    if (local.regProvComponent['geometry']) {
+      cql_filter='&cql_filter=INTERSECTS(geom,'+local.regProvComponent['geometry']+')';
+      console.log("map.updateLayersWithViewparams()", cql_filter);
+    }
     local.mapConfig.layers.forEach((layerName, i, layers) => {
-      let sourceUrl = encodeURI(local.mapConfig.source + '&viewparams=' + viewparams.join(';'));
+      let sourceUrl = encodeURI(local.mapConfig.source + '&viewparams=' + viewparams.join(';')+cql_filter);
       console.log("map.updateLayersWithViewparams()", layerName, sourceUrl);
       let source = createWMSSourceWithLayerName(sourceUrl, layerName);
       const sourceId = 'source_' + i + local.mapConfig.viewparams[0] + (Math.floor(Math.random() * 1000) + 1);
@@ -114,6 +119,15 @@ export const changeFeatureInfoComponent = (featureInfoComponent) => {
     type: 'LOCAL.CHANGEFEATUREINFOCOMPONENT',
     payload: {
       featureInfoComponent: featureInfoComponent
+    }
+  };
+}
+
+export const changeRegProvComponent = (regProvComponent) => {
+  return {
+    type: 'LOCAL.CHANGEREGPROVCOMPONENT',
+    payload: {
+      regProvComponent: regProvComponent
     }
   };
 }

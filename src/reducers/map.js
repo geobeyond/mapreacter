@@ -3,7 +3,8 @@ let defaultState = {
   viewparams: '',
   refreshIndicator: { status: 'hide' },
   measureComponent: { open: false },
-  featureInfoComponent: { open: false, items: [] }
+  featureInfoComponent: { open: false, items: [] },
+  regProvComponent: {}
 };
 
 export default function MapReducer(state = defaultState, action) {
@@ -41,6 +42,12 @@ export default function MapReducer(state = defaultState, action) {
     case 'LOCAL.CHANGEFEATUREINFOCOMPONENT':
       state = Object.assign({}, state, {
         featureInfoComponent: action.payload['featureInfoComponent']
+      });
+      return state;
+
+    case 'LOCAL.CHANGEREGPROVCOMPONENT':
+      state = Object.assign({}, state, {
+        regProvComponent: action.payload['regProvComponent']
       });
       return state;
 
