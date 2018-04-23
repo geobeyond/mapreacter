@@ -12,7 +12,7 @@ import Chip from 'material-ui/Chip';
 import Typography from 'material-ui/Typography';
 
 import { mylocalizedstrings } from '../services/localizedstring';
-import * as actions from '../actions/map';
+//import * as actions from '../actions/map';
 
 var axios = require('axios');
 
