@@ -225,7 +225,7 @@ li.sdk-layer {
 
 .sdk-map {
   width: 100%;
-  height: calc(100% - 60px); }
+  height: calc(100% - 80px); }
 
 .sdk-popup {
   font-size: 14px;
