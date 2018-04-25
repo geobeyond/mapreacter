@@ -184,7 +184,7 @@ class RegProvAutocomplete extends React.Component {
       '              <wps:Input>\n' +
       '                <ows:Identifier>distance</ows:Identifier>\n' +
       '                <wps:Data>\n' +
-      '                  <wps:LiteralData>5000</wps:LiteralData>\n' +
+      '                  <wps:LiteralData>1000</wps:LiteralData>\n' +
       '                </wps:Data>\n' +
       '              </wps:Input>\n' +
       '              <wps:Input>\n' +
