@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom'
@@ -12,7 +13,6 @@ import Chip from 'material-ui/Chip';
 import Typography from 'material-ui/Typography';
 import GeoJSON from 'ol/format/geojson';
 import WKT from 'ol/format/wkt';
-//import WFS from 'ol/format/wfs';
 import { mylocalizedstrings } from '../services/localizedstring';
 import * as actions from '../actions/map';
 
@@ -155,38 +155,6 @@ class RegProvAutocomplete extends React.Component {
     this.setState({ inputValue: event.target.value });
   };
 
-  /*handleChange = item => {
-    console.log("RegProvAutocomplete.handleChange()", item);
-
-    this.setState({
-      inputValue: '',
-      selectedItem: [item],
-    });
-
-    let selectedRecord = this.getSuggestions(item)[0];
-
-    const url = selectedRecord.url +
-      '&srsName=EPSG:4326' +
-      '&outputFormat=application/json' +
-      '&featureID=' + selectedRecord.feature.id;
-    console.log("GET", url);
-    axios.get(url)
-      .then((response) => {
-        console.log("response:", JSON.stringify(response.data));
-
-        let feature_coll = (new GeoJSON()).readFeatures(response.data);
-        console.log('-->', feature_coll);
-        let feature_wkt = (new WKT()).writeFeature(feature_coll[0]);
-        console.log('-->', feature_wkt);
-
-        this.props.changeRegProvComponent({ geometry: feature_wkt });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };*/
-
-
   handleChange = item => {
     console.log("RegProvAutocomplete.handleChange()", item);
 
@@ -200,56 +168,110 @@ class RegProvAutocomplete extends React.Component {
     let _data =
       '<?xml version="1.0" encoding="UTF-8"?>\n' +
       '<wps:Execute version="1.0.0" service="WPS" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.opengis.net/wps/1.0.0" xmlns:wfs="http://www.opengis.net/wfs" xmlns:wps="http://www.opengis.net/wps/1.0.0" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" xmlns:wcs="http://www.opengis.net/wcs/1.1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.opengis.net/wps/1.0.0 http://schemas.opengis.net/wps/1.0.0/wpsAll.xsd">\n' +
-      '  <ows:Identifier>vec:Simplify</ows:Identifier>\n' +
+      '  <ows:Identifier>vec:Reproject</ows:Identifier>\n' +
       '  <wps:DataInputs>\n' +
       '    <wps:Input>\n' +
       '      <ows:Identifier>features</ows:Identifier>\n' +
-      '      <wps:Reference mimeType="application/json" xlink:href="<WFSURL>&amp;featureID=<FEATUREID>&amp;outputFormat=application/json<SRSNAME>" method="GET"/>\n' +
+      '      <wps:Reference mimeType="text/xml" xlink:href="http://geoserver/wps" method="POST">\n' +
+      '        <wps:Body>\n' +
+      '          <wps:Execute version="1.0.0" service="WPS" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.opengis.net/wps/1.0.0" xmlns:wfs="http://www.opengis.net/wfs" xmlns:wps="http://www.opengis.net/wps/1.0.0" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" xmlns:wcs="http://www.opengis.net/wcs/1.1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.opengis.net/wps/1.0.0 http://schemas.opengis.net/wps/1.0.0/wpsAll.xsd">\n' +
+      '            <ows:Identifier>vec:Simplify</ows:Identifier>\n' +
+      '            <wps:DataInputs>\n' +
+      '              <wps:Input>\n' +
+      '                <ows:Identifier>features</ows:Identifier>\n' +
+      '                <wps:Reference mimeType="application/json" xlink:href="<WFSURL>&amp;featureID=<FEATUREID>&amp;outputFormat=application/json" method="GET"/>\n\n' +
+      '              </wps:Input>\n' +
+      '              <wps:Input>\n' +
+      '                <ows:Identifier>distance</ows:Identifier>\n' +
+      '                <wps:Data>\n' +
+      '                  <wps:LiteralData>5000</wps:LiteralData>\n' +
+      '                </wps:Data>\n' +
+      '              </wps:Input>\n' +
+      '              <wps:Input>\n' +
+      '                <ows:Identifier>preserveTopology</ows:Identifier>\n' +
+      '                <wps:Data>\n' +
+      '                  <wps:LiteralData>true</wps:LiteralData>\n' +
+      '                </wps:Data>\n' +
+      '              </wps:Input>\n' +
+      '            </wps:DataInputs>\n' +
+      '            <wps:ResponseForm>\n' +
+      '              <wps:RawDataOutput mimeType="application/json">\n' +
+      '                <ows:Identifier>result</ows:Identifier>\n' +
+      '              </wps:RawDataOutput>\n' +
+      '            </wps:ResponseForm>\n' +
+      '          </wps:Execute>\n' +
+      '        </wps:Body>\n' +
+      '      </wps:Reference>\n' +
       '    </wps:Input>\n' +
       '    <wps:Input>\n' +
-      '      <ows:Identifier>distance</ows:Identifier>\n' +
+      '      <ows:Identifier>targetCRS</ows:Identifier>\n' +
       '      <wps:Data>\n' +
-      '        <wps:LiteralData>7000</wps:LiteralData>\n' +
-      '      </wps:Data>\n' +
-      '    </wps:Input>\n' +
-      '    <wps:Input>\n' +
-      '      <ows:Identifier>preserveTopology</ows:Identifier>\n' +
-      '      <wps:Data>\n' +
-      '        <wps:LiteralData>true</wps:LiteralData>\n' +
+      '        <wps:LiteralData><SRSNAME></wps:LiteralData>\n' +
       '      </wps:Data>\n' +
       '    </wps:Input>\n' +
       '  </wps:DataInputs>\n' +
       '  <wps:ResponseForm>\n' +
-      '    <wps:RawDataOutput mimeType="application/json">\n' +
+      '    <wps:RawDataOutput mimeType="<MIMETYPE>">\n' +
       '      <ows:Identifier>result</ows:Identifier>\n' +
       '    </wps:RawDataOutput>\n' +
       '  </wps:ResponseForm>\n' +
-      '</wps:Execute>\n';
+      '</wps:Execute>';
 
-    _data = _data
+    /*let _data2 = _data
       .replace("<WFSURL>", encodeURI(selectedRecord.url).replace(/&/g, '&amp;'))
       .replace("<FEATUREID>", selectedRecord.feature.id)
-      .replace("<SRSNAME>", ""); //"&amp;srsName=EPSG:3857"
-    const url = this.props.local.mapConfig.wpsserviceurl;
-    console.log("POST", url, _data);
+      .replace("<SRSNAME>", "EPSG:3857") //EPSG:4326
+      .replace("<MIMETYPE>", "GML3");
+    let url = this.props.local.mapConfig.wpsserviceurl;
+    console.log("POST", url, _data2);
     axios({
       method: 'post',
       url: url,
       headers: { 'content-type': 'text/xml' },
-      data: _data
+      data: _data2
     })
       .then((response) => {
-        console.log("RegProvAutocomplete.handleChange() response:", JSON.stringify(response.data));
+        console.log("RegProvAutocomplete.handleChange() response:", response.data);
 
+        let oParser = new DOMParser();
+        let oSerializer = new XMLSerializer();
+        let oDOM = oParser.parseFromString(response.data, "text/xml");
+
+        let filter =
+          '&filter=<Intersects><PropertyName>geom</PropertyName>' +
+          oSerializer.serializeToString(oDOM.getElementsByTagName("feature:geometry")[0].childNodes[0]) +
+          '</Intersects>';
+
+        console.log("RegProvAutocomplete.handleChange() filter -->", filter);
+        //this.props.changeRegProvComponent({ filter: filter });
+      })
+      .catch((error) => {
+        console.error(error);
+      });*/
+
+    let _data2 = _data
+      .replace("<WFSURL>", encodeURI(selectedRecord.url).replace(/&/g, '&amp;'))
+      .replace("<FEATUREID>", selectedRecord.feature.id)
+      .replace("<SRSNAME>", "EPSG:4326")
+      .replace("<MIMETYPE>", "application/json");
+    let url = this.props.local.mapConfig.wpsserviceurl;
+    console.log("POST", url, _data2);
+    axios({
+      method: 'post',
+      url: url,
+      headers: { 'content-type': 'text/xml' },
+      data: _data2
+    })
+      .then((response) => {
+        console.log("RegProvAutocomplete.handleChange() response:", response.data);
         let feature_coll = (new GeoJSON()).readFeatures(response.data);
-        let feature_geojson = (new GeoJSON()).writeFeature(feature_coll[0]);
-        console.log('RegProvAutocomplete.handleChange() geojson -->', feature_geojson);
-
+        console.log('RegProvAutocomplete.handleChange() geojson -->', (new GeoJSON()).writeFeature(feature_coll[0]));
         let feature_wkt = (new WKT()).writeFeature(feature_coll[0]);
-        console.log('RegProvAutocomplete.handleChange() wkt -->', feature_wkt);
 
-        this.props.changeRegProvComponent({ geometry: feature_wkt });
-
+        let filter='&cql_filter=INTERSECTS(geom,'+feature_wkt+')';
+        
+        console.log("RegProvAutocomplete.handleChange() filter -->", filter);
+        this.props.changeRegProvComponent({ filter: filter });        
       })
       .catch((error) => {
         console.error(error);

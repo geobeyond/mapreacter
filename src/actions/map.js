@@ -53,13 +53,13 @@ export const updateLayersWithViewparams = (params) => {
       viewparams.push(_item);
     }
 
-    let cql_filter='';
-    if (local.regProvComponent['geometry']) {
-      cql_filter='&cql_filter=INTERSECTS(geom,'+local.regProvComponent['geometry']+')';
-      console.log("map.updateLayersWithViewparams()", cql_filter);
-    }
+    let filter='';
+    if (local.regProvComponent['filter']) {
+      filter=local.regProvComponent['filter'];
+      console.log("map.updateLayersWithViewparams()", filter);
+    }    
     local.mapConfig.layers.forEach((layerName, i, layers) => {
-      let sourceUrl = encodeURI(local.mapConfig.source + '&viewparams=' + viewparams.join(';')+cql_filter);
+      let sourceUrl = encodeURI(local.mapConfig.source + '&viewparams=' + viewparams.join(';')+filter);
       console.log("map.updateLayersWithViewparams()", layerName, sourceUrl);
       let source = createWMSSourceWithLayerName(sourceUrl, layerName);
       const sourceId = 'source_' + i + local.mapConfig.viewparams[0] + (Math.floor(Math.random() * 1000) + 1);
