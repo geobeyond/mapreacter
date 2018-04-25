@@ -155,7 +155,7 @@ class RegProvAutocomplete extends React.Component {
     this.setState({ inputValue: event.target.value });
   };
 
-  handleChange = item => {
+  /*handleChange = item => {
     console.log("RegProvAutocomplete.handleChange()", item);
 
     this.setState({
@@ -184,8 +184,77 @@ class RegProvAutocomplete extends React.Component {
       .catch((error) => {
         console.error(error);
       });
+  };*/
 
-  };
+
+  handleChange = item => {
+    console.log("RegProvAutocomplete.handleChange()", item);
+
+    this.setState({
+      inputValue: '',
+      selectedItem: [item],
+    });
+
+    let selectedRecord = this.getSuggestions(item)[0];
+
+    let _data =
+      '<?xml version="1.0" encoding="UTF-8"?>\n' +
+      '<wps:Execute version="1.0.0" service="WPS" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.opengis.net/wps/1.0.0" xmlns:wfs="http://www.opengis.net/wfs" xmlns:wps="http://www.opengis.net/wps/1.0.0" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" xmlns:wcs="http://www.opengis.net/wcs/1.1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.opengis.net/wps/1.0.0 http://schemas.opengis.net/wps/1.0.0/wpsAll.xsd">\n' +
+      '  <ows:Identifier>vec:Simplify</ows:Identifier>\n' +
+      '  <wps:DataInputs>\n' +
+      '    <wps:Input>\n' +
+      '      <ows:Identifier>features</ows:Identifier>\n' +
+      '      <wps:Reference mimeType="application/json" xlink:href="<WFSURL>&amp;featureID=<FEATUREID>&amp;outputFormat=application/json<SRSNAME>" method="GET"/>\n' +
+      '    </wps:Input>\n' +
+      '    <wps:Input>\n' +
+      '      <ows:Identifier>distance</ows:Identifier>\n' +
+      '      <wps:Data>\n' +
+      '        <wps:LiteralData>7000</wps:LiteralData>\n' +
+      '      </wps:Data>\n' +
+      '    </wps:Input>\n' +
+      '    <wps:Input>\n' +
+      '      <ows:Identifier>preserveTopology</ows:Identifier>\n' +
+      '      <wps:Data>\n' +
+      '        <wps:LiteralData>true</wps:LiteralData>\n' +
+      '      </wps:Data>\n' +
+      '    </wps:Input>\n' +
+      '  </wps:DataInputs>\n' +
+      '  <wps:ResponseForm>\n' +
+      '    <wps:RawDataOutput mimeType="application/json">\n' +
+      '      <ows:Identifier>result</ows:Identifier>\n' +
+      '    </wps:RawDataOutput>\n' +
+      '  </wps:ResponseForm>\n' +
+      '</wps:Execute>\n';
+
+    _data = _data
+      .replace("<WFSURL>", encodeURI(selectedRecord.url).replace(/&/g, '&amp;'))
+      .replace("<FEATUREID>", selectedRecord.feature.id)
+      .replace("<SRSNAME>", ""); //"&amp;srsName=EPSG:3857"
+    const url = this.props.local.mapConfig.wpsserviceurl;
+    console.log("POST", url, _data);
+    axios({
+      method: 'post',
+      url: url,
+      headers: { 'content-type': 'text/xml' },
+      data: _data
+    })
+      .then((response) => {
+        console.log("RegProvAutocomplete.handleChange() response:", JSON.stringify(response.data));
+
+        let feature_coll = (new GeoJSON()).readFeatures(response.data);
+        let feature_geojson = (new GeoJSON()).writeFeature(feature_coll[0]);
+        console.log('RegProvAutocomplete.handleChange() geojson -->', feature_geojson);
+
+        let feature_wkt = (new WKT()).writeFeature(feature_coll[0]);
+        console.log('RegProvAutocomplete.handleChange() wkt -->', feature_wkt);
+
+        this.props.changeRegProvComponent({ geometry: feature_wkt });
+
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
 
   handleDelete = item => () => {
     const selectedItem = [...this.state.selectedItem];
