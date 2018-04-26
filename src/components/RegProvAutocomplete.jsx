@@ -207,7 +207,7 @@ class RegProvAutocomplete extends React.Component {
       '              <wps:Input>\n' +
       '                <ows:Identifier>distance</ows:Identifier>\n' +
       '                <wps:Data>\n' +
-      '                  <wps:LiteralData>1000</wps:LiteralData>\n' +
+      '                  <wps:LiteralData>3000</wps:LiteralData>\n' +
       '                </wps:Data>\n' +
       '              </wps:Input>\n' +
       '              <wps:Input>\n' +
@@ -263,9 +263,42 @@ class RegProvAutocomplete extends React.Component {
 
         console.log("RegProvAutocomplete.handleChange() filter -->", filter);
         this.props.changeRegProvComponent({ filter: filter });
-
         this.handlePermalinkMask(selectedRecord);
         this.props.updateLayersWithViewparams(decodeURIComponent(window.location.hash).replace(/^#\//, '').split("/"));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    _data2 = _data
+      .replace("<WFSURL>", encodeURI(selectedRecord.url).replace(/&/g, '&amp;'))
+      .replace("<FEATUREID>", selectedRecord.feature.id)
+      .replace("<SRSNAME>", "EPSG:4326")
+      .replace("<MIMETYPE>", "GML3");
+    url = this.props.local.mapConfig.wpsserviceurl;
+    console.log("POST", url, _data2);
+    axios({
+      method: 'post',
+      url: url,
+      headers: { 'content-type': 'text/xml' },
+      data: _data2
+    })
+      .then((response) => {
+        console.log("RegProvAutocomplete.handleChange() response:", response.data);
+
+        let oParser = new DOMParser();
+        let oSerializer = new XMLSerializer();
+        let oDOM = oParser.parseFromString(response.data, "text/xml");
+
+        let filter =
+          '&filter=<Intersects><PropertyName>geom</PropertyName><Literal>' +
+          oSerializer.serializeToString(oDOM.getElementsByTagName("feature:geometry")[0].childNodes[0]) +
+          '</Literal></Intersects>';
+
+        console.log("RegProvAutocomplete.handleChange() filter -->", filter);
+        //this.props.changeRegProvComponent({ filter: filter });
+        //this.handlePermalinkMask(selectedRecord);
+        //this.props.updateLayersWithViewparams(decodeURIComponent(window.location.hash).replace(/^#\//, '').split("/"));
       })
       .catch((error) => {
         console.error(error);
