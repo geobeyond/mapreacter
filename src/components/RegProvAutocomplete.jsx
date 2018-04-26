@@ -114,7 +114,9 @@ class RegProvAutocomplete extends React.Component {
     try {
       _permalinkmaskarray.forEach((_record, _index) => {
         if (_record === '<REGPROV>') {
-          selectedItem = [_locationarray[_index]];
+          if (_locationarray[_index]) {
+            selectedItem = [_locationarray[_index]];
+          }
         }
       });
     } catch (error) {
@@ -125,6 +127,8 @@ class RegProvAutocomplete extends React.Component {
       selectedItem: selectedItem,
       suggestions: []
     };
+
+    console.log("RegProvAutocomplete() this.state:", JSON.stringify(this.state));
 
     this.props.local.mapConfig.regprovconf.forEach(_record => {
       const url = _record.url + '&outputFormat=application/json&propertyName=' + _record.propertyname;
@@ -147,7 +151,9 @@ class RegProvAutocomplete extends React.Component {
             }
           });
           console.log("RegProvAutocomplete() this.state:", JSON.stringify(this.state));
-          this.handleChange(this.state.selectedItem[0]);
+          if (this.state.selectedItem[0]) {
+            this.handleChange(this.state.selectedItem[0]);
+          }
         })
         .catch((error) => {
           console.error(error);
@@ -438,7 +444,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     updateLayersWithViewparams: (params) => {
       dispatch(actions.updateLayersWithViewparams(params));
-    },    
+    },
   };
 };
 
