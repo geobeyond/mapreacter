@@ -105,9 +105,24 @@ class RegProvAutocomplete extends React.Component {
   constructor(props) {
     super(props);
 
+    let permalinkmask = this.props.local.mapConfig.permalinkmask.replace(/^\//, '');
+    let thehash = decodeURIComponent(window.location.hash).replace(/^#\//, '');
+    const _permalinkmaskarray = permalinkmask.split("/");
+    const _locationarray = thehash.split("/");
+
+    let selectedItem = [];
+    try {
+      _permalinkmaskarray.forEach((_record, _index) => {
+        if (_record === '<REGPROV>') {
+          selectedItem = [_locationarray[_index]];
+        }
+      });
+    } catch (error) {
+    }
+
     this.state = {
       inputValue: '',
-      selectedItem: [],
+      selectedItem: selectedItem,
       suggestions: []
     };
 
@@ -132,6 +147,7 @@ class RegProvAutocomplete extends React.Component {
             }
           });
           console.log("RegProvAutocomplete() this.state:", JSON.stringify(this.state));
+          this.handleChange(this.state.selectedItem[0]);
         })
         .catch((error) => {
           console.error(error);
@@ -274,6 +290,7 @@ class RegProvAutocomplete extends React.Component {
         this.props.changeRegProvComponent({ filter: filter });
 
         this.handlePermalinkMask(selectedRecord);
+        this.props.updateLayersWithViewparams(decodeURIComponent(window.location.hash).replace(/^#\//, '').split("/"));
       })
       .catch((error) => {
         console.error(error);
@@ -419,6 +436,9 @@ const mapDispatchToProps = (dispatch) => {
     changeRegProvComponent: (params) => {
       dispatch(actions.changeRegProvComponent(params));
     },
+    updateLayersWithViewparams: (params) => {
+      dispatch(actions.updateLayersWithViewparams(params));
+    },    
   };
 };
 
