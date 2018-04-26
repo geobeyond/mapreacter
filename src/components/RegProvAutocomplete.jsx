@@ -114,7 +114,7 @@ class RegProvAutocomplete extends React.Component {
     try {
       _permalinkmaskarray.forEach((_record, _index) => {
         if (_record === '<REGPROV>') {
-          if (_locationarray[_index] && _locationarray[_index] !== '*') {
+          if (_locationarray[_index] && _locationarray[_index] !== '*' && _locationarray[_index] !== '<REGPROV>') {
             selectedItem = [_locationarray[_index]];
           }
         }
