@@ -268,10 +268,12 @@ class RegProvAutocomplete extends React.Component {
         console.log('RegProvAutocomplete.handleChange() geojson -->', (new GeoJSON()).writeFeature(feature_coll[0]));
         let feature_wkt = (new WKT()).writeFeature(feature_coll[0]);
 
-        let filter='&cql_filter=INTERSECTS(geom,'+feature_wkt+')';
-        
+        let filter = '&cql_filter=INTERSECTS(geom,' + feature_wkt + ')';
+
         console.log("RegProvAutocomplete.handleChange() filter -->", filter);
-        this.props.changeRegProvComponent({ filter: filter });        
+        this.props.changeRegProvComponent({ filter: filter });
+
+        this.handlePermalinkMask(selectedRecord);
       })
       .catch((error) => {
         console.error(error);
@@ -284,7 +286,53 @@ class RegProvAutocomplete extends React.Component {
     this.setState({ selectedItem });
     console.log("RegProvAutocomplete.handleDelete()", item);
     this.props.changeRegProvComponent({});
+    this.handlePermalinkMask();
   };
+
+  handlePermalinkMask(selectedRecord = {}) {
+    console.log("RegProvAutocomplete.handlePermalinkMask()", JSON.stringify(selectedRecord));
+    let permalinkmask = this.props.local.mapConfig.permalinkmask;
+    let thehash = decodeURIComponent(window.location.hash).replace(/#\//, '');
+    console.log("RegProvAutocomplete.handlePermalinkMask() permalinkmask:", permalinkmask, "window.location.hash:", thehash);
+
+    const _permalinkmaskarray = permalinkmask.replace(/^\//, '').split("/");
+    //const _viewparamsarray = this.props.local.viewparams.split("/");
+
+    const _locationarray = thehash.split("/");
+
+    let _newpermalinkmaskarray = _permalinkmaskarray.map((_record, _index) => {
+      let returnvalue = '';
+      if (_record === '<REGPROV>') {
+        returnvalue = selectedRecord.label ? selectedRecord.label : '*';
+      } else {
+        try {
+          returnvalue = _locationarray[_index];
+        } catch (error) {
+          returnvalue = '*';
+        }
+      }
+      console.log("RegProvAutocomplete.handlePermalinkMask() sostituisco", _record, "con", returnvalue);
+      return returnvalue;
+    });
+
+    permalinkmask = '/' + _newpermalinkmaskarray.join('/');
+    console.log("RegProvAutocomplete.handlePermalinkMask() permalinkmask:", permalinkmask);
+
+    try {
+      let _array = [
+        this.props.map.zoom,
+        '' + Math.round(this.props.map.center[0] * 100) / 100,
+        '' + Math.round(this.props.map.center[1] * 100) / 100,
+        this.props.map.bearing
+      ];
+      permalinkmask += '/' + _array.join('/');
+      console.log("RegProvAutocomplete.handlePermalinkMask() permalinkmask:", permalinkmask);
+    } catch (error) {
+      console.error(error);
+    }
+
+    this.props.history.push(permalinkmask);
+  }
 
   getSuggestions(inputValue) {
     console.log("RegProvAutocomplete.getSuggestions()", inputValue);
