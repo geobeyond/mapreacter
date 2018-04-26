@@ -57,11 +57,13 @@
       regprovconf: [
         {
           url: 'http://localhost:8080/geoserver/wfs?service=wfs&version=2.0.0&request=GetFeature&typeNames=nnb:Reg_2016_WGS84_g',
+          wpsserviceurl: 'http://localhost:8080/geoserver/ows?strict:true',
           propertyname: 'REGIONE',  //&propertyName=REGIONE
           label: 'reglabel'
         },
         {
           url: 'http://localhost:8080/geoserver/wfs?service=wfs&version=2.0.0&request=GetFeature&typeNames=nnb:CMprov2016_WGS84',
+          wpsserviceurl: 'http://localhost:8080/geoserver/ows?strict:true',
           propertyname: 'PROVINCIA',
           label: 'provlabel'
         }

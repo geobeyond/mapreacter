@@ -144,7 +144,8 @@ class RegProvAutocomplete extends React.Component {
                     feature: _feature,
                     label: _feature.properties[_record.propertyname],
                     sublabel: _record.propertyname,
-                    url: _record.url
+                    url: _record.url,
+                    wpsserviceurl: _record.wpsserviceurl
                   });
                 })
               )
@@ -239,44 +240,12 @@ class RegProvAutocomplete extends React.Component {
       '  </wps:ResponseForm>\n' +
       '</wps:Execute>';
 
-    /*let _data2 = _data
-      .replace("<WFSURL>", encodeURI(selectedRecord.url).replace(/&/g, '&amp;'))
-      .replace("<FEATUREID>", selectedRecord.feature.id)
-      .replace("<SRSNAME>", "EPSG:3857") //EPSG:4326
-      .replace("<MIMETYPE>", "GML3");
-    let url = this.props.local.mapConfig.wpsserviceurl;
-    console.log("POST", url, _data2);
-    axios({
-      method: 'post',
-      url: url,
-      headers: { 'content-type': 'text/xml' },
-      data: _data2
-    })
-      .then((response) => {
-        console.log("RegProvAutocomplete.handleChange() response:", response.data);
-
-        let oParser = new DOMParser();
-        let oSerializer = new XMLSerializer();
-        let oDOM = oParser.parseFromString(response.data, "text/xml");
-
-        let filter =
-          '&filter=<Intersects><PropertyName>geom</PropertyName>' +
-          oSerializer.serializeToString(oDOM.getElementsByTagName("feature:geometry")[0].childNodes[0]) +
-          '</Intersects>';
-
-        console.log("RegProvAutocomplete.handleChange() filter -->", filter);
-        //this.props.changeRegProvComponent({ filter: filter });
-      })
-      .catch((error) => {
-        console.error(error);
-      });*/
-
     let _data2 = _data
       .replace("<WFSURL>", encodeURI(selectedRecord.url).replace(/&/g, '&amp;'))
       .replace("<FEATUREID>", selectedRecord.feature.id)
       .replace("<SRSNAME>", "EPSG:4326")
       .replace("<MIMETYPE>", "application/json");
-    let url = this.props.local.mapConfig.wpsserviceurl;
+    let url = selectedRecord.wpsserviceurl;
     console.log("POST", url, _data2);
     axios({
       method: 'post',
