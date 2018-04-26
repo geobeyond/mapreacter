@@ -291,13 +291,11 @@ class RegProvAutocomplete extends React.Component {
 
   handlePermalinkMask(selectedRecord = {}) {
     console.log("RegProvAutocomplete.handlePermalinkMask()", JSON.stringify(selectedRecord));
-    let permalinkmask = this.props.local.mapConfig.permalinkmask;
-    let thehash = decodeURIComponent(window.location.hash).replace(/#\//, '');
+    let permalinkmask = this.props.local.mapConfig.permalinkmask.replace(/^\//, '');
+    let thehash = decodeURIComponent(window.location.hash).replace(/^#\//, '');
     console.log("RegProvAutocomplete.handlePermalinkMask() permalinkmask:", permalinkmask, "window.location.hash:", thehash);
 
-    const _permalinkmaskarray = permalinkmask.replace(/^\//, '').split("/");
-    //const _viewparamsarray = this.props.local.viewparams.split("/");
-
+    const _permalinkmaskarray = permalinkmask.split("/");
     const _locationarray = thehash.split("/");
 
     let _newpermalinkmaskarray = _permalinkmaskarray.map((_record, _index) => {
