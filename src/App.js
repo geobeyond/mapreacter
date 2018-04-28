@@ -45,10 +45,11 @@ export const themiddleware = store => next => action => {
       console.log('themiddleware() current action:', action.type);
       break;
     default:
-      console.log('themiddleware() current action:', JSON.stringify(action, (key, value) => {
-        if (key === 'component') return '...';
-        return value;
-      }));
+      try {
+        console.log('themiddleware() current action:', JSON.stringify(action));
+      } catch (error) {
+        console.log('themiddleware() current action:', action);
+      }
       break;
   }
 
@@ -114,14 +115,14 @@ export const themiddleware = store => next => action => {
         if (index < 8) {
           if (_record !== '*' && _record !== '') {
             _datafilter +=
-            '                <ogc:PropertyIsEqualTo>\n' +
-            '                  <ogc:PropertyName>' + store.getState().local.mapConfig.routing[index % 4].field + '</ogc:PropertyName>\n' +
-            '                  <ogc:Literal>' + _record + '</ogc:Literal>\n' +
-            '                </ogc:PropertyIsEqualTo>\n';
+              '                <ogc:PropertyIsEqualTo>\n' +
+              '                  <ogc:PropertyName>' + store.getState().local.mapConfig.routing[index % 4].field + '</ogc:PropertyName>\n' +
+              '                  <ogc:Literal>' + _record + '</ogc:Literal>\n' +
+              '                </ogc:PropertyIsEqualTo>\n';
           }
         }
       });
-      
+
       const _data = _dataheader + _datafilter + _datafooter;
       const url = store.getState().local.mapConfig.wpsserviceurl;
       store.dispatch(configActions.changerefreshindicator({ status: "loading" }));
@@ -238,16 +239,39 @@ class App extends Component {
 
     const _array = window.location.hash.split("/");
     const _index = store.getState().local.mapConfig.permalinkmasklength;
-    if (_array.length === _index+5) {
+    if (_array.length === _index + 5) {
       const _map = {
-        center: [Number(_array[_index+2]), Number(_array[_index+3])],
-        zoom: Number(_array[_index+1])
+        center: [Number(_array[_index + 2]), Number(_array[_index + 3])],
+        zoom: Number(_array[_index + 1])
       };
-      store.dispatch(mapActions.setView(_map.center, _map.zoom));  
+      store.dispatch(mapActions.setView(_map.center, _map.zoom));
     } else if (this.config.map && this.config.map.center) {
       let zoom = this.config.map.zoom || 2;
       store.dispatch(mapActions.setView(this.config.map.center, zoom));
     }
+
+    store.dispatch(mapActions.addSource('regioni_province', {
+      type: 'geojson',
+      name: 'regioni_province',
+      //crs: { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+      data: {
+        type: "FeatureCollection",
+        features: []
+      }
+    }));
+    store.dispatch(mapActions.addLayer({
+      id: 'regioni_province',
+      source: 'regioni_province',
+      type: 'fill',
+      paint: {
+        'fill-opacity': 0.5,
+        'fill-color': '#feb24c',
+        'fill-outline-color': '#f03b20',
+      },
+      metadata: {
+        'bnd:hide-layerlist': true,
+      },      
+    }));
   }
 
   componentDidMount() {

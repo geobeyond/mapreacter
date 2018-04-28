@@ -15,6 +15,7 @@ import GeoJSON from 'ol/format/geojson';
 import WKT from 'ol/format/wkt';
 import { mylocalizedstrings } from '../services/localizedstring';
 import * as actions from '../actions/map';
+import * as mapActions from '@boundlessgeo/sdk/actions/map';
 
 
 var axios = require('axios');
@@ -188,6 +189,8 @@ class RegProvAutocomplete extends React.Component {
 
     let selectedRecord = this.getSuggestions(item)[0];
 
+    this.props.removeFeatures("regioni_province");
+    
     let _data =
       '<?xml version="1.0" encoding="UTF-8"?>\n' +
       '<wps:Execute version="1.0.0" service="WPS" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.opengis.net/wps/1.0.0" xmlns:wfs="http://www.opengis.net/wfs" xmlns:wps="http://www.opengis.net/wps/1.0.0" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" xmlns:wcs="http://www.opengis.net/wcs/1.1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.opengis.net/wps/1.0.0 http://schemas.opengis.net/wps/1.0.0/wpsAll.xsd">\n' +
@@ -207,7 +210,7 @@ class RegProvAutocomplete extends React.Component {
       '              <wps:Input>\n' +
       '                <ows:Identifier>distance</ows:Identifier>\n' +
       '                <wps:Data>\n' +
-      '                  <wps:LiteralData>3000</wps:LiteralData>\n' +
+      '                  <wps:LiteralData>1000</wps:LiteralData>\n' +
       '                </wps:Data>\n' +
       '              </wps:Input>\n' +
       '              <wps:Input>\n' +
@@ -265,40 +268,8 @@ class RegProvAutocomplete extends React.Component {
         this.props.changeRegProvComponent({ filter: filter });
         this.handlePermalinkMask(selectedRecord);
         this.props.updateLayersWithViewparams(decodeURIComponent(window.location.hash).replace(/^#\//, '').split("/"));
-      })
-      .catch((error) => {
-        console.error(error);
-      });
 
-    _data2 = _data
-      .replace("<WFSURL>", encodeURI(selectedRecord.url).replace(/&/g, '&amp;'))
-      .replace("<FEATUREID>", selectedRecord.feature.id)
-      .replace("<SRSNAME>", "EPSG:4326")
-      .replace("<MIMETYPE>", "GML3");
-    url = this.props.local.mapConfig.wpsserviceurl;
-    console.log("POST", url, _data2);
-    axios({
-      method: 'post',
-      url: url,
-      headers: { 'content-type': 'text/xml' },
-      data: _data2
-    })
-      .then((response) => {
-        console.log("RegProvAutocomplete.handleChange() response:", response.data);
-
-        let oParser = new DOMParser();
-        let oSerializer = new XMLSerializer();
-        let oDOM = oParser.parseFromString(response.data, "text/xml");
-
-        let filter =
-          '&filter=<Intersects><PropertyName>geom</PropertyName><Literal>' +
-          oSerializer.serializeToString(oDOM.getElementsByTagName("feature:geometry")[0].childNodes[0]) +
-          '</Literal></Intersects>';
-
-        console.log("RegProvAutocomplete.handleChange() filter -->", filter);
-        //this.props.changeRegProvComponent({ filter: filter });
-        //this.handlePermalinkMask(selectedRecord);
-        //this.props.updateLayersWithViewparams(decodeURIComponent(window.location.hash).replace(/^#\//, '').split("/"));
+        this.props.addFeatures("regioni_province", response.data);
       })
       .catch((error) => {
         console.error(error);
@@ -312,6 +283,7 @@ class RegProvAutocomplete extends React.Component {
     console.log("RegProvAutocomplete.handleDelete()", item);
     this.props.changeRegProvComponent({});
     this.handlePermalinkMask();
+    this.props.removeFeatures("regioni_province");
   };
 
   handlePermalinkMask(selectedRecord = {}) {
@@ -447,6 +419,12 @@ const mapDispatchToProps = (dispatch) => {
     updateLayersWithViewparams: (params) => {
       dispatch(actions.updateLayersWithViewparams(params));
     },
+    addFeatures: (sourceName, features) => {
+      dispatch(mapActions.addFeatures(sourceName, features));
+    },  
+    removeFeatures: (sourceName, filter) => {
+      dispatch(mapActions.removeFeatures(sourceName, filter));
+    },        
   };
 };
 
