@@ -6,12 +6,18 @@ import LayerListItem from './map/LayerListItem';
 import Menu from 'material-ui/Menu';
 import IconButton from 'material-ui/IconButton';
 import Tooltip from 'material-ui/Tooltip';
+import Dialog, {
+    DialogActions,
+    DialogContent,
+    //DialogContentText,
+    //DialogTitle,
+} from 'material-ui/Dialog';
+import Button from 'material-ui/Button';
 import { mylocalizedstrings } from '../services/localizedstring';
 
 class TocComponent extends Component {
 
     state = {
-        sharedialog: false,
         anchorEl: null
     };
 
@@ -20,6 +26,7 @@ class TocComponent extends Component {
     };
 
     handleCloseMenu = () => {
+        console.log("TocComponent.handleCloseMenu()");
         this.setState({ anchorEl: null });
     };
 
@@ -51,7 +58,10 @@ class TocComponent extends Component {
                     open={Boolean(anchorEl)}
                     onClose={this.handleCloseMenu}
                 >
-                    <div>
+                    <Dialog
+                        open={Boolean(anchorEl)}
+                        onClose={() => { this.handleCloseMenu(); }}
+                    >
                         <ul className="sdk-layer-list" >
                             <li className="sdk-layer" >
                                 <div className="toc-container">
@@ -62,9 +72,13 @@ class TocComponent extends Component {
                                 </div>
                             </li>
                         </ul>
-                        <hr />
                         <SdkLayerList layerClass={LayerListItem} />
-                    </div>
+                        <DialogActions>
+                            <Button onClick={() => { this.handleCloseMenu(); }}>
+                                {mylocalizedstrings.close}
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
                 </Menu>
             </div>
         );
