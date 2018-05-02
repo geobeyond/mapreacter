@@ -76,7 +76,7 @@ class ConfComponent extends Component {
                     <DialogActions>
                         <Button onClick={() => { this.setState({ sharedialog: false }); }}>
                             {mylocalizedstrings.close}
-                        </Button>,
+                        </Button>
                     </DialogActions>
                 </Dialog>
 
