@@ -3,7 +3,6 @@ let defaultState = {
   viewparams: '',
   refreshIndicator: { status: 'hide' },
   measureComponent: { open: false },
-  featureInfoComponent: { open: false, items: [] },
   regProvComponent: {}
 };
 
@@ -36,12 +35,6 @@ export default function MapReducer(state = defaultState, action) {
     case 'LOCAL.CHANGELANG':
       state = Object.assign({}, state, {
         lang: action.payload['lang'],
-      });
-      return state;
-
-    case 'LOCAL.CHANGEFEATUREINFOCOMPONENT':
-      state = Object.assign({}, state, {
-        featureInfoComponent: action.payload['featureInfoComponent']
       });
       return state;
 

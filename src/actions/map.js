@@ -114,15 +114,6 @@ export const changeMeasureComponent = (measureComponent) => {
   };
 }
 
-export const changeFeatureInfoComponent = (featureInfoComponent) => {
-  return {
-    type: 'LOCAL.CHANGEFEATUREINFOCOMPONENT',
-    payload: {
-      featureInfoComponent: featureInfoComponent
-    }
-  };
-}
-
 export const changeRegProvComponent = (regProvComponent) => {
   return {
     type: 'LOCAL.CHANGEREGPROVCOMPONENT',

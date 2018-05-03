@@ -9,6 +9,7 @@ import SdkScaleLine from '@boundlessgeo/sdk/components/map/scaleline';
 import * as printActions from '@boundlessgeo/sdk/actions/print';
 import OverviewMap from 'ol/control/overviewmap';
 //import FullScreen from 'ol/control/fullscreen';
+import WMSPopup from './map/wms/wmspopup'
 import ZoomControl from './map/zoom-control';
 import * as actions from '../actions/map';
 import { store } from '../App';
@@ -67,7 +68,7 @@ class Map extends Component {
           includeFeaturesOnClick
           onExportImage={this.exportMapImage}
           onClick={(map, xy, featuresPromise) => {            
-            //this.props.changerefreshindicator({ status: "loading" });
+            this.props.changerefreshindicator({ status: "loading" });
             featuresPromise.then((featureGroups) => {
               let items = [];
               featureGroups.forEach((feature, index) => {
@@ -80,9 +81,15 @@ class Map extends Component {
                 });
               });
               if (items.length > 0) {
-                this.props.changeFeatureInfoComponent({ open: true, items: items });
+                map.addPopup(
+                  <WMSPopup
+                    coordinate={xy}
+                    closeable
+                    items={items}
+                  />
+                );             
               }
-              //this.props.changerefreshindicator({ status: "hide" });
+              this.props.changerefreshindicator({ status: "hide" });
             });
           }}>
           <SdkScaleLine />
@@ -115,9 +122,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     receiveMapImage: () => {
       dispatch(printActions.receiveMapImage());
-    },
-    changeFeatureInfoComponent: (params) => {
-      dispatch(actions.changeFeatureInfoComponent(params));
     },
   };
 };

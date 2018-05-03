@@ -26,7 +26,6 @@ import MeasureComponent from './components/MeasureComponent';
 import TocComponent from './components/TocComponent';
 import LangComponent from './components/LangComponent';
 import ConfComponent from './components/ConfComponent';
-import FeatureInfoComponent from './components/FeatureInfoComponent';
 import RegProvAutocomplete from './components/RegProvAutocomplete';
 
 
@@ -289,7 +288,6 @@ class App extends Component {
 
                 <RefreshIndicatorComponent />
                 <MeasureComponent />
-                <FeatureInfoComponent />
 
                 <AppBar position="static">
                   <Toolbar style={{ height: '80px' }}>
