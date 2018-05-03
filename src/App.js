@@ -269,6 +269,7 @@ class App extends Component {
       },
       metadata: {
         'bnd:hide-layerlist': true,
+        'bnd:queryable': false,
       },      
     }));
   }
