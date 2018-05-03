@@ -40,7 +40,7 @@ function featuresTableBody(classes, layer, features) {
       const key = `${i}-${keys[j]}`;
       rows.push(
         <TableRow className={classes.row} key={key}>
-          <CustomTableCell>{j==0?layer:''}</CustomTableCell>
+          <CustomTableCell>{j===0?layer:''}</CustomTableCell>
           <CustomTableCell>{keys[j]}</CustomTableCell>
           <CustomTableCell>{feature.properties[keys[j]]}</CustomTableCell>
         </TableRow>
