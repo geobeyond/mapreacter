@@ -8,7 +8,7 @@ import IconButton from 'material-ui/IconButton';
 import Tooltip from 'material-ui/Tooltip';
 import Dialog, {
     DialogActions,
-    DialogContent,
+    //DialogContent,
     //DialogContentText,
     //DialogTitle,
 } from 'material-ui/Dialog';
