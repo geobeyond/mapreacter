@@ -207,18 +207,33 @@ class TassonomiaAutoComplete extends React.Component {
 
   handlePermalinkMask(selectedRecord) {
     console.log("TassonomiaAutoComplete.handlePermalinkMask()", JSON.stringify(selectedRecord));
-    let permalinkmask = this.props.local.mapConfig.permalinkmask;
-    console.log("TassonomiaAutoComplete.handlePermalinkMask() permalinkmask:", permalinkmask);
-    selectedRecord.forEach((_record, index) => {
-      let _mask = _record.routingrecord.mask.replace(/xx/g, '' + (index + 1));
-      permalinkmask = permalinkmask.replace(_mask, _record.label);
-      console.log("TassonomiaAutoComplete.handlePermalinkMask() permalinkmask:", permalinkmask);
+    let permalinkmask = this.props.local.mapConfig.permalinkmask.replace(/^\//, '');
+    let thehash = decodeURIComponent(window.location.hash).replace(/^#\//, '');
+    console.log("TassonomiaAutoComplete.handlePermalinkMask() permalinkmask:", permalinkmask, "window.location.hash:", thehash);
+
+    let _permalinkmaskarray = permalinkmask.split("/");
+    const _locationarray = thehash.split("/");
+
+    _permalinkmaskarray = _permalinkmaskarray.map((_record, _index) => {
+      let returnvalue = '*';
+      if (_record === '<HABITAT>') {
+        returnvalue = _locationarray[_index];
+      } else if (_record === '<REGPROV>') {
+        returnvalue = _locationarray[_index];
+      }
+
+      selectedRecord.forEach((_selectedRecord, _selectedRecordIndex) => {
+        let _mask = _selectedRecord.routingrecord.mask.replace(/xx/g, '' + (_selectedRecordIndex + 1));
+        if (_record === _mask) {
+          returnvalue = _selectedRecord.label ? _selectedRecord.label : '*';
+        }
+      });
+
+      console.log("TassonomiaAutoComplete.handlePermalinkMask() sostituisco", _record, "con", returnvalue);
+      return returnvalue;
     });
-    //permalinkmask = permalinkmask.replace(/<.*>/, '*');
-    permalinkmask = permalinkmask.replace(/<ORDER.?>/g, '*');
-    permalinkmask = permalinkmask.replace(/<GENUS.?>/g, '*');
-    permalinkmask = permalinkmask.replace(/<FAMILY.?>/g, '*');
-    permalinkmask = permalinkmask.replace(/<SPECIES.?>/g, '*');
+
+    permalinkmask = '/' + _permalinkmaskarray.join('/');
     console.log("TassonomiaAutoComplete.handlePermalinkMask() permalinkmask:", permalinkmask);
 
     try {
