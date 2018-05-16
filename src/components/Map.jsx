@@ -6,6 +6,7 @@ import SdkMap from '@boundlessgeo/sdk/components/map';
 //import SdkZoomSlider from '@boundlessgeo/sdk/components/map/zoom-slider';
 import SdkMousePosition from '@boundlessgeo/sdk/components/map/mouseposition';
 import SdkScaleLine from '@boundlessgeo/sdk/components/map/scaleline';
+//import SdkLegend from '@boundlessgeo/sdk/components/legend';
 import * as printActions from '@boundlessgeo/sdk/actions/print';
 import ol from 'ol';
 import Control from 'ol/control/control';
@@ -18,19 +19,47 @@ import { store } from '../App';
 
 const LegendControl = function (opt_options) {
 
-  var theInfo = document.createElement('div');
-  theInfo.innerHTML = '<p style="color:#00ffff">this is a simple string</p>';
-  theInfo.style.float = 'right';
-  theInfo.style.display = 'none';
+  let options = opt_options || {};
 
-  var options = opt_options || {};
+  console.log("LegendControl()", options);
+
+  let theInfo = document.createElement('div');
+  theInfo.style.display = 'none';
+  theInfo.style.float = 'right';
+  theInfo.style.maxHeight = '300px';
+  theInfo.style.overflowY = 'scroll';
+  theInfo.style.padding = '10px';
+
+  if (options['layers']) {
+    options.layers.forEach((rec) => {
+      if (rec['layout']) {
+        if (rec.layout.visibility === 'visible') {
+          console.log("LegendControl() rec=", rec);
+
+          var theLayerName = document.createElement('div');
+          theLayerName.style.display = 'block';
+          theLayerName.style.paddingRight = '10px';
+          theLayerName.innerHTML = '<span class="name">' + rec.id + '</span>';
+          theInfo.appendChild(theLayerName);
+
+          var theImage = document.createElement('div');
+          theImage.class = 'sdk-legend';
+          theImage.style.display = 'block';
+          theImage.innerHTML =
+            '<img alt="' + rec.id + '" class="sdk-legend-image" ' +
+            'src="' + options.geoserverurl + '/wms?SERVICE=WMS&REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=' + rec.id + '">';
+          theInfo.appendChild(theImage);
+        }
+      }
+    });
+  }
 
   var theButton = document.createElement('button');
   theButton.innerHTML = 'L';
 
   //var this_ = this;
   var handleLegendControl = function () {
-    console.log("handleLegendControl()", theInfo.style.display);
+    console.log("LegendControl.handleLegendControl()", theInfo.style.display);
     //this_.getMap().getView().setRotation(0);
     if (theInfo.style.display === 'block' || theInfo.style.display === '') {
       theInfo.style.display = 'none';
@@ -84,11 +113,11 @@ class Map extends Component {
   }
   exportMapImage(blob) {
     console.log("Map.exportMapImage()", blob);
-    var hiddenElement = document.createElement('a');
-    hiddenElement.href = (window.URL).createObjectURL(blob);
-    hiddenElement.target = '_blank';
-    hiddenElement.download = 'map.png';
-    hiddenElement.click();
+    var theLegend = document.createElement('a');
+    theLegend.href = (window.URL).createObjectURL(blob);
+    theLegend.target = '_blank';
+    theLegend.download = 'map.png';
+    theLegend.click();
     store.dispatch(printActions.receiveMapImage());
     //this.props.receiveMapImage();
   };
@@ -103,7 +132,7 @@ class Map extends Component {
             if (input) {
               input.wrappedInstance.map.addControl(new OverviewMap());
               //input.wrappedInstance.map.addControl(new FullScreen());
-              input.wrappedInstance.map.addControl(new LegendControl());
+              input.wrappedInstance.map.addControl(new LegendControl({ layers: this.props.layers, geoserverurl: this.props.local.mapConfig.geoserverurl }));
             }
           }}
           style={{ position: 'relative' }}
@@ -147,7 +176,8 @@ class Map extends Component {
 const mapStateToProps = (state, { match }) => {
   return {
     viewparams: match.params.viewparams,
-    local: state.local
+    local: state.local,
+    layers: state.map.layers
   }
 }
 
