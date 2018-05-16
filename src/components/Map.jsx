@@ -87,6 +87,12 @@ ol.inherits(LegendControl, Control);
 
 class Map extends Component {
 
+  theLegendControl = null;
+
+  constructor(props) {
+    super(props);
+    this.theLegendControl = new LegendControl({ layers: this.props.layers, geoserverurl: this.props.local.mapConfig.geoserverurl });
+  }
   componentDidMount() {
     console.log("Map.componentDidMount()");
     if (this.props.viewparams) {
@@ -132,7 +138,7 @@ class Map extends Component {
             if (input) {
               input.wrappedInstance.map.addControl(new OverviewMap());
               //input.wrappedInstance.map.addControl(new FullScreen());
-              input.wrappedInstance.map.addControl(new LegendControl({ layers: this.props.layers, geoserverurl: this.props.local.mapConfig.geoserverurl }));
+              input.wrappedInstance.map.addControl(this.theLegendControl);
             }
           }}
           style={{ position: 'relative' }}
