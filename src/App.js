@@ -27,6 +27,7 @@ import TocComponent from './components/TocComponent';
 import LangComponent from './components/LangComponent';
 import ConfComponent from './components/ConfComponent';
 import RegProvAutocomplete from './components/RegProvAutocomplete';
+import AddressAutoComplete from './components/AddressAutoComplete';
 
 
 import './App.css';
@@ -272,6 +273,30 @@ class App extends Component {
         'bnd:queryable': false,
       },      
     }));
+
+    store.dispatch(mapActions.addSource('indirizzi', {
+      type: 'geojson',
+      name: 'indirizzi',
+      //crs: { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+      data: {
+        type: "FeatureCollection",
+        features: []
+      }
+    }));
+    store.dispatch(mapActions.addLayer({
+      id: 'indirizzi',
+      source: 'indirizzi',
+      type: 'fill',
+      paint: {
+        'fill-opacity': 0.5,
+        'fill-color': '#46f46f',
+        'fill-outline-color': '#f03b20',
+      },
+      metadata: {
+        'bnd:hide-layerlist': true,
+        'bnd:queryable': false,
+      },      
+    }));    
   }
 
   componentDidMount() {
@@ -300,6 +325,8 @@ class App extends Component {
                     <TassonomiaAutoComplete />
 
                     <RegProvAutocomplete />
+
+                    <AddressAutoComplete />
 
                     <LangComponent style={{ position: 'absolute', right: 40, width: '70px', color: 'currentColor' }} />
 
