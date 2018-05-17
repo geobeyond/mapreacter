@@ -47,7 +47,7 @@ const styles = theme => ({
 
 function renderInput(inputProps) {
   const { InputProps, classes, ref, ...other } = inputProps;
-  console.log("AddressAutoComplete.renderInput()");
+  console.log("GeocodingAutoComplete.renderInput()");
   return (
     <TextField
       InputProps={{
@@ -63,7 +63,7 @@ function renderInput(inputProps) {
 }
 
 function renderSuggestion({ suggestion, index, itemProps, highlightedIndex, selectedItem }) {
-  console.log("AddressAutoComplete.renderSuggestion()", JSON.stringify(suggestion));
+  console.log("GeocodingAutoComplete.renderSuggestion()", JSON.stringify(suggestion));
   const isHighlighted = highlightedIndex === index;
   const isSelected = (selectedItem || '').indexOf(suggestion.label) > -1;
 
@@ -93,12 +93,12 @@ renderSuggestion.propTypes = {
 
 
 
-class AddressAutoComplete extends React.Component {
+class GeocodingAutoComplete extends React.Component {
 
 
   constructor(props) {
     super(props);
-    console.log("AddressAutoComplete()");
+    console.log("GeocodingAutoComplete()");
     this.state = {
       inputValue: '',
       selectedItem: [],
@@ -107,7 +107,7 @@ class AddressAutoComplete extends React.Component {
   }
 
   handleKeyDown = event => {
-    console.log("AddressAutoComplete.handleKeyDown()");
+    console.log("GeocodingAutoComplete.handleKeyDown()");
     const { inputValue, selectedItem } = this.state;
     if (selectedItem.length && !inputValue.length && keycode(event) === 'backspace') {
       this.setState({
@@ -117,10 +117,10 @@ class AddressAutoComplete extends React.Component {
   };
 
   handleInputChange = event => {
-    console.log("AddressAutoComplete.handleInputChange()", event.target.value);
+    console.log("GeocodingAutoComplete.handleInputChange()", event.target.value);
     this.setState({ inputValue: event.target.value });
 
-    const url = "https://nominatim.openstreetmap.org/search?format=json&polygon_geojson=1&q=" + event.target.value;
+    const url = this.props.local.mapConfig.geocodingurl + event.target.value;
     console.log("GET", url);
     axios.get(url)
       .then((response) => {
@@ -137,7 +137,7 @@ class AddressAutoComplete extends React.Component {
   };
 
   handleChange = item => {
-    console.log("AddressAutoComplete.handleChange() item=", item);
+    console.log("GeocodingAutoComplete.handleChange() item=", item);
 
     this.setState({
       inputValue: '',
@@ -145,9 +145,20 @@ class AddressAutoComplete extends React.Component {
     });
 
     let selectedRecord = this.getSuggestions(item)[0];
-    console.log("AddressAutoComplete.handleChange()", JSON.stringify(selectedRecord));
-    this.props.removeFeatures("indirizzi");
-    this.props.addFeatures("indirizzi", selectedRecord.geojson);
+    console.log("GeocodingAutoComplete.handleChange()", JSON.stringify(selectedRecord));
+    this.props.removeFeatures("geocoding");
+    this.props.addFeatures("geocoding", selectedRecord.geojson);
+
+    // Nominatim API returns a boundingbox property of the form: south Latitude, north Latitude, west Longitude, east Longitude
+    let _extent = [
+      Number(selectedRecord.boundingbox[2]), 
+      Number(selectedRecord.boundingbox[0]), 
+      Number(selectedRecord.boundingbox[3]), 
+      Number(selectedRecord.boundingbox[1])
+    ];
+    if (_extent[0] !== 0 && _extent[1] !== 0 && _extent[2] !== -1 && _extent[3] !== -1) {
+      this.props.fitExtent(_extent, this.props.mapinfo.size, "EPSG:4326");
+    }    
   };
 
   handleDelete = item => () => {
@@ -155,11 +166,11 @@ class AddressAutoComplete extends React.Component {
     selectedItem.splice(selectedItem.indexOf(item), 1);
     this.setState({ selectedItem });
     console.log("RegProvAutocomplete.handleDelete()", item);
-    this.props.removeFeatures("indirizzi");
+    this.props.removeFeatures("geocoding");
   };
 
   getSuggestions(inputValue) {
-    console.log("AddressAutoComplete.getSuggestions()", inputValue);
+    console.log("GeocodingAutoComplete.getSuggestions()", inputValue);
     let count = 0;
     return this.state.suggestions.filter(suggestion => {
       return (count++ < 12)
@@ -167,7 +178,7 @@ class AddressAutoComplete extends React.Component {
   }
 
   render() {
-    console.log("AddressAutoComplete.render()");
+    console.log("GeocodingAutoComplete.render()");
     const { classes } = this.props;
     const { inputValue, selectedItem } = this.state;
 
@@ -223,15 +234,16 @@ class AddressAutoComplete extends React.Component {
   }
 }
 
-AddressAutoComplete.propTypes = {
+GeocodingAutoComplete.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {
-  //console.log("AddressAutoComplete.mapStateToProps()");
+  //console.log("GeocodingAutoComplete.mapStateToProps()");
   return {
     map: state.map,
     local: state.local,
+    mapinfo: state.mapinfo
   }
 }
 
@@ -243,7 +255,10 @@ const mapDispatchToProps = (dispatch) => {
     removeFeatures: (sourceName, filter) => {
       dispatch(mapActions.removeFeatures(sourceName, filter));
     },
+    fitExtent: (extent, size, projection) => {
+      dispatch(mapActions.fitExtent(extent, size, projection));
+    },    
   };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(AddressAutoComplete)));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(GeocodingAutoComplete)));

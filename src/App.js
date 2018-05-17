@@ -27,7 +27,7 @@ import TocComponent from './components/TocComponent';
 import LangComponent from './components/LangComponent';
 import ConfComponent from './components/ConfComponent';
 import RegProvAutocomplete from './components/RegProvAutocomplete';
-import AddressAutoComplete from './components/AddressAutoComplete';
+import GeocodingAutoComplete from './components/GeocodingAutoComplete';
 
 
 import './App.css';
@@ -274,9 +274,9 @@ class App extends Component {
       },      
     }));
 
-    store.dispatch(mapActions.addSource('indirizzi', {
+    store.dispatch(mapActions.addSource('geocoding', {
       type: 'geojson',
-      name: 'indirizzi',
+      name: 'geocoding',
       //crs: { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
       data: {
         type: "FeatureCollection",
@@ -284,8 +284,8 @@ class App extends Component {
       }
     }));
     store.dispatch(mapActions.addLayer({
-      id: 'indirizzi',
-      source: 'indirizzi',
+      id: 'geocoding',
+      source: 'geocoding',
       type: 'fill',
       paint: {
         'fill-opacity': 0.5,
@@ -326,7 +326,7 @@ class App extends Component {
 
                     <RegProvAutocomplete />
 
-                    <AddressAutoComplete />
+                    <GeocodingAutoComplete />
 
                     <LangComponent style={{ position: 'absolute', right: 40, width: '70px', color: 'currentColor' }} />
 
