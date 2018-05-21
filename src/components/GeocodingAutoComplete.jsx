@@ -158,7 +158,8 @@ class GeocodingAutoComplete extends React.Component {
     ];
     if (_extent[0] !== 0 && _extent[1] !== 0 && _extent[2] !== -1 && _extent[3] !== -1) {
       this.props.fitExtent(_extent, this.props.mapinfo.size, "EPSG:4326");
-    }    
+      this.props.zoomOut();
+    }
   };
 
   handleDelete = item => () => {
@@ -257,7 +258,10 @@ const mapDispatchToProps = (dispatch) => {
     },
     fitExtent: (extent, size, projection) => {
       dispatch(mapActions.fitExtent(extent, size, projection));
-    },    
+    },
+    zoomOut: () => {
+      dispatch(mapActions.zoomOut());
+    },
   };
 };
 
