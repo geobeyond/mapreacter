@@ -71,7 +71,9 @@ class TocComponent extends Component {
                                 </div>
                             </li>
                         </ul>
-                        <SdkLayerList layerClass={LayerListItem} />
+                        <div style={{ overflowY: 'scroll', maxHeight: '300px' }}>
+                            <SdkLayerList layerClass={LayerListItem} />
+                        </div>
                         <DialogActions>
                             <Button onClick={() => { this.handleCloseMenu(); }}>
                                 {mylocalizedstrings.close}
