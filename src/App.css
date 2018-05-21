@@ -337,3 +337,9 @@ li {
 .legend-control .name {
   font-family: "Courier New", Courier, monospace;
   font-size: 14px; }
+
+.ol-control {
+  background-color: #FFFFFF; }
+
+.ol-control:hover {
+  background-color: #FFFFFF; }
