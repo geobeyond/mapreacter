@@ -68,7 +68,6 @@ class TocComponent extends Component {
                                     <div className="div1"><span className="name">{mylocalizedstrings.layer}</span> </div>
                                     <div className="div2"><span className="name">{mylocalizedstrings.onoff}</span> </div>
                                     <div className="div3"><span className="name">{mylocalizedstrings.updown}</span> </div>
-                                    <div className="div4"><span className="name">{mylocalizedstrings.legend}</span> </div>
                                 </div>
                             </li>
                         </ul>

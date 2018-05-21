@@ -91,7 +91,7 @@ li {
 
 .toc-container {
   display: grid;
-  grid-template-columns: 200px 50px 180px 90px;
+  grid-template-columns: 200px 50px 180px;
 }
 
 .toc-container .div1 {
@@ -107,12 +107,6 @@ li {
 }
 
 .toc-container .div3 {
-  text-align: center;
-  height: 40px; 
-  line-height: 40px;  
-}
-
-.toc-container .div4 {
   text-align: center;
   height: 40px; 
   line-height: 40px;  

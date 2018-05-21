@@ -55,7 +55,6 @@ class LayerListItem extends SdkLayerListItem {
           <div className="div1"><span className="name">{layer.id}</span> </div>
           <div className="div2">{checkbox} </div>
           <div className="div3">{moveButtons}</div>
-          <div className="div4">{legend}</div>
         </div>
       </li>
     )));
