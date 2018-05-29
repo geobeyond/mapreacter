@@ -57,15 +57,21 @@
       regprovconf: [
         {
           url: 'http://193.206.192.107/geoserver/wfs?service=wfs&version=2.0.0&request=GetFeature&typeNames=nnb:Reg_2016_WGS84',
+          cql_filter: '',
           wpsserviceurl: 'http://193.206.192.107/geoserver/ows?strict:true',
           propertyname: 'REGIONE',  //&propertyName=REGIONE
-          label: 'reglabel'
         },
         {
           url: 'http://193.206.192.107/geoserver/wfs?service=wfs&version=2.0.0&request=GetFeature&typeNames=nnb:CMprov2016_WGS84',
+          cql_filter: '&CQL_FILTER=FLAG_CMPRO=2',
           wpsserviceurl: 'http://193.206.192.107/geoserver/ows?strict:true',
-          propertyname: 'PROVINCIA',
-          label: 'provlabel'
+          propertyname: 'PROVINCIA'
+        },
+        {
+          url: 'http://193.206.192.107/geoserver/wfs?service=wfs&version=2.0.0&request=GetFeature&typeNames=nnb:CMprov2016_WGS84',
+          cql_filter: '&CQL_FILTER=FLAG_CMPRO=1',
+          wpsserviceurl: 'http://193.206.192.107/geoserver/ows?strict:true',
+          propertyname: 'DEN_CMPRO'
         }
       ],
 
@@ -104,8 +110,9 @@
           legend: 'Legenda',
           toc: 'TOC: elenco dei layer presenti in mappa',
           regprovlabel: 'Filtra per regione / provincia',
-          REGIONE: 'REGIONE',
-          PROVINCIA: 'PROVINCIA',
+          REGIONE: 'Regione',
+          PROVINCIA: 'Provincia',
+          DEN_CMPRO: 'Città Metropolitana',
           addressautocompletelabel: 'Cerca località ...'
         },
         en: {
@@ -126,8 +133,9 @@
           legend: 'Legend',
           toc: 'TOC: layers list',
           regprovlabel: 'Filter by region / province',
-          REGIONE: 'REGION',
-          PROVINCIA: 'PROVINCE',
+          REGIONE: 'Region',
+          PROVINCIA: 'Province',
+          DEN_CMPRO: 'Metropolitan City',
           addressautocompletelabel: 'Search places ...'
         }
       },

@@ -132,8 +132,8 @@ class RegProvAutocomplete extends React.Component {
     console.log("RegProvAutocomplete() this.state:", JSON.stringify(this.state));
 
     this.props.local.mapConfig.regprovconf.forEach(_record => {
-      const url = _record.url + '&outputFormat=application/json&propertyName=' + _record.propertyname;
-      console.log("GET", url);
+      const url = _record.url + _record.cql_filter + '&outputFormat=application/json&propertyName=' + _record.propertyname;
+      console.log("RegProvAutocomplete() GET", url);
       axios.get(url)
         .then((response) => {
           console.log("RegProvAutocomplete() response:", JSON.stringify(response.data));
@@ -156,7 +156,6 @@ class RegProvAutocomplete extends React.Component {
               return {};
             }
           });
-          console.log("RegProvAutocomplete() this.state:", JSON.stringify(this.state));
           if (this.state.selectedItem[0]) {
             this.handleChange(this.state.selectedItem[0]);
           }
@@ -191,7 +190,7 @@ class RegProvAutocomplete extends React.Component {
       selectedItem: [item],
     });
 
-    let selectedRecord = this.getSuggestions(item)[0];
+    let selectedRecord = this.getSuggestions(item).filter(_record => _record.label === item)[0];
 
     this.props.removeFeatures("regioni_province");
 
