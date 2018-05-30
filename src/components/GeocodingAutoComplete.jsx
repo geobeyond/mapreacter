@@ -4,12 +4,12 @@ import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types';
 import keycode from 'keycode';
 import Downshift from 'downshift';
-import { withStyles } from 'material-ui/styles';
-import TextField from 'material-ui/TextField';
-import Paper from 'material-ui/Paper';
-import { MenuItem } from 'material-ui/Menu';
-import Chip from 'material-ui/Chip';
-import Typography from 'material-ui/Typography';
+import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Paper from '@material-ui/core/Paper';
+import MenuItem from '@material-ui/core/MenuItem';
+import Chip from '@material-ui/core/Chip';
+import Typography from '@material-ui/core/Typography';
 import * as mapActions from '@boundlessgeo/sdk/actions/map';
 import { mylocalizedstrings } from '../services/localizedstring';
 

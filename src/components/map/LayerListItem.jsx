@@ -2,7 +2,7 @@ import React from 'react';
 import { DragSource, DropTarget } from 'react-dnd';
 import { types, layerListItemSource, layerListItemTarget, collect, collectDrop } from '@boundlessgeo/sdk/components/layer-list-item';
 import SdkLayerListItem from '@boundlessgeo/sdk/components/layer-list-item';
-import IconButton from 'material-ui/IconButton';
+import IconButton from '@material-ui/core/IconButton';
 import { fitextent } from '../../actions/map';
 
 

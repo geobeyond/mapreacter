@@ -5,7 +5,7 @@ import  Adapter from 'enzyme-adapter-react-16';
 
 configure({ adapter: new Adapter() });
 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import WMSPopup from '../../components/map/wms/wmspopup';
 
 

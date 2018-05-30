@@ -5,8 +5,9 @@ import { HashRouter, Switch, Route, Link } from 'react-router-dom'
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
-import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
-import { Menu, MenuItem } from 'material-ui/Menu';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import { shallow, mount, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import TassonomiaAutoComplete from '../../components/TassonomiaAutoComplete';

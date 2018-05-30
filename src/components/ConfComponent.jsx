@@ -7,15 +7,13 @@ import * as printActions from '@boundlessgeo/sdk/actions/print';
 import * as drawingActions from '@boundlessgeo/sdk/actions/drawing';
 import { INTERACTIONS } from '@boundlessgeo/sdk/constants';
 
-import Menu, { MenuItem } from 'material-ui/Menu';
-import IconButton from 'material-ui/IconButton';
-import Dialog, {
-    DialogActions,
-    //DialogContent,
-    //DialogContentText,
-    DialogTitle,
-} from 'material-ui/Dialog';
-import Button from 'material-ui/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import IconButton from '@material-ui/core/IconButton';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
 
 import * as configActions from '../actions/map';
 import { mylocalizedstrings } from '../services/localizedstring';

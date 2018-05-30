@@ -4,8 +4,8 @@ import { withRouter } from 'react-router-dom'
 //import LineString from 'ol/geom/linestring';
 //import Polygon from 'ol/geom/polygon';
 //import { mylocalizedstrings } from '../services/localizedstring';
-import Paper from 'material-ui/Paper';
-import Typography from 'material-ui/Typography';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 
 const style = {
     zIndex: 1,

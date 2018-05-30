@@ -3,16 +3,12 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import SdkLayerList from '@boundlessgeo/sdk/components/layer-list';
 import LayerListItem from './map/LayerListItem';
-import Menu from 'material-ui/Menu';
-import IconButton from 'material-ui/IconButton';
-import Tooltip from 'material-ui/Tooltip';
-import Dialog, {
-    DialogActions,
-    //DialogContent,
-    //DialogContentText,
-    //DialogTitle,
-} from 'material-ui/Dialog';
-import Button from 'material-ui/Button';
+import Menu from '@material-ui/core/Menu';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import Button from '@material-ui/core/Button';
 import { mylocalizedstrings } from '../services/localizedstring';
 
 class TocComponent extends Component {

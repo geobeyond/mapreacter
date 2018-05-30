@@ -10,9 +10,9 @@ import SdkMapInfoReducer from '@boundlessgeo/sdk/reducers/mapinfo';
 import SdkDrawingReducer from '@boundlessgeo/sdk/reducers/drawing';
 import * as drawingActions from '@boundlessgeo/sdk/actions/drawing';
 
-import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
 
 import { createWMSLayer, createWMSSourceWithLayerName } from './services/wms/wmslayer'
 import { createVectorSourceFromStyle, createRasterSourceFromStyle } from './services/mapbox'

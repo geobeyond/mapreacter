@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import * as mapActions from '@boundlessgeo/sdk/actions/map';
-import { withStyles } from 'material-ui/styles';
-import Button from 'material-ui/Button';
-import Tooltip from 'material-ui/Tooltip';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const styles = theme => ({
   container: {
