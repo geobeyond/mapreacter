@@ -326,7 +326,7 @@ class App extends Component {
 
                     <RegProvAutocomplete />
 
-                    <GeocodingAutoComplete />
+                    { /* <GeocodingAutoComplete /> */ }
 
                     <LangComponent style={{ position: 'absolute', right: 40, width: '70px', color: 'currentColor' }} />
 
