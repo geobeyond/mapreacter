@@ -125,21 +125,21 @@ class ConfComponent extends Component {
                     </MenuItem>
 
                     <MenuItem onClick={(event) => {
-                        downloadFile(this.props.local.mapConfig.downloadCSVUrl, this.getActiveLayers(), '.csv');
+                        downloadFile(this.props.local.mapConfig.downloadCSVUrl, this.getActiveLayers(), '.csv', this.props.local.regProvComponent['filter']);
                         this.handleCloseMenu();
                     }}>
                         <i className="material-icons">file_download</i><span style={{ padding: '10px' }}>CSV</span>
                     </MenuItem>
 
                     <MenuItem onClick={(event) => {
-                        downloadFile(this.props.local.mapConfig.downloadShapefileUrl, this.getActiveLayers(), '.zip');
+                        downloadFile(this.props.local.mapConfig.downloadShapefileUrl, this.getActiveLayers(), '.zip', this.props.local.regProvComponent['filter']);
                         this.handleCloseMenu();
                     }}>
                         <i className="material-icons">file_download</i><span style={{ padding: '10px' }}>Shapefile</span>
                     </MenuItem>
 
                     <MenuItem onClick={(event) => {
-                        downloadFile(this.props.local.mapConfig.downloadPdfUrl, this.getActiveLayers(), '.pdf');
+                        downloadFile(this.props.local.mapConfig.downloadPdfUrl, this.getActiveLayers(), '.pdf', this.props.local.regProvComponent['filter']);
                         this.handleCloseMenu();
                     }} >
                         <i className="material-icons">file_download</i><span style={{ padding: '10px' }}>PDF</span>
