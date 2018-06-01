@@ -46,7 +46,7 @@ const LegendControl = function (opt_options) {
           theImage.class = 'sdk-legend';
           theImage.style.display = 'block';
           theImage.innerHTML =
-            '<img alt="' + rec.id + '" class="sdk-legend-image" ' +
+            '<img alt="" class="sdk-legend-image" ' +
             'src="' + options.geoserverurl + '/wms?SERVICE=WMS&REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=' + rec.id + '">';
           theInfo.appendChild(theImage);
         }
@@ -138,6 +138,8 @@ class Map extends Component {
             if (input) {
               input.wrappedInstance.map.addControl(new OverviewMap());
               //input.wrappedInstance.map.addControl(new FullScreen());
+              input.wrappedInstance.map.removeControl(this.theLegendControl);
+              this.theLegendControl = new LegendControl({ layers: this.props.layers, geoserverurl: this.props.local.mapConfig.geoserverurl });
               input.wrappedInstance.map.addControl(this.theLegendControl);
             }
           }}
