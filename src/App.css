@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*
  * Include the SDK stylesheet
  */
@@ -67,11 +68,15 @@
     overflow: auto; }
 
 .sdk-popup-closer {
+  font-style: normal;
   text-decoration: none;
   position: absolute;
   top: 7px;
   right: 8px;
   cursor: pointer; }
+
+.sdk-popup-closer:after {
+  content: "✖"; }
 
 .controls .sdk-slider-control {
   z-index: 1;
@@ -309,7 +314,7 @@ li {
 
 .toc-container {
   display: grid;
-  grid-template-columns: 200px 50px 180px; }
+  grid-template-columns: auto 50px 180px; }
 
 .toc-container .div1 {
   text-align: left;

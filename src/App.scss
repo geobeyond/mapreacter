@@ -91,7 +91,7 @@ li {
 
 .toc-container {
   display: grid;
-  grid-template-columns: 200px 50px 180px;
+  grid-template-columns: auto 50px 180px;
 }
 
 .toc-container .div1 {
