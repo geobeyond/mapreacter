@@ -7,6 +7,7 @@ import Menu from '@material-ui/core/Menu';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import { mylocalizedstrings } from '../services/localizedstring';
@@ -55,21 +56,25 @@ class TocComponent extends Component {
                     onClose={this.handleCloseMenu}
                 >
                     <Dialog
+                        fullWidth={true}
+                        maxWidth='md'
                         open={Boolean(anchorEl)}
                         onClose={() => { this.handleCloseMenu(); }}
                     >
-                        <ul className="sdk-layer-list" >
-                            <li className="sdk-layer" >
-                                <div className="toc-container">
-                                    <div className="div1"><span className="name">{mylocalizedstrings.layer}</span> </div>
-                                    <div className="div2"><span className="name">{mylocalizedstrings.onoff}</span> </div>
-                                    <div className="div3"><span className="name">{mylocalizedstrings.updown}</span> </div>
-                                </div>
-                            </li>
-                        </ul>
+                        <DialogContent>
                         <div style={{ overflowY: 'scroll', maxHeight: '300px' }}>
+                            <ul className="sdk-layer-list" >
+                                <li className="sdk-layer" >
+                                    <div className="toc-container">
+                                        <div className="div1"><span className="name">{mylocalizedstrings.layer}</span> </div>
+                                        <div className="div2"><span className="name">{mylocalizedstrings.onoff}</span> </div>
+                                        <div className="div3"><span className="name">{mylocalizedstrings.updown}</span> </div>
+                                    </div>
+                                </li>
+                            </ul>
                             <SdkLayerList layerClass={LayerListItem} />
                         </div>
+                        </DialogContent>
                         <DialogActions>
                             <Button onClick={() => { this.handleCloseMenu(); }}>
                                 {mylocalizedstrings.close}

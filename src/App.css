@@ -305,21 +305,24 @@ button.sdk-btn {
 .sdk-layer-list {
   color: #fff; }
 
+li.sdk-layer {
+  list-style: none; }
+
+li.sdk-layer-group {
+  list-style: none; }
+
 .ol-overviewmap {
   left: 0.5em;
   bottom: 2em; }
 
-li {
-  list-style: none; }
-
 .toc-container {
   display: grid;
-  grid-template-columns: auto 50px 180px; }
+  grid-template-columns: auto 100px 180px;
+  grid-auto-rows: minmax(50px, auto); }
 
 .toc-container .div1 {
   text-align: left;
-  height: 40px;
-  line-height: 40px; }
+  height: 40px; }
 
 .toc-container .div2 {
   text-align: center;
