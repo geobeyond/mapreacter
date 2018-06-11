@@ -44,7 +44,7 @@ class LayerListItem extends SdkLayerListItem {
     return this.props.connectDragSource(this.props.connectDropTarget((
       <li className="sdk-layer">
         <div className="toc-container">
-          <div className="div1"><span className="name">{layer.id}<br/>{layer.description}</span> </div>
+          <div className="div1" dangerouslySetInnerHTML={{__html: '<span className="name">'+layer.id+'<br/>'+layer.description+'</span>'}} />
           <div className="div2">{checkbox} </div>
           <div className="div3">{moveButtons}</div>
         </div>
