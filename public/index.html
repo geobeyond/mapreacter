@@ -37,7 +37,6 @@
   </style>
   <script>
     var config = {
-      basemaps: ['mapbox', 'osm'],
       mapbox: {
         type: 'raster',
         style: 'mapbox.satellite',
@@ -51,34 +50,47 @@
       source: 'http://localhost:8080/geoserver/wms?SERVICE=WMS&VERSION=1.1.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true',
       groups: {
         'mapbox:groups': {
-          base: {
-            name: 'Strati di base',
-          },
-          mare: {
-            name: 'Mare',
+          sitiprotetti: {
+            name: 'siti protetti',
           },
           specieehabitat: {
             name: 'specie e habitat',
           },
-          sitiprotetti: {
-            name: 'siti protetti',
+          mare: {
+            name: 'Mare',
+          },
+          base: {
+            name: 'Strati di base',
           },
         },
       }, 
       layers: [
         {
           group: 'base',
+          name: 'osm',
+          description: 'OpenStreetMap is a free, editable map of the whole world'
+        },
+        {
+          group: 'base',
+          name: 'mapbox',
+          description: 'Mapbox is a large provider of custom online maps for websites and applications'
+        },
+        {
+          group: 'mare',
           name: 'nnb:naturalita_marino_costiera',
           description: 'naturalità marino costiera'
         },
         {
           name: 'nnb:param_oss_polig4b',
+          filter: true,
         },
         {
           name: 'nnb:param_dist_geom4b',
+          filter: true,
         },
         {
           name: 'nnb:param_oss_point4b',
+          filter: true,
         },
       ],
       tassonomiaserviceurl: 'http://localhost:8080/MyRestServer/tassonomia?name=',

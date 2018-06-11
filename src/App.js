@@ -221,12 +221,6 @@ class App extends Component {
       },
     }));
 
-    if (this.config.basemaps) {
-      this.config.basemaps.reverse().forEach((basemap) => {
-        this._addBasemap(basemap, this.config[basemap]);
-      })
-    }
-
     if (this.config.source && this.config.layers) {
       this._createLayers(this.config.source, this.config.layers);
     }
@@ -342,64 +336,60 @@ class App extends Component {
   }
 
 
-  _addBasemap(basemap, basemapConfig = {}) {
-    console.log("_addBasemap()", basemap, basemapConfig);
-    if (basemap === 'osm') {
-      this.addOsmBasemap();
-    } else if (basemap === 'mapbox' && basemapConfig.style) {
-      this.addMapBoxBasemap();
-    }
-  }
   _createLayers(sourceUrl, layers) {
     console.log("_createLayers()", sourceUrl, layers);
     layers.forEach((rec, i) => {
-      let source = createWMSSourceWithLayerName(sourceUrl, rec.name);
-      const sourceId = 'source_' + i;
-      store.dispatch(mapActions.addSource(sourceId, source));
-      let _layer = createWMSLayer(sourceId, rec.name, rec.name, rec.group, rec.descrition);
-      _layer.layout = { visibility: 'visible' };
-      store.dispatch(mapActions.addLayer(_layer));
+      if (rec.name === 'osm') {
+        // add the OSM source
+        store.dispatch(mapActions.addOsmSource('osm'));
+
+        // and an OSM layer.
+        // Raster layers need not have any paint styles.
+        store.dispatch(mapActions.addLayer({
+          id: 'osm',
+          source: 'osm',
+          type: 'raster',
+          metadata: {
+            'mapbox:group': rec.group
+          },
+          description: rec.description
+        }));
+
+      } else if (rec.name === 'mapbox') {
+        let source;
+        switch (this.config.mapbox.type) {
+          case 'raster':
+            source = createRasterSourceFromStyle(this.config.mapbox.style, this.config.mapbox.token);
+            break;
+          default:
+            source = createVectorSourceFromStyle(this.config.mapbox.style);
+        }
+        store.dispatch(mapActions.addSource('mapbox', source));
+        store.dispatch(mapActions.addLayer({
+          metadata: {
+            'mapbox:group': rec.group,
+            'bnd:title': 'mapbox',
+          },
+          type: 'raster',
+          /*layout: {
+              visibility: 'none',
+          }, */
+          id: 'mapbox',
+          source: 'mapbox',
+          description: rec.description 
+        }));
+
+      } else {
+        let source = createWMSSourceWithLayerName(sourceUrl, rec.name);
+        const sourceId = 'source_' + i;
+        store.dispatch(mapActions.addSource(sourceId, source));
+        let _layer = createWMSLayer(sourceId, rec.name, rec.name, rec.group, rec.descrition);
+        _layer.layout = { visibility: 'visible' };
+        store.dispatch(mapActions.addLayer(_layer));
+      }
     });
   }
 
-  addMapBoxBasemap() {
-    let source;
-    switch (this.config.mapbox.type) {
-      case 'raster':
-        source = createRasterSourceFromStyle(this.config.mapbox.style, this.config.mapbox.token);
-        break;
-      default:
-        source = createVectorSourceFromStyle(this.config.mapbox.style);
-    }
-    store.dispatch(mapActions.addSource('mapbox', source));
-    store.dispatch(mapActions.addLayer({
-      metadata: {
-        'mapbox:group': 'base',
-        'bnd:title': 'mapbox',
-      },
-      type: 'raster',
-      /*layout: {
-          visibility: 'none',
-      }, */
-      id: 'mapbox',
-      source: 'mapbox',
-    }));
-  }
-  addOsmBasemap() {
-    // add the OSM source
-    store.dispatch(mapActions.addOsmSource('osm'));
-
-    // and an OSM layer.
-    // Raster layers need not have any paint styles.
-    store.dispatch(mapActions.addLayer({
-      id: 'osm',
-      source: 'osm',
-      type: 'raster',
-      metadata: {
-        'mapbox:group': 'base'
-      }
-    }));
-  }
 }
 
 export default App;

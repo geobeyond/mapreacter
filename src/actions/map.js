@@ -59,13 +59,15 @@ export const updateLayersWithViewparams = (params) => {
       console.log("map.updateLayersWithViewparams()", filter);
     }    
     local.mapConfig.layers.forEach((rec, i) => {
-      let sourceUrl = encodeURI(local.mapConfig.source + '&viewparams=' + viewparams.join(';')+filter);
-      console.log("map.updateLayersWithViewparams()", rec.name, sourceUrl);
-      let source = createWMSSourceWithLayerName(sourceUrl, rec.name);
-      const sourceId = 'source_' + i + local.mapConfig.viewparams[0] + (Math.floor(Math.random() * 1000) + 1);
-      dispatch(mapActions.addSource(sourceId, source));
-      dispatch(mapActions.updateLayer(rec.name, createWMSLayer(sourceId, rec.name, rec.name, rec.group, rec.description)));
-      dispatch(mapActions.orderLayer(rec.name));
+      if (rec.filter) {
+        let sourceUrl = encodeURI(local.mapConfig.source + '&viewparams=' + viewparams.join(';')+filter);
+        console.log("map.updateLayersWithViewparams()", rec.name, sourceUrl);
+        let source = createWMSSourceWithLayerName(sourceUrl, rec.name);
+        const sourceId = 'source_' + i + local.mapConfig.viewparams[0] + (Math.floor(Math.random() * 1000) + 1);
+        dispatch(mapActions.addSource(sourceId, source));
+        dispatch(mapActions.updateLayer(rec.name, createWMSLayer(sourceId, rec.name, rec.name, rec.group, rec.description)));
+        dispatch(mapActions.orderLayer(rec.name));
+      }
     })
   }
 }
