@@ -206,13 +206,7 @@ class App extends Component {
     this.config = window.config;
     store.dispatch(configActions.setConfig(this.config));
 
-    store.dispatch(mapActions.updateMetadata({
-      'mapbox:groups': {
-        base: {
-          name: 'Base Maps',
-        },
-      },
-    }));
+    store.dispatch(mapActions.updateMetadata(this.config.groups));
 
     // Background layers change the background color of
     // the map. They are not attached to a source.
@@ -358,11 +352,11 @@ class App extends Component {
   }
   _createLayers(sourceUrl, layers) {
     console.log("_createLayers()", sourceUrl, layers);
-    layers.forEach((layerName, i, layers_) => {
-      let source = createWMSSourceWithLayerName(sourceUrl, layerName);
+    layers.forEach((rec, i) => {
+      let source = createWMSSourceWithLayerName(sourceUrl, rec.name);
       const sourceId = 'source_' + i;
       store.dispatch(mapActions.addSource(sourceId, source));
-      let _layer = createWMSLayer(sourceId, layerName, layerName);
+      let _layer = createWMSLayer(sourceId, rec.name, rec.name, rec.group, rec.descrition);
       _layer.layout = { visibility: 'visible' };
       store.dispatch(mapActions.addLayer(_layer));
     });
