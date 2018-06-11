@@ -383,7 +383,7 @@ class App extends Component {
         let source = createWMSSourceWithLayerName(sourceUrl, rec.name);
         const sourceId = 'source_' + i;
         store.dispatch(mapActions.addSource(sourceId, source));
-        let _layer = createWMSLayer(sourceId, rec.name, rec.name, rec.group, rec.descrition);
+        let _layer = createWMSLayer(sourceId, rec.name, rec.name, rec.group, rec.description);
         _layer.layout = { visibility: 'visible' };
         store.dispatch(mapActions.addLayer(_layer));
       }
