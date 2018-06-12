@@ -14,7 +14,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 
-import { createWMSLayer, createWMSSourceWithLayerName } from './services/wms/wmslayer'
+import { createWMSSourceWithLayerName } from './services/wms/wmslayer'
 import { createVectorSourceFromStyle, createRasterSourceFromStyle } from './services/mapbox'
 import MapReducer from './reducers/map';
 import * as configActions from './actions/map';
@@ -383,9 +383,19 @@ class App extends Component {
         let source = createWMSSourceWithLayerName(sourceUrl, rec.name);
         const sourceId = 'source_' + i;
         store.dispatch(mapActions.addSource(sourceId, source));
-        let _layer = createWMSLayer(sourceId, rec.name, rec.name, rec.group, rec.description);
-        _layer.layout = { visibility: 'visible' };
-        store.dispatch(mapActions.addLayer(_layer));
+        store.dispatch(mapActions.addLayer({
+          metadata: {
+            'mapbox:group': rec.group,
+            'bnd:title': rec.name,
+            'bnd:queryable': true,
+          },
+          id: rec.name,
+          source: sourceId,
+          description: rec.description,
+          layout: { visibility: 'visible' },
+          flag_filter:  rec.flag_filter,
+          flag_legend:  rec.flag_legend,
+        }));
       }
     });
   }

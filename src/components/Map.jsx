@@ -34,21 +34,25 @@ const LegendControl = function (opt_options) {
     options.layers.forEach((rec) => {
       if (rec['layout']) {
         if (rec.layout.visibility === 'visible') {
-          console.log("LegendControl() rec=", rec);
 
-          var theLayerName = document.createElement('div');
-          theLayerName.style.display = 'block';
-          theLayerName.style.paddingRight = '10px';
-          theLayerName.innerHTML = '<span class="name">' + rec.id + '</span>';
-          theInfo.appendChild(theLayerName);
+          if (rec.flag_legend) {
+            console.log("LegendControl() add --->", JSON.stringify(rec));
+            var theLayerName = document.createElement('div');
+            theLayerName.style.display = 'block';
+            theLayerName.style.paddingRight = '10px';
+            theLayerName.innerHTML = '<span class="name">' + rec.id + '</span>';
+            theInfo.appendChild(theLayerName);
 
-          var theImage = document.createElement('div');
-          theImage.class = 'sdk-legend';
-          theImage.style.display = 'block';
-          theImage.innerHTML =
-            '<img alt="" class="sdk-legend-image" ' +
-            'src="' + options.geoserverurl + '/wms?SERVICE=WMS&REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=' + rec.id + '">';
-          theInfo.appendChild(theImage);
+            var theImage = document.createElement('div');
+            theImage.class = 'sdk-legend';
+            theImage.style.display = 'block';
+            theImage.innerHTML =
+              '<img alt="" class="sdk-legend-image" ' +
+              'src="' + options.geoserverurl + '/wms?SERVICE=WMS&REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=' + rec.id + '">';
+            theInfo.appendChild(theImage);
+          } else {
+            console.log("LegendControl() reject --->", JSON.stringify(rec));
+          }
         }
       }
     });

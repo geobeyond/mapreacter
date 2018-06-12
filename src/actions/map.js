@@ -1,5 +1,5 @@
 import * as mapActions from '@boundlessgeo/sdk/actions/map';
-import { createWMSLayer, createWMSSourceWithLayerName } from '../services/wms/wmslayer'
+import { createWMSSourceWithLayerName } from '../services/wms/wmslayer'
 
 export const viewparams = [];
 
@@ -59,13 +59,24 @@ export const updateLayersWithViewparams = (params) => {
       console.log("map.updateLayersWithViewparams()", filter);
     }    
     local.mapConfig.layers.forEach((rec, i) => {
-      if (rec.filter) {
-        let sourceUrl = encodeURI(local.mapConfig.source + '&viewparams=' + viewparams.join(';')+filter);
+      if (rec.flag_filter) {
+        let sourceUrl = encodeURI(local.mapConfig.source + '&viewparams=' + viewparams.join(';') + filter);
         console.log("map.updateLayersWithViewparams()", rec.name, sourceUrl);
         let source = createWMSSourceWithLayerName(sourceUrl, rec.name);
         const sourceId = 'source_' + i + local.mapConfig.viewparams[0] + (Math.floor(Math.random() * 1000) + 1);
         dispatch(mapActions.addSource(sourceId, source));
-        dispatch(mapActions.updateLayer(rec.name, createWMSLayer(sourceId, rec.name, rec.name, rec.group, rec.description)));
+        dispatch(mapActions.updateLayer(rec.name, {
+          metadata: {
+            'mapbox:group': rec.group,
+            'bnd:title': rec.name,
+            'bnd:queryable': true,
+          },
+          id: rec.name,
+          source: sourceId,
+          description: rec.description,
+          flag_filter:  rec.flag_filter,
+          flag_legend:  rec.flag_legend,
+        }));
         dispatch(mapActions.orderLayer(rec.name));
       }
     })
