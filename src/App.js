@@ -392,7 +392,7 @@ class App extends Component {
           id: rec.name,
           source: sourceId,
           description: rec.description,
-          layout: { visibility: 'visible' },
+          layout: rec.layout,
           flag_filter:  rec.flag_filter,
           flag_legend:  rec.flag_legend,
         }));

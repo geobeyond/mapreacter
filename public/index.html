@@ -50,14 +50,14 @@
       source: 'http://193.206.192.107/geoserver/wms?SERVICE=WMS&VERSION=1.1.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true',
       groups: {
         'mapbox:groups': {
-          sitiprotetti: {
-            name: 'siti protetti',
-          },
-          specieehabitat: {
-            name: 'specie e habitat',
-          },
           mare: {
             name: 'Mare',
+          },
+          specieehabitat: {
+            name: 'Specie e Habitat',
+          },
+          sitiprotetti: {
+            name: 'Siti Protetti',
           },
           base: {
             name: 'Strati di base',
@@ -65,36 +65,56 @@
         },
       }, 
       layers: [
-        {
-          group: 'base',
-          name: 'osm',
-          description: '<sub><i>OpenStreetMap</i> is a free, editable map of the whole world</sub>'
-        },
-        {
-          group: 'base',
-          name: 'mapbox',
-          description: '<sub><i>Mapbox</i> is a large provider of custom online maps for websites and applications</sub>'
-        },
-        {
-          group: 'mare',
-          name: 'nnb:naturalita_marino_costiera',
-          description: '<sub>naturalità marino costiera</sub>',
-        },
+        { group: 'base', name: 'osm', description: '<sub><i>OpenStreetMap</i> is a free, editable map of the whole world</sub>', layout: { visibility: 'visible' } },
+        { group: 'base', name: 'mapbox', description: '<sub><i>Mapbox</i> is a large provider of custom online maps for websites and applications</sub>', layout: { visibility: 'visible' } },
+        { group: 'base', name: 'nnb:admin_shp_it_10km', description: '<sub>griglia 10 km</sub>', layout: { visibility: 'none' } },
+        { group: 'base', name: 'nnb:com2016_wgs84_g   ', description: '<sub>comuni</sub>', layout: { visibility: 'none' } },
+        { group: 'base', name: 'nnb:cmprov2016_wgs84_g', description: '<sub>provincie</sub>', layout: { visibility: 'none' } },
+        { group: 'base', name: 'nnb:reg_2016_wgs84_g  ', description: '<sub>regioni</sub>', layout: { visibility: 'none' } },
+        { group: 'sitiprotetti', name: 'nnb:Aree_Importanti_Avifauna', description: '<sub>Siti protetti aree importanti avifauna</sub>', layout: { visibility: 'none' } },
+        { group: 'sitiprotetti', name: 'nnb:studi_federparchi', description: '<sub>Studi federparchi</sub>', layout: { visibility: 'none' } },
+        { group: 'sitiprotetti', name: 'nnb:sic_zps_ita_32', description: '<sub>Siti protetti (SIC ZPS ZSC)</sub>', layout: { visibility: 'none' } },
+        { group: 'sitiprotetti', name: 'nnb:Siti_protetti_Aree_Protette_EUAP', description: '<sub>Siti protetti Aree Protette EUAP</sub>', layout: { visibility: 'none' } },
+        { group: 'sitiprotetti', name: 'nnb:Siti_Protetti_Aree_Protette_Ramsar', description: '<sub>Siti protetti Aree Protette Ramsar</sub>', layout: { visibility: 'none' } },
+        { group: 'specieehabitat', name: 'nnb:carta_serie_vegetazione_italia', description: '<sub>serie vegetazione italia</sub>', layout: { visibility: 'none' } },
+        { group: 'specieehabitat', name: 'nnb:vegetazione naturale potenziale - ILC', description: '<sub>vegetazione naturale potenziale - ILC</sub>', layout: { visibility: 'none' } },
+        { group: 'specieehabitat', name: 'nnb:vegetazione naturale potenziale - ILC', description: '<sub>vegetazione naturale potenziale - VNP</sub>', layout: { visibility: 'none' } },
+        { group: 'specieehabitat', name: 'nnb:ecoregioni_italia', description: '<sub>ecoregioni</sub>', layout: { visibility: 'none' } },
+        { group: 'specieehabitat', name: 'nnb:ecosistemi_reali', description: '<sub>ecosistemi - naturalità</sub>', layout: { visibility: 'none' } },
+        { group: 'specieehabitat', name: 'nnb:ecosistemi_reali', description: '<sub>ecosistemi - qualità</sub>', layout: { visibility: 'none' } },
+        { group: 'specieehabitat', name: 'nnb:ecosistemi_reali', description: '<sub>ecosistemi reali</sub>', layout: { visibility: 'none' } },
+        { group: 'specieehabitat', name: 'nnb:ipa_nazionale', description: '<sub>IPA - Important plant areas</sub>', layout: { visibility: 'none' } },
+        { group: 'specieehabitat', name: 'nnb:foreste_vetuste', description: '<sub>foreste vetuste</sub>', layout: { visibility: 'none' } },
+        { group: 'specieehabitat', name: 'nnb:carta_dei_tipi_forestali_molise', description: '<sub>carta dei tipi forestali molise</sub>', layout: { visibility: 'none' } },
+        { group: 'specieehabitat', name: 'nnb:tipi_forestali_molise', description: '<sub>tipi forestali molise</sub>', layout: { visibility: 'none' } },
+        { group: 'specieehabitat', name: 'nnb:art17_species_distribution', description: '<sub>art.17 species distribution</sub>', layout: { visibility: 'none' } },
+        { group: 'specieehabitat', name: 'nnb:art17_habitats_distribution', description: '<sub>art.17 habitats distribution</sub>', layout: { visibility: 'none' } },
+        { group: 'specieehabitat', name: 'nnb:art12_birds_sensitives_nnb', description: '<sub>art.12 birds sensitives nnb</sub>', layout: { visibility: 'none' } },
+        { group: 'specieehabitat', name: 'nnb:art12_birds_distribution_nnb', description: '<sub>art.12 birds distribution nnb</sub>', layout: { visibility: 'none' } },
+        { group: 'specieehabitat', name: 'nnb:art12_birds_range_nnb', description: '<sub>art.12_birds range nnb</sub>', layout: { visibility: 'none' } },
+        { group: 'mare', name: 'nnb:sidimar_batimetria', description: '<sub>Sidimar - batimetria</sub>', layout: { visibility: 'none' } },
+        { group: 'mare', name: 'nnb:praterie_posidonia_oceanica', description: '<sub>Praterie posidonia oceanica</sub>', layout: { visibility: 'none' } },
+        { group: 'mare', name: 'nnb:naturalita_marino_costiera', description: '<sub>Naturalità marino costiera</sub>', layout: { visibility: 'none' } },
+        { group: 'mare', name: 'nnb:sedimenti_marino_costieri', description: '<sub>Sedimenti marino costieri</sub>', layout: { visibility: 'none' } },
+        { group: 'mare', name: 'nnb:biocenosi_bentoniche', description: '<sub>Biocenosi bentoniche</sub>', layout: { visibility: 'none' } },
         {
           name: 'nnb:param_oss_polig4b',
-          description: '<sub style="background-color:Tomato;">osservazioni</sub>',
+          description: '<sub>osservazioni</sub>',
+          layout: { visibility: 'visible' },
           flag_filter: true,
           flag_legend: true,
         },
         {
           name: 'nnb:param_dist_geom4b',
           description: '<sub>distribuzioni</sub>',
+          layout: { visibility: 'visible' },
           flag_filter: true,
           flag_legend: true,
         },
         {
           name: 'nnb:param_oss_point4b',
           description: '<sub>osservazioni</sub>',
+          layout: { visibility: 'visible' },
           flag_filter: true,
           flag_legend: true,
         },
@@ -105,22 +125,22 @@
       permalinkmasklength: 10,
       regprovconf: [
         {
-          url: 'http://193.206.192.107/geoserver/wfs?service=wfs&version=2.0.0&request=GetFeature&typeNames=nnb:Reg_2016_WGS84',
+          url: 'http://193.206.192.107/geoserver/wfs?service=wfs&version=2.0.0&request=GetFeature&typeNames=nnb:reg_2016_wgs84_g',
           cql_filter: '',
           wpsserviceurl: 'http://193.206.192.107/geoserver/ows?strict:true',
-          propertyname: 'REGIONE',  //&propertyName=REGIONE
+          propertyname: 'regione',  //&propertyName=REGIONE
         },
         {
-          url: 'http://193.206.192.107/geoserver/wfs?service=wfs&version=2.0.0&request=GetFeature&typeNames=nnb:CMprov2016_WGS84',
-          cql_filter: '&CQL_FILTER=FLAG_CMPRO=2',
+          url: 'http://193.206.192.107/geoserver/wfs?service=wfs&version=2.0.0&request=GetFeature&typeNames=nnb:cmprov2016_wgs84_g',
+          cql_filter: '&CQL_FILTER=flag_cmpro=2',
           wpsserviceurl: 'http://193.206.192.107/geoserver/ows?strict:true',
-          propertyname: 'PROVINCIA'
+          propertyname: 'provincia'
         },
         {
-          url: 'http://193.206.192.107/geoserver/wfs?service=wfs&version=2.0.0&request=GetFeature&typeNames=nnb:CMprov2016_WGS84',
-          cql_filter: '&CQL_FILTER=FLAG_CMPRO=1',
+          url: 'http://193.206.192.107/geoserver/wfs?service=wfs&version=2.0.0&request=GetFeature&typeNames=nnb:cmprov2016_wgs84_g',
+          cql_filter: '&CQL_FILTER=flag_cmpro=1',
           wpsserviceurl: 'http://193.206.192.107/geoserver/ows?strict:true',
-          propertyname: 'DEN_CMPRO'
+          propertyname: 'den_cmpro'
         }
       ],
 
@@ -159,9 +179,9 @@
           legend: 'Legenda',
           toc: 'TOC: elenco dei layer presenti in mappa',
           regprovlabel: 'Filtra per regione / provincia',
-          REGIONE: 'Regione',
-          PROVINCIA: 'Provincia',
-          DEN_CMPRO: 'Città Metropolitana',
+          regione: 'Regione',
+          provincia: 'Provincia',
+          den_cmpro: 'Città Metropolitana',
           addressautocompletelabel: 'Cerca località ...'
         },
         en: {
@@ -182,9 +202,9 @@
           legend: 'Legend',
           toc: 'TOC: layers list',
           regprovlabel: 'Filter by region / province',
-          REGIONE: 'Region',
-          PROVINCIA: 'Province',
-          DEN_CMPRO: 'Metropolitan City',
+          regione: 'Region',
+          provincia: 'Province',
+          den_cmpro: 'Metropolitan City',
           addressautocompletelabel: 'Search places ...'
         }
       },
