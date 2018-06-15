@@ -47,7 +47,7 @@ const styles = theme => ({
 
 function renderInput(inputProps) {
   const { InputProps, classes, ref, ...other } = inputProps;
-  console.log("GeocodingAutoComplete.renderInput()");
+  //console.log("GeocodingAutoComplete.renderInput()");
   return (
     <TextField
       InputProps={{
@@ -179,7 +179,7 @@ class GeocodingAutoComplete extends React.Component {
   }
 
   render() {
-    console.log("GeocodingAutoComplete.render()");
+    //console.log("GeocodingAutoComplete.render()");
     const { classes } = this.props;
     const { inputValue, selectedItem } = this.state;
 
