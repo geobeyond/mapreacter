@@ -27,7 +27,8 @@ const LegendControl = function (opt_options) {
   theInfo.style.display = 'none';
   theInfo.style.float = 'right';
   theInfo.style.maxHeight = '300px';
-  theInfo.style.overflowY = 'scroll';
+  theInfo.style.maxWidth = '400px';
+  theInfo.style.overflow = 'scroll';
   theInfo.style.padding = '10px';
 
   if (options['layers']) {
@@ -46,12 +47,11 @@ const LegendControl = function (opt_options) {
             var theImage = document.createElement('div');
             theImage.class = 'sdk-legend';
             theImage.style.display = 'block';
-            theImage.innerHTML =
-              '<img alt="" class="sdk-legend-image" ' +
-              'src="' + options.geoserverurl + '/wms?SERVICE=WMS&REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=' + rec.id + '">';
+            let _innerHTML = '<img alt="" class="sdk-legend-image" ' +
+              'src="' + options.geoserverurl + '/wms?SERVICE=WMS&REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=' + rec.name + (rec['styles']?'&STYLE=' + rec.styles:'') + '">';
+            console.log("LegendControl()", _innerHTML);
+            theImage.innerHTML = _innerHTML;
             theInfo.appendChild(theImage);
-          } else {
-            console.log("LegendControl() reject --->", JSON.stringify(rec));
           }
         }
       }

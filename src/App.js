@@ -339,23 +339,15 @@ class App extends Component {
   _createLayers(sourceUrl, layers) {
     console.log("_createLayers()", sourceUrl, layers);
     layers.forEach((rec, i) => {
-      if (rec.name === 'osm') {
+      if (rec.id === 'osm') {
         // add the OSM source
         store.dispatch(mapActions.addOsmSource('osm'));
 
         // and an OSM layer.
         // Raster layers need not have any paint styles.
-        store.dispatch(mapActions.addLayer({
-          id: 'osm',
-          source: 'osm',
-          type: 'raster',
-          metadata: {
-            'mapbox:group': rec.group
-          },
-          description: rec.description
-        }));
+        store.dispatch(mapActions.addLayer(rec));
 
-      } else if (rec.name === 'mapbox') {
+      } else if (rec.id === 'mapbox') {
         let source;
         switch (this.config.mapbox.type) {
           case 'raster':
@@ -365,37 +357,14 @@ class App extends Component {
             source = createVectorSourceFromStyle(this.config.mapbox.style);
         }
         store.dispatch(mapActions.addSource('mapbox', source));
-        store.dispatch(mapActions.addLayer({
-          metadata: {
-            'mapbox:group': rec.group,
-            'bnd:title': 'mapbox',
-          },
-          type: 'raster',
-          /*layout: {
-              visibility: 'none',
-          }, */
-          id: 'mapbox',
-          source: 'mapbox',
-          description: rec.description 
-        }));
+        store.dispatch(mapActions.addLayer(rec));
 
       } else {
-        let source = createWMSSourceWithLayerName(sourceUrl, rec.name);
+        let source = createWMSSourceWithLayerName(sourceUrl, rec.name, rec.styles);
         const sourceId = 'source_' + i;
         store.dispatch(mapActions.addSource(sourceId, source));
-        store.dispatch(mapActions.addLayer({
-          metadata: {
-            'mapbox:group': rec.group,
-            'bnd:title': rec.name,
-            'bnd:queryable': true,
-          },
-          id: rec.name,
-          source: sourceId,
-          description: rec.description,
-          layout: rec.layout,
-          flag_filter:  rec.flag_filter,
-          flag_legend:  rec.flag_legend,
-        }));
+        let _layer = Object.assign({source: sourceId}, rec);
+        store.dispatch(mapActions.addLayer(_layer));
       }
     });
   }

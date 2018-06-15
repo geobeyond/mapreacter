@@ -1,8 +1,8 @@
-export const createWMSSourceWithLayerName = (url, name, options = {tileSize: 256}) => {
+export const createWMSSourceWithLayerName = (url, name, styles='', options = {tileSize: 256}) => {
   return {
       type: 'raster',
       tileSize: options.tileSize,
-      tiles: [`${url}&LAYERS=${name}`],
+      tiles: [`${url}&LAYERS=${name}&STYLES=${styles}`],
   }
 }
 export const createWMSSource = (url, options = {tileSize: 256}) => {

@@ -61,23 +61,13 @@ export const updateLayersWithViewparams = (params) => {
     local.mapConfig.layers.forEach((rec, i) => {
       if (rec.flag_filter) {
         let sourceUrl = encodeURI(local.mapConfig.source + '&viewparams=' + viewparams.join(';') + filter);
-        console.log("map.updateLayersWithViewparams()", rec.name, sourceUrl);
-        let source = createWMSSourceWithLayerName(sourceUrl, rec.name);
+        console.log("map.updateLayersWithViewparams()", rec.id, sourceUrl);
+        let source = createWMSSourceWithLayerName(sourceUrl, rec.name, rec.styles);
         const sourceId = 'source_' + i + local.mapConfig.viewparams[0] + (Math.floor(Math.random() * 1000) + 1);
         dispatch(mapActions.addSource(sourceId, source));
-        dispatch(mapActions.updateLayer(rec.name, {
-          metadata: {
-            'mapbox:group': rec.group,
-            'bnd:title': rec.name,
-            'bnd:queryable': true,
-          },
-          id: rec.name,
-          source: sourceId,
-          description: rec.description,
-          flag_filter:  rec.flag_filter,
-          flag_legend:  rec.flag_legend,
-        }));
-        dispatch(mapActions.orderLayer(rec.name));
+        let _layer = Object.assign({source: sourceId}, rec);
+        dispatch(mapActions.updateLayer(rec.id, _layer));
+        dispatch(mapActions.orderLayer(rec.id));
       }
     })
   }
