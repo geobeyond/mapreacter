@@ -5,16 +5,15 @@ import { HashRouter, Switch, Route, Link } from 'react-router-dom'
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import { Menu, MenuItem } from 'material-ui/Menu';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import { shallow, mount, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import TassonomiaAutoComplete from '../../components/TassonomiaAutoComplete';
-import { tassonomiastore, newDataAction } from '../../components/tassonomiaredux';
 import { wrap } from 'module';
 import jsdom from 'jsdom';
 import MapReducer from '../../reducers/map';
-import TassonomiaReducer from '../../components/tassonomiaredux';
 
 
 configure({ adapter: new Adapter() });
@@ -42,16 +41,15 @@ export const store = createStore(
       //mapinfo: SdkMapInfoReducer,
       //print: SdkPrintReducer,
       local: MapReducer,
-      tassonomia: TassonomiaReducer,
     }),
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 test('renders correctly', () => {
     const component = renderer.create(
-        <MuiThemeProvider>
+        <MuiThemeProvider theme={createMuiTheme({ type: 'dark' })}>
             <Provider store={store}>
                 <HashRouter>
-                    <TassonomiaAutoComplete config={config} />
+                    <TassonomiaAutoComplete />
                 </HashRouter>
             </Provider>
         </MuiThemeProvider>

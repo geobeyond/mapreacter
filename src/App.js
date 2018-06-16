@@ -5,37 +5,30 @@ import thunkMiddleware from 'redux-thunk';
 import { Provider } from 'react-redux';
 import SdkMapReducer from '@boundlessgeo/sdk/reducers/map';
 import * as mapActions from '@boundlessgeo/sdk/actions/map';
-import SdkLayerList from '@boundlessgeo/sdk/components/layer-list';
-import * as printActions from '@boundlessgeo/sdk/actions/print';
 import SdkPrintReducer from '@boundlessgeo/sdk/reducers/print';
 import SdkMapInfoReducer from '@boundlessgeo/sdk/reducers/mapinfo';
 import SdkDrawingReducer from '@boundlessgeo/sdk/reducers/drawing';
 import * as drawingActions from '@boundlessgeo/sdk/actions/drawing';
-import { INTERACTIONS } from '@boundlessgeo/sdk/constants';
 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import IconMenu from 'material-ui/IconMenu';
-import IconButton from 'material-ui/IconButton';
-import FontIcon from 'material-ui/FontIcon';
-import { MenuItem } from 'material-ui/Menu';
-import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import SelectField from 'material-ui/SelectField';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
 
-import { createWMSLayer, createWMSSourceWithLayerName } from './services/wms/wmslayer'
+import { createWMSSourceWithLayerName } from './services/wms/wmslayer'
 import { createVectorSourceFromStyle, createRasterSourceFromStyle } from './services/mapbox'
 import MapReducer from './reducers/map';
 import * as configActions from './actions/map';
 import Map from './components/Map';
-import TassonomiaReducer from './components/tassonomiaredux';
 import TassonomiaAutoComplete from './components/TassonomiaAutoComplete';
-import LayerListItem from './components/map/LayerListItem';
-import { downloadFile } from './services/download';
-import { mylocalizedstrings } from './services/localizedstring';
+//import { mylocalizedstrings } from './services/localizedstring';
 import RefreshIndicatorComponent from './components/RefreshIndicatorComponent';
 import MeasureComponent from './components/MeasureComponent';
+import TocComponent from './components/TocComponent';
+import LangComponent from './components/LangComponent';
+import ConfComponent from './components/ConfComponent';
+import RegProvAutocomplete from './components/RegProvAutocomplete';
+import GeocodingAutoComplete from './components/GeocodingAutoComplete';
+
 
 import './App.css';
 //import {} from 'dotenv/config';
@@ -52,10 +45,11 @@ export const themiddleware = store => next => action => {
       console.log('themiddleware() current action:', action.type);
       break;
     default:
-      console.log('themiddleware() current action:', JSON.stringify(action, (key, value) => {
-        if (key === 'component') return '...';
-        return value;
-      }));
+      try {
+        console.log('themiddleware() current action:', JSON.stringify(action));
+      } catch (error) {
+        console.log('themiddleware() current action:', action);
+      }
       break;
   }
 
@@ -64,7 +58,8 @@ export const themiddleware = store => next => action => {
   switch (action.type) {
     case 'MAP_SET_VIEW':
       if (store.getState().local['viewparams']) {
-        const _index = store.getState().local.mapConfig.routing.length;
+        //const _index = store.getState().local.mapConfig.routing.length;
+        const _index = store.getState().local.mapConfig.permalinkmasklength;
         const _array = store.getState().local.viewparams.split("/");
         while (_array.length < (_index + 4)) {
           _array.push('*');
@@ -116,13 +111,15 @@ export const themiddleware = store => next => action => {
         '</wps:Execute>\n';
 
       const _array = store.getState().local.viewparams.split("/");
-      store.getState().local.mapConfig.routing.forEach((record, index) => {
-        if (_array[index] && _array[index] !== '*') {
-          _datafilter +=
-            '                <ogc:PropertyIsEqualTo>\n' +
-            '                  <ogc:PropertyName>' + record.field + '</ogc:PropertyName>\n' +
-            '                  <ogc:Literal>' + _array[index] + '</ogc:Literal>\n' +
-            '                </ogc:PropertyIsEqualTo>\n';
+      _array.forEach((_record, index) => {
+        if (index < 8) {
+          if (_record !== '*' && _record !== '') {
+            _datafilter +=
+              '                <ogc:PropertyIsEqualTo>\n' +
+              '                  <ogc:PropertyName>' + store.getState().local.mapConfig.routing[index % 4].field + '</ogc:PropertyName>\n' +
+              '                  <ogc:Literal>' + _record + '</ogc:Literal>\n' +
+              '                </ogc:PropertyIsEqualTo>\n';
+          }
         }
       });
 
@@ -191,7 +188,6 @@ export const store = createStore(
     print: SdkPrintReducer,
     drawing: SdkDrawingReducer,
     local: MapReducer,
-    tassonomia: TassonomiaReducer,
   }),
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
   applyMiddleware(themiddleware, thunkMiddleware));
@@ -203,11 +199,6 @@ class App extends Component {
     sharedialog: false,
   };
 
-  handleChangeLanguage = (event, index, value) => {
-    mylocalizedstrings.setLanguage(value);
-    this.setState({});
-  };
-
   constructor(props) {
     super(props);
     console.log("App()");
@@ -215,13 +206,7 @@ class App extends Component {
     this.config = window.config;
     store.dispatch(configActions.setConfig(this.config));
 
-    store.dispatch(mapActions.updateMetadata({
-      'mapbox:groups': {
-        base: {
-          name: 'Base Maps',
-        },
-      },
-    }));
+    store.dispatch(mapActions.updateMetadata(this.config.groups));
 
     // Background layers change the background color of
     // the map. They are not attached to a source.
@@ -236,27 +221,70 @@ class App extends Component {
       },
     }));
 
-    if (this.config.basemaps) {
-      this.config.basemaps.reverse().forEach((basemap) => {
-        this._addBasemap(basemap, this.config[basemap]);
-      })
-    }
-
     if (this.config.source && this.config.layers) {
       this._createLayers(this.config.source, this.config.layers);
     }
 
     const _array = window.location.hash.split("/");
-    if (_array.length === 8) {
+    const _index = store.getState().local.mapConfig.permalinkmasklength;
+    if (_array.length === _index + 5) {
       const _map = {
-        center: [Number(_array[5]), Number(_array[6])],
-        zoom: Number(_array[4])
+        center: [Number(_array[_index + 2]), Number(_array[_index + 3])],
+        zoom: Number(_array[_index + 1])
       };
       store.dispatch(mapActions.setView(_map.center, _map.zoom));
     } else if (this.config.map && this.config.map.center) {
       let zoom = this.config.map.zoom || 2;
       store.dispatch(mapActions.setView(this.config.map.center, zoom));
     }
+
+    store.dispatch(mapActions.addSource('regioni_province', {
+      type: 'geojson',
+      name: 'regioni_province',
+      //crs: { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+      data: {
+        type: "FeatureCollection",
+        features: []
+      }
+    }));
+    store.dispatch(mapActions.addLayer({
+      id: 'regioni_province',
+      source: 'regioni_province',
+      type: 'fill',
+      paint: {
+        'fill-opacity': 0.5,
+        'fill-color': '#feb24c',
+        'fill-outline-color': '#f03b20',
+      },
+      metadata: {
+        'bnd:hide-layerlist': true,
+        'bnd:queryable': false,
+      },      
+    }));
+
+    store.dispatch(mapActions.addSource('geocoding', {
+      type: 'geojson',
+      name: 'geocoding',
+      //crs: { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+      data: {
+        type: "FeatureCollection",
+        features: []
+      }
+    }));
+    store.dispatch(mapActions.addLayer({
+      id: 'geocoding',
+      source: 'geocoding',
+      type: 'fill',
+      paint: {
+        'fill-opacity': 0.5,
+        'fill-color': '#46f46f',
+        'fill-outline-color': '#f03b20',
+      },
+      metadata: {
+        'bnd:hide-layerlist': true,
+        'bnd:queryable': false,
+      },      
+    }));    
   }
 
   componentDidMount() {
@@ -267,153 +295,32 @@ class App extends Component {
     console.log("App.render()");
     return (
       <div style={{ width: '100%', height: '100%' }}>
-        <MuiThemeProvider muiTheme={getMuiTheme(this.config.ispraTheme)}>
+        <MuiThemeProvider theme={createMuiTheme(this.config.ispraTheme)}>
           <Provider store={store}>
             <HashRouter>
               <div style={{ width: '100%', height: '100%' }}>
-                <Dialog
-                  title={mylocalizedstrings.sharetitle}
-                  actions={[
-                    <FlatButton
-                      label={mylocalizedstrings.close}
-                      primary={true}
-                      onClick={() => { this.setState({ sharedialog: false }); }}
-                    />,
-                  ]}
-                  modal={false}
-                  open={this.state.sharedialog}
-                  onRequestClose={() => { this.setState({ sharedialog: false }); }}
-                >
-                  {window.location.href}
-                </Dialog>
+
                 <RefreshIndicatorComponent />
                 <MeasureComponent />
-                <Toolbar style={{ height: '60px' }}>
-                  <ToolbarGroup firstChild={true} style={{ margin: '5px' }}>
-                    <IconMenu
-                      style={{ margin: '5px' }}
-                      iconButtonElement={
-                        <FontIcon className="material-icons">more_vert</FontIcon>
-                      }
-                    >
-                      <MenuItem onClick={(event) => {
-                        let url = this.config.helpUrl + mylocalizedstrings.getLanguage() + this.config.helpDoc;
-                        let win = window.open(url, '_blank');
-                        win.focus();
-                      }} >
-                        <i class="material-icons">help</i>
-                      </MenuItem>
 
-                      <MenuItem
-                        onClick={(event) => {
-                          var _txt = document.createElement('textarea');
-                          _txt.value = window.location.href; //chrome
-                          _txt.textContent = window.location.href; //firefox
-                          document.body.appendChild(_txt);
-                          _txt.select();
-                          document.execCommand('copy');
-                          console.log(_txt);
-                          document.body.removeChild(_txt);
-                          this.setState({ sharedialog: true });
-                        }} >
-                        <i class="material-icons">share</i>
-                      </MenuItem>
+                <AppBar position="static">
+                  <Toolbar style={{ height: '80px' }}>
 
-                      <MenuItem
-                        menuItems={[
-                          <MenuItem
-                            primaryText="PNG"
-                            onClick={(event) => {
-                              store.dispatch(printActions.exportMapImage());
-                            }}
-                          />,
-                          <MenuItem
-                            primaryText="CSV"
-                            onClick={(event) => {
-                              downloadFile(this.config.downloadCSVUrl, this.getActiveLayers(), '.csv');
-                            }}
-                          />,
-                          <MenuItem
-                            primaryText="Shapefile"
-                            onClick={(event) => {
-                              downloadFile(this.config.downloadShapefileUrl, this.getActiveLayers(), '.zip');
-                            }}
-                          />,
-                          <MenuItem
-                            primaryText="Pdf"
-                            onClick={(event) => {
-                              downloadFile(this.config.downloadPdfUrl, this.getActiveLayers(), '.pdf');
-                            }}
-                          />
-                        ]}
-                      >
-                        <i class="material-icons">file_download</i>
-                      </MenuItem>
+                    <ConfComponent />
 
-                      <MenuItem
-                        menuItems={[
-                          <MenuItem
-                            primaryText={mylocalizedstrings.line}
-                            onClick={(event) => {
-                              store.dispatch(drawingActions.startMeasure(INTERACTIONS.measure_line));
-                              store.dispatch(configActions.changeMeasureComponent({ open: true }));
-                            }}
-                          />,
-                          <MenuItem
-                            primaryText={mylocalizedstrings.polygon}
-                            onClick={(event) => {
-                              store.dispatch(drawingActions.startMeasure(INTERACTIONS.measure_polygon));
-                              store.dispatch(configActions.changeMeasureComponent({ open: true }));
-                            }}
-                          />
-                        ]}
-                      >
-                        <i class="material-icons">photo_size_select_small</i>
-                      </MenuItem>
-                      <MenuItem onClick={(event) => {
-                        let zoom = this.config.map.zoom || 2;
-                        store.dispatch(mapActions.setView(this.config.map.center, zoom));
-                      }} >
-                        <i class="material-icons">fullscreen</i>
-                      </MenuItem>
-                    </IconMenu>
-                    <IconMenu
-                      style={{ margin: '5px' }}
-                      iconButtonElement={
-                        <IconButton>
-                          <FontIcon className="material-icons">folder_open</FontIcon>
-                        </IconButton>
-                      }
-                    >
-                      <ul className="sdk-layer-list" >
-                        <li className="sdk-layer" >
-                          <div className="toc-container">
-                            <div className="div1"><span className="name">{mylocalizedstrings.layer}</span> </div>
-                            <div className="div2"><span className="name">{mylocalizedstrings.onoff}</span> </div>
-                            <div className="div3"><span className="name">{mylocalizedstrings.updown}</span> </div>
-                            <div className="div4"><span className="name">{mylocalizedstrings.legend}</span> </div>
-                          </div>
-                        </li>
-                      </ul>
-                      <hr />
-                      <SdkLayerList layerClass={LayerListItem} />
-                    </IconMenu>
-                    <TassonomiaAutoComplete config={this.config} style={
-                      window.screen.width <= 480 ? { margin: '5px', width: '140px' } : { margin: '5px', width: '400px' }
-                    } />
-                  </ToolbarGroup>
-                  <ToolbarGroup firstChild={false} style={{ margin: '5px' }}>
-                    <SelectField
-                      floatingLabelText={mylocalizedstrings.selectLanguage}
-                      value={mylocalizedstrings.getLanguage()}
-                      onChange={this.handleChangeLanguage}
-                      style={{ width: '100px' }}
-                    >
-                      <MenuItem value={'it'} primaryText="Italiano" />
-                      <MenuItem value={'en'} primaryText="English" />
-                    </SelectField>
-                  </ToolbarGroup>
-                </Toolbar>
+                    <TocComponent />
+
+                    <TassonomiaAutoComplete />
+
+                    <RegProvAutocomplete />
+
+                    <GeocodingAutoComplete />
+
+                    <LangComponent style={{ position: 'absolute', right: 40, width: '70px', color: 'currentColor' }} />
+
+                  </Toolbar>
+                </AppBar>
+
                 <Switch>
                   <Route path="/:viewparams+" render={(props) => (
                     <Map {...props} />
@@ -429,75 +336,39 @@ class App extends Component {
   }
 
 
-  _addBasemap(basemap, basemapConfig = {}) {
-    console.log("_addBasemap()", basemap, basemapConfig);
-    if (basemap === 'osm') {
-      this.addOsmBasemap();
-    } else if (basemap === 'mapbox' && basemapConfig.style) {
-      this.addMapBoxBasemap();
-    }
-  }
   _createLayers(sourceUrl, layers) {
     console.log("_createLayers()", sourceUrl, layers);
-    layers.forEach((layerName, i, layers_) => {
-      let source = createWMSSourceWithLayerName(sourceUrl, layerName);
-      const sourceId = 'source_' + i;
-      store.dispatch(mapActions.addSource(sourceId, source));
-      let _layer = createWMSLayer(sourceId, layerName, layerName);
-      _layer.layout = { visibility: 'visible' };
-      store.dispatch(mapActions.addLayer(_layer));
-    });
-  }
+    layers.forEach((rec, i) => {
+      if (rec.id === 'osm') {
+        // add the OSM source
+        store.dispatch(mapActions.addOsmSource('osm'));
 
-  addMapBoxBasemap() {
-    let source;
-    switch (this.config.mapbox.type) {
-      case 'raster':
-        source = createRasterSourceFromStyle(this.config.mapbox.style, this.config.mapbox.token);
-        break;
-      default:
-        source = createVectorSourceFromStyle(this.config.mapbox.style);
-    }
-    store.dispatch(mapActions.addSource('mapbox', source));
-    store.dispatch(mapActions.addLayer({
-      metadata: {
-        'mapbox:group': 'base',
-        'bnd:title': 'mapbox',
-      },
-      type: 'raster',
-      /*layout: {
-          visibility: 'none',
-      }, */
-      id: 'mapbox',
-      source: 'mapbox',
-    }));
-  }
-  addOsmBasemap() {
-    // add the OSM source
-    store.dispatch(mapActions.addOsmSource('osm'));
+        // and an OSM layer.
+        // Raster layers need not have any paint styles.
+        store.dispatch(mapActions.addLayer(rec));
 
-    // and an OSM layer.
-    // Raster layers need not have any paint styles.
-    store.dispatch(mapActions.addLayer({
-      id: 'osm',
-      source: 'osm',
-      type: 'raster',
-      metadata: {
-        'mapbox:group': 'base'
-      }
-    }));
-  }
-  getActiveLayers() {
-    let _array = [];
-    store.getState().map.layers.forEach((rec) => {
-      if (rec['layout']) {
-        if (rec.layout.visibility === 'visible') {
-          _array.push(rec.id);
+      } else if (rec.id === 'mapbox') {
+        let source;
+        switch (this.config.mapbox.type) {
+          case 'raster':
+            source = createRasterSourceFromStyle(this.config.mapbox.style, this.config.mapbox.token);
+            break;
+          default:
+            source = createVectorSourceFromStyle(this.config.mapbox.style);
         }
+        store.dispatch(mapActions.addSource('mapbox', source));
+        store.dispatch(mapActions.addLayer(rec));
+
+      } else {
+        let source = createWMSSourceWithLayerName(sourceUrl, rec.name, rec.styles);
+        const sourceId = 'source_' + i;
+        store.dispatch(mapActions.addSource(sourceId, source));
+        let _layer = Object.assign({source: sourceId}, rec);
+        store.dispatch(mapActions.addLayer(_layer));
       }
     });
-    return _array;
   }
+
 }
 
 export default App;

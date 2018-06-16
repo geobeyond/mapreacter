@@ -1,13 +1,10 @@
 @import "@boundlessgeo/sdk/stylesheet/sdk.scss";
 
-.sdk-zoom-control {
-    background-color: transparent; 
-}
 
 .sdk-map {
   //position: relative; 
   width: 100%;
-  height: calc(100% - 60px); }
+  height: calc(100% - 80px); }
 
 .sdk-popup {
     font-size: 14px;
@@ -42,7 +39,10 @@
       max-height: 240px;
       overflow: auto; }
 
-      
+.sdk-popup-content{
+  min-width: 13rem;
+}
+
 .sdk-popup-closer {
     text-decoration: none;
     position: absolute;
@@ -50,50 +50,86 @@
     right: 8px;
     cursor: pointer; }
 
+.sdk-popup-closer:after {
+  content: "X";
+}
+
 .sdk-legend-image {
   vertical-align: middle; }
+
+/** SDK button. */
+button.sdk-btn {
+  background-color: #00601d;
+  color: #fff;
+  display: inline-block;
+  font-weight: 400;
+  line-height: 1.25;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: .5rem 1rem;
+  font-size: 1rem;
+  border-radius: .25rem;
+}  
+
+.sdk-layer-list {
+  color: #fff; }
+
+li.sdk-layer {
+  list-style: none; 
+}
+li.sdk-layer-group {
+  list-style: none; 
+}
 
 .ol-overviewmap {
     left: 0.5em;
     bottom: 2em;
-}    
-
-
-
-li {
-  list-style: none;
 }
 
 .toc-container {
   display: grid;
-  grid-template-columns: 200px 50px 110px 90px;
+  grid-template-columns: auto 100px 180px;
 }
 
 .toc-container .div1 {
   text-align: left;
-  height: 40px; 
-  line-height: 40px;
+  padding: 5px;
 }
 
 .toc-container .div2 {
   text-align: center;
-  height: 40px; 
-  line-height: 40px;
 }
 
 .toc-container .div3 {
   text-align: center;
-  height: 40px; 
-  line-height: 40px;
-}
-
-.toc-container .div4 {
-  text-align: center;
-  height: 40px; 
-  line-height: 40px;
 }
 
 .toc-container .name {
   font-family: "Courier New", Courier, monospace;
   font-size: 14px;
+}
+
+.toc-container input[type=checkbox] {
+  height: 48px;
+}
+
+.legend-control {
+  top: 65px;
+  left: .5em;
+}
+
+.legend-control .name {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 14px; 
+} 
+
+.ol-control {
+  background-color: #FFFFFF;
+}
+.ol-control:hover {
+  background-color: #FFFFFF;
 }

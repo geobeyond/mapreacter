@@ -45,9 +45,12 @@ export const downloadShapefile = (geoserverurl, layers) => {
     });
 }
 
-export const downloadFile = (serviceurl, layers, filenameExtension) => {
+export const downloadFile = (serviceurl, layers, filenameExtension, filter) => {
+    if (!filter) {
+        filter='';
+    }
     layers.forEach(element => {
-        let url = serviceurl.replace('<LAYER>', element).replace('<VIEWPARAMS>', viewparams.join(';'));
+        let url = serviceurl.replace('<LAYER>', element).replace('<VIEWPARAMS>', viewparams.join(';')+filter);
         console.log("downloadFile()", url);
         
         if (url.includes('outputFormat=CSV')) {
