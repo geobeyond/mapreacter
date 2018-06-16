@@ -2,7 +2,8 @@ let defaultState = {
   mapConfig: {},
   viewparams: '',
   refreshIndicator: { status: 'hide' },
-  measureComponent: { open: false }
+  measureComponent: { open: false },
+  regProvComponent: {}
 };
 
 export default function MapReducer(state = defaultState, action) {
@@ -28,6 +29,18 @@ export default function MapReducer(state = defaultState, action) {
     case 'LOCAL.CHANGEMEASURECOMPONENT':
       state = Object.assign({}, state, {
         measureComponent: action.payload['measureComponent']
+      });
+      return state;
+
+    case 'LOCAL.CHANGELANG':
+      state = Object.assign({}, state, {
+        lang: action.payload['lang'],
+      });
+      return state;
+
+    case 'LOCAL.CHANGEREGPROVCOMPONENT':
+      state = Object.assign({}, state, {
+        regProvComponent: action.payload['regProvComponent']
       });
       return state;
 

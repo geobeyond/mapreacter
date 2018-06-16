@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*
  * Include the SDK stylesheet
  */
@@ -67,11 +68,15 @@
     overflow: auto; }
 
 .sdk-popup-closer {
+  font-style: normal;
   text-decoration: none;
   position: absolute;
   top: 7px;
   right: 8px;
   cursor: pointer; }
+
+.sdk-popup-closer:after {
+  content: "✖"; }
 
 .controls .sdk-slider-control {
   z-index: 1;
@@ -223,12 +228,9 @@ li.sdk-layer {
   width: 100%;
   height: 100%; }
 
-.sdk-zoom-control {
-  background-color: transparent; }
-
 .sdk-map {
   width: 100%;
-  height: calc(100% - 60px); }
+  height: calc(100% - 80px); }
 
 .sdk-popup {
   font-size: 14px;
@@ -267,6 +269,9 @@ li.sdk-layer {
   max-height: 240px;
   overflow: auto; }
 
+.sdk-popup-content {
+  min-width: 13rem; }
+
 .sdk-popup-closer {
   text-decoration: none;
   position: absolute;
@@ -274,14 +279,73 @@ li.sdk-layer {
   right: 8px;
   cursor: pointer; }
 
+.sdk-popup-closer:after {
+  content: "X"; }
+
+.sdk-legend-image {
+  vertical-align: middle; }
+
+/** SDK button. */
+button.sdk-btn {
+  background-color: #00601d;
+  color: #fff;
+  display: inline-block;
+  font-weight: 400;
+  line-height: 1.25;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: .5rem 1rem;
+  font-size: 1rem;
+  border-radius: .25rem; }
+
+.sdk-layer-list {
+  color: #fff; }
+
+li.sdk-layer {
+  list-style: none; }
+
+li.sdk-layer-group {
+  list-style: none; }
+
 .ol-overviewmap {
   left: 0.5em;
   bottom: 2em; }
 
-.name {
-  font-family: "Courier New", Courier, monospace;
-  font-size: 14px;
-  white-space: pre; }
+.toc-container {
+  display: grid;
+  grid-template-columns: auto 100px 180px; }
 
-.name::after {
-  content: "\0020"; }
+.toc-container .div1 {
+  text-align: left;
+  padding: 5px; }
+
+.toc-container .div2 {
+  text-align: center; }
+
+.toc-container .div3 {
+  text-align: center; }
+
+.toc-container .name {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 14px; }
+
+.toc-container input[type=checkbox] {
+  height: 48px; }
+
+.legend-control {
+  top: 65px;
+  left: .5em; }
+
+.legend-control .name {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 14px; }
+
+.ol-control {
+  background-color: #FFFFFF; }
+
+.ol-control:hover {
+  background-color: #FFFFFF; }

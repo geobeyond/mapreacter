@@ -2,29 +2,55 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import * as mapActions from '@boundlessgeo/sdk/actions/map';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
-import ContentRemove from 'material-ui/svg-icons/content/remove';
+const styles = theme => ({
+  container: {
+    position: 'absolute',
+    zIndex: 1,
+    top: 10,
+    left: 10,
+  },
+});
 
 class ZoomControl extends React.Component {
   render() {
-    let className = 'sdk-zoom-control';
-    if (this.props.className) {
-      className += ' ' + this.props.className;
-    }
+    const { classes } = this.props;
+    console.log("ZoomControl.render()");
+
     return (
-      <div className={className} style={this.props.style}>
-        <FloatingActionButton className='sdk-zoom-in' onClick={this.props.zoomIn} title={this.props.zoomInTitle} mini={true} ><ContentAdd /></FloatingActionButton>
-        <FloatingActionButton className='sdk-zoom-out' onClick={this.props.zoomOut} title={this.props.zoomOutTitle} mini={true} ><ContentRemove /></FloatingActionButton>
+      <div className={classes.container}>
+        <Tooltip title={this.props.zoomInTitle}>
+          <Button
+            onClick={this.props.zoomIn}
+            variant="fab"
+            color="primary"
+            mini={true}
+            className='sdk-zoom-in'
+          >
+            <i className="material-icons">add</i>
+          </Button>
+        </Tooltip>
+        <Tooltip title={this.props.zoomOutTitle}>
+          <Button
+            onClick={this.props.zoomOut}
+            variant="fab"
+            color="primary"
+            mini={true}
+            className='sdk-zoom-out'
+          >
+            <i className="material-icons">remove</i>
+          </Button>
+        </Tooltip>
       </div>
     );
   }
 }
 
 ZoomControl.propTypes = {
-  className: PropTypes.string,
-  style: PropTypes.object,
+  classes: PropTypes.object.isRequired,
   zoomInTitle: PropTypes.string,
   zoomOutTitle: PropTypes.string,
 };
@@ -45,4 +71,4 @@ function mapDispatchToProps(dispatch) {
   };
 };
 
-export default connect(null, mapDispatchToProps)(ZoomControl);
+export default connect(null, mapDispatchToProps)((withStyles(styles)(ZoomControl)));

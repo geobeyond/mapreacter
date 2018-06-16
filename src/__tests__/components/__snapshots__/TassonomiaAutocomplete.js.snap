@@ -2,126 +2,48 @@
 
 exports[`renders correctly 1`] = `
 <div
-  style={
-    Object {
-      "display": "inline-block",
-      "muiPrepared": true,
-      "position": "relative",
-      "width": 256,
-    }
-  }
+  className="TassonomiaAutoComplete-root-1"
 >
   <div
-    className="tassonomiaautocomplete"
-    style={
-      Object {
-        "backgroundColor": "transparent",
-        "cursor": "auto",
-        "display": "inline-block",
-        "fontFamily": "Roboto, sans-serif",
-        "fontSize": 16,
-        "height": 48,
-        "lineHeight": "24px",
-        "muiPrepared": true,
-        "position": "relative",
-        "transition": "height 200ms cubic-bezier(0.23, 1, 0.32, 1) 0ms",
-        "width": 256,
-      }
-    }
+    className="TassonomiaAutoComplete-container-2"
   >
     <div
-      style={
-        Object {
-          "bottom": 12,
-          "color": "rgba(0, 0, 0, 0.3)",
-          "muiPrepared": true,
-          "opacity": 1,
-          "position": "absolute",
-          "transition": "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms",
-        }
-      }
-    >
-      Tassonomia ...
-    </div>
-    <input
-      autoComplete="off"
-      disabled={false}
-      id="tassonomiaautocomplete"
+      aria-describedby={undefined}
+      className="MuiFormControl-root-6 MuiFormControl-fullWidth-9"
       onBlur={[Function]}
-      onChange={[Function]}
       onFocus={[Function]}
-      onKeyDown={[Function]}
-      open={false}
-      style={
-        Object {
-          "WebkitOpacity": 1,
-          "WebkitTapHighlightColor": "rgba(0,0,0,0)",
-          "appearance": "textfield",
-          "backgroundColor": "rgba(0,0,0,0)",
-          "border": "none",
-          "color": "rgba(0, 0, 0, 0.87)",
-          "cursor": "inherit",
-          "font": "inherit",
-          "height": "100%",
-          "muiPrepared": true,
-          "outline": "none",
-          "padding": 0,
-          "position": "relative",
-          "width": "100%",
-        }
-      }
-      type="text"
-      value=""
-    />
-    <div>
-      <hr
-        aria-hidden="true"
-        style={
-          Object {
-            "borderBottomStyle": "solid",
-            "borderBottomWidth": 1,
-            "borderColor": "#e0e0e0",
-            "borderLeft": "none",
-            "borderRight": "none",
-            "borderTop": "none",
-            "bottom": 8,
-            "boxSizing": "content-box",
-            "margin": 0,
-            "muiPrepared": true,
-            "position": "absolute",
-            "width": "100%",
-          }
-        }
-      />
-      <hr
-        aria-hidden="true"
-        style={
-          Object {
-            "borderBottomStyle": "solid",
-            "borderBottomWidth": 2,
-            "borderColor": "#00bcd4",
-            "borderLeft": "none",
-            "borderRight": "none",
-            "borderTop": "none",
-            "bottom": 8,
-            "boxSizing": "content-box",
-            "margin": 0,
-            "muiPrepared": true,
-            "position": "absolute",
-            "transform": "scaleX(0)",
-            "transition": "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms",
-            "width": "100%",
-          }
-        }
-      />
+    >
+      <div
+        aria-activedescendant={null}
+        aria-autocomplete="list"
+        aria-expanded={false}
+        className="MuiInput-root-10 TassonomiaAutoComplete-inputRoot-5 MuiInput-fullWidth-17 MuiInput-formControl-11 MuiInput-underline-14"
+        role="combobox"
+      >
+        <input
+          aria-invalid={false}
+          aria-required={false}
+          autoComplete="off"
+          autoFocus={undefined}
+          className="MuiInput-input-18"
+          defaultValue={undefined}
+          disabled={false}
+          id="integration-downshift-multiple"
+          name={undefined}
+          onBlur={[Function]}
+          onChange={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          onKeyUp={undefined}
+          placeholder="Tassonomia ..."
+          readOnly={undefined}
+          required={undefined}
+          rows={undefined}
+          type="text"
+          value=""
+        />
+      </div>
     </div>
   </div>
-  <div
-    style={
-      Object {
-        "display": "none",
-      }
-    }
-  />
 </div>
 `;

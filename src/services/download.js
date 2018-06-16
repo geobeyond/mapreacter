@@ -45,15 +45,15 @@ export const downloadShapefile = (geoserverurl, layers) => {
     });
 }
 
-export const downloadFile = (geoserverurl, layers, urlparameters) => {
-    console.log("downloadFile()", geoserverurl, layers, urlparameters);
+export const downloadFile = (serviceurl, layers, filenameExtension, filter) => {
+    if (!filter) {
+        filter='';
+    }
     layers.forEach(element => {
-        const url = geoserverurl + '/ows?service=WFS&version=1.0.0&request=GetFeature' +
-            urlparameters +
-            '&typeName=' + element +
-            '&viewparams=' + viewparams.join(';');
-
-        if (urlparameters.includes('outputFormat=CSV')) {
+        let url = serviceurl.replace('<LAYER>', element).replace('<VIEWPARAMS>', viewparams.join(';')+filter);
+        console.log("downloadFile()", url);
+        
+        if (url.includes('outputFormat=CSV')) {
             console.log("GET", url);
             axios.get(url)
                 .then((response) => {
@@ -62,7 +62,7 @@ export const downloadFile = (geoserverurl, layers, urlparameters) => {
                     var hiddenElement = document.createElement('a');
                     hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(response.data);
                     hiddenElement.target = '_blank';
-                    hiddenElement.download = element + '.csv';
+                    hiddenElement.download = element + filenameExtension;
                     hiddenElement.click();
 
                 })
@@ -73,7 +73,8 @@ export const downloadFile = (geoserverurl, layers, urlparameters) => {
             var hiddenElement = document.createElement('a');
             hiddenElement.href = url;
             hiddenElement.target = '_blank';
-            hiddenElement.download = element + '.zip';
+            hiddenElement.download = element + filenameExtension;
+            console.log("hiddenElement:", hiddenElement);
             hiddenElement.click();
         }
     });

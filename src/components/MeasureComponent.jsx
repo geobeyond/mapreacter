@@ -4,7 +4,8 @@ import { withRouter } from 'react-router-dom'
 //import LineString from 'ol/geom/linestring';
 //import Polygon from 'ol/geom/polygon';
 //import { mylocalizedstrings } from '../services/localizedstring';
-import Paper from 'material-ui/Paper';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 
 const style = {
     zIndex: 1,
@@ -35,9 +36,9 @@ class MeasureComponent extends Component {
                         }
                     }
                     if (_length > 1000) {
-                        output = <span>{new Intl.NumberFormat().format(Math.round(_length * 100 / 1000) / 100) + ' km'}</span>;
+                        output = <Typography component="p">{new Intl.NumberFormat().format(Math.round(_length * 100 / 1000) / 100) + ' km'}</Typography>;
                     } else {
-                        output = <span>{new Intl.NumberFormat().format(Math.round(_length * 100) / 100) + ' m'}</span>;
+                        output = <Typography component="p">{new Intl.NumberFormat().format(Math.round(_length * 100) / 100) + ' m'}</Typography>;
                     }
 
                 } else if (nextProps.feature.geometry.type === "Polygon") {
@@ -48,9 +49,9 @@ class MeasureComponent extends Component {
                         }
                     }
                     if (_area > 1000) {
-                        output = <span>{new Intl.NumberFormat().format(Math.round(_area * 100 / 1000) / 100) + ' km'}<sup>2</sup></span>;
+                        output = <Typography component="p">{new Intl.NumberFormat().format(Math.round(_area * 100 / 1000) / 100) + ' km'}<sup>2</sup></Typography>;
                     } else {
-                        output = <span>{new Intl.NumberFormat().format(Math.round(_area * 100) / 100) + ' m'}<sup>2</sup></span>;
+                        output = <Typography component="p">{new Intl.NumberFormat().format(Math.round(_area * 100) / 100) + ' m'}<sup>2</sup></Typography>;
                     }
                 }
             }
@@ -64,7 +65,11 @@ class MeasureComponent extends Component {
             return null;
         }
         return (
-            <Paper style={style} zDepth={3} rounded={true} circle={false}>
+            <Paper
+                style={style}
+                elevation={3}
+                square={true}
+            >
                 {this.state.output}
             </Paper>
         );
