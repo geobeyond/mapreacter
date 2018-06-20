@@ -42,9 +42,11 @@ class ConfComponent extends Component {
     getActiveLayers() {
         let _array = [];
         this.props.layers.forEach((rec) => {
-            if (rec['layout']) {
-                if (rec.layout.visibility === 'visible') {
-                    _array.push(rec.id);
+            if (rec.flag_filter) {
+                if (rec['layout']) {
+                    if (rec.layout.visibility === 'visible') {
+                        _array.push(rec.id);
+                    }
                 }
             }
         });
@@ -138,12 +140,14 @@ class ConfComponent extends Component {
                         <i className="material-icons">file_download</i><span style={{ padding: '10px' }}>Shapefile</span>
                     </MenuItem>
 
+                    { /*
                     <MenuItem onClick={(event) => {
                         downloadFile(this.props.local.mapConfig.downloadPdfUrl, this.getActiveLayers(), '.pdf', this.props.local.regProvComponent['filter']);
                         this.handleCloseMenu();
                     }} >
                         <i className="material-icons">file_download</i><span style={{ padding: '10px' }}>PDF</span>
-                    </MenuItem>
+                    </MenuItem> 
+                    */ }
 
                     <MenuItem onClick={(event) => {
                         this.props.startMeasure(INTERACTIONS.measure_line);

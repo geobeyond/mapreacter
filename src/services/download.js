@@ -57,14 +57,16 @@ export const downloadFile = (serviceurl, layers, filenameExtension, filter) => {
             console.log("GET", url);
             axios.get(url)
                 .then((response) => {
-                    console.log("response:", JSON.stringify(response.data));
-
-                    var hiddenElement = document.createElement('a');
-                    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(response.data);
-                    hiddenElement.target = '_blank';
-                    hiddenElement.download = element + filenameExtension;
-                    hiddenElement.click();
-
+                    let encodeddata=encodeURI(response.data);
+                    let pagesize=2000000;
+                    console.log("response:", encodeddata);
+                    for (let i=0; i<encodeddata.length; i+=pagesize) {
+                        var hiddenElement = document.createElement('a');
+                        hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeddata.substring(i,i+pagesize);
+                        hiddenElement.target = '_blank';
+                        hiddenElement.download = element + filenameExtension;
+                        hiddenElement.click();
+                    }
                 })
                 .catch((error) => {
                     console.error(error);

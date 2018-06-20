@@ -425,8 +425,8 @@
           flag_legend: true
         },
         {
-          id: 'nnb:param_oss_polig4b',
-          name: 'nnb:param_oss_polig4b',
+          id: 'nnb:Osservazioni_su_Regioni-Provincie-Comuni',
+          name: 'nnb:Osservazioni_su_Regioni-Provincie-Comuni',
           metadata: { 'bnd:queryable': true, },
           description: '<sub>osservazioni</sub>',
           layout: { visibility: 'visible' },
@@ -434,8 +434,8 @@
           flag_legend: true,
         },
         {
-          id: 'nnb:param_dist_geom4b',
-          name: 'nnb:param_dist_geom4b',
+          id: 'nnb:Osservazioni_su_griglia_10x10',
+          name: 'nnb:Osservazioni_su_griglia_10x10',
           metadata: {
             'bnd:queryable': true,
           },
@@ -445,12 +445,11 @@
           flag_legend: true,
         },
         {
-          id: 'nnb:param_oss_point4b',
-          name: 'nnb:param_oss_point4b',
+          id: 'nnb:Osservazioni_puntuali',
+          name: 'nnb:Osservazioni_puntuali',
           metadata: {
             'bnd:queryable': true,
           },
-          id: 'nnb:param_oss_point4b',
           description: '<sub>osservazioni</sub>',
           layout: { visibility: 'visible' },
           flag_filter: true,
@@ -489,7 +488,7 @@
         { field: 'nome_scientifico', label: 'specielabel', mask: '<SPECIESxx>' },
       ],
       wpsserviceurl: 'http://193.206.192.107/geoserver/ows?strict:true',
-      downloadCSVUrl: 'http://193.206.192.107/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=CSV&typeName=<LAYER>&viewparams=<VIEWPARAMS>&PropertyName=nome_scientifico,anno,lat,lon',
+      downloadCSVUrl: 'http://193.206.192.107/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=CSV&typeName=<LAYER>&viewparams=<VIEWPARAMS>',
       downloadShapefileUrl: 'http://193.206.192.107/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=shape-zip&typeName=<LAYER>&viewparams=<VIEWPARAMS>',
       downloadPdfUrl: 'http://193.206.192.107/geoserver/nnb/wms?service=WMS&version=1.1.0&request=GetMap&format=application/pdf&width=768&height=384&bbox=-180.0,-90.0,180.0,90.0&srs=EPSG:4326&layers=<LAYER>&viewparams=<VIEWPARAMS>',
       helpUrl: 'http://193.206.192.107/mapreacter-help/docs/',
