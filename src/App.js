@@ -28,6 +28,7 @@ import LangComponent from './components/LangComponent';
 import ConfComponent from './components/ConfComponent';
 import RegProvAutocomplete from './components/RegProvAutocomplete';
 import GeocodingAutoComplete from './components/GeocodingAutoComplete';
+import BrowserVerComponent from './components/BrowserVerComponent';
 
 
 import './App.css';
@@ -305,6 +306,8 @@ class App extends Component {
 
                 <AppBar position="static">
                   <Toolbar style={{ height: '80px' }}>
+
+                    <BrowserVerComponent />
 
                     <ConfComponent />
 
