@@ -123,13 +123,18 @@ class Map extends Component {
   }
   exportMapImage(blob) {
     console.log("Map.exportMapImage()", blob);
-    var theLegend = document.createElement('a');
-    theLegend.href = (window.URL).createObjectURL(blob);
-    theLegend.target = '_blank';
-    theLegend.download = 'map.png';
-    theLegend.click();
+    var hiddenElement = document.createElement('a');
+    hiddenElement.href = window.URL.createObjectURL(blob);
+    hiddenElement.target = '_blank';
+    hiddenElement.download = 'map.png';
+    document.body.appendChild(hiddenElement); // necessario x firefox
+    hiddenElement.click();
     store.dispatch(printActions.receiveMapImage());
     //this.props.receiveMapImage();
+    setTimeout(function () {
+      window.URL.revokeObjectURL(hiddenElement.href);
+      document.body.removeChild(hiddenElement);
+    }, 100);    
   };
   render() {
     console.log("Map.render()");
