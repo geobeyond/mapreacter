@@ -29,6 +29,7 @@ import ConfComponent from './components/ConfComponent';
 import RegProvAutocomplete from './components/RegProvAutocomplete';
 import GeocodingAutoComplete from './components/GeocodingAutoComplete';
 import BrowserVerComponent from './components/BrowserVerComponent';
+import ErrorBoundary from './ErrorBoundary';
 
 
 import './App.css';
@@ -296,44 +297,48 @@ class App extends Component {
     console.log("App.render()");
     return (
       <div style={{ width: '100%', height: '100%' }}>
-        <MuiThemeProvider theme={createMuiTheme(this.config.ispraTheme)}>
-          <Provider store={store}>
-            <HashRouter>
-              <div style={{ width: '100%', height: '100%' }}>
+        <ErrorBoundary>
+          <MuiThemeProvider theme={createMuiTheme(this.config.ispraTheme)}>
+            <Provider store={store}>
+              <HashRouter>
+                <div style={{ width: '100%', height: '100%' }}>
 
-                <RefreshIndicatorComponent />
-                <MeasureComponent />
+                  <RefreshIndicatorComponent />
+                  <MeasureComponent />
 
-                <AppBar position="static">
-                  <Toolbar style={{ height: '80px' }}>
+                  <AppBar position="static">
+                    <Toolbar style={{ height: '80px' }}>
 
-                    <BrowserVerComponent />
+                      <BrowserVerComponent />
 
-                    <ConfComponent />
+                      <ConfComponent />
 
-                    <TocComponent />
+                      <TocComponent />
 
-                    <TassonomiaAutoComplete />
+                      <TassonomiaAutoComplete />
 
-                    <RegProvAutocomplete />
+                      <RegProvAutocomplete />
 
-                    <GeocodingAutoComplete />
+                      <GeocodingAutoComplete />
 
-                    <LangComponent style={{ position: 'absolute', right: 40, width: '70px', color: 'currentColor' }} />
+                      <LangComponent style={{ position: 'absolute', right: 40, width: '70px', color: 'currentColor' }} />
 
-                  </Toolbar>
-                </AppBar>
+                    </Toolbar>
+                  </AppBar>
 
-                <Switch>
-                  <Route path="/:viewparams+" render={(props) => (
-                    <Map {...props} />
-                  )} />
-                  <Route exact path="/" component={Map} />
-                </Switch>
-              </div>
-            </HashRouter>
-          </Provider>
-        </MuiThemeProvider>
+                  <ErrorBoundary>
+                    <Switch>
+                      <Route path="/:viewparams+" render={(props) => (
+                        <Map {...props} />
+                      )} />
+                      <Route exact path="/" component={Map} />
+                    </Switch>
+                  </ErrorBoundary>
+                </div>
+              </HashRouter>
+            </Provider>
+          </MuiThemeProvider>
+        </ErrorBoundary>
       </div>
     );
   }
