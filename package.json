@@ -73,17 +73,15 @@
     "whatwg-fetch": "2.0.3"
   },
   "scripts": {
-    "watch": "NODE_ENV=development webpack --watch --config ./config/webpack.config.dev.js",
-    "watchw": "set NODE_ENV=development& webpack --watch --config ./config/webpack.config.dev.js",
+    "watch": "cross-env NODE_ENV=development webpack --watch --config ./config/webpack.config.dev.js",
     "build-css": "node-sass-chokidar src/ --include-path node_modules/ -o src/",
     "watch-css": "npm run build-css && node-sass-chokidar src/ --include-path node_modules/ -o src/ --watch --recursive",
     "build": "node scripts/build.js",
     "test": "jest",
-    "start:dev": "NODE_ENV=development webpack-dev-server --config ./config/webpack.config.dev.js",
-    "start:devw": "set NODE_ENV=development& webpack-dev-server --config ./config/webpack.config.dev.js",
+    "start:dev": "cross-env NODE_ENV=development webpack-dev-server --config ./config/webpack.config.dev.js",
     "package": "npm-run-all build-css build test",
     "deploy": "surge -p build --domain mapreacter.surge.sh",
-    "builddeploy": "set PUBLIC_URL=http://mapreacter.surge.sh& npm-run-all build deploy"
+    "builddeploy": "cross-env PUBLIC_URL=http://mapreacter.surge.sh& npm-run-all build deploy"
   },
   "jest": {
     "setupTestFrameworkScriptFile": "<rootDir>/scripts/setup.js",
