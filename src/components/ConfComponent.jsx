@@ -119,10 +119,12 @@ class ConfComponent extends Component {
                     </MenuItem>
 
 
-                    <MenuItem onClick={(event) => {
-                        this.props.exportMapImage();
-                        this.handleCloseMenu();
-                    }}>
+                    <MenuItem
+                        disabled={navigator.userAgent.indexOf("Edge")>-1}
+                        onClick={(event) => {
+                            this.props.exportMapImage();
+                            this.handleCloseMenu();
+                        }}>
                         <i className="material-icons">file_download</i><span style={{ padding: '10px' }}>PNG</span>
                     </MenuItem>
 
@@ -133,10 +135,12 @@ class ConfComponent extends Component {
                         <i className="material-icons">file_download</i><span style={{ padding: '10px' }}>CSV</span>
                     </MenuItem>
 
-                    <MenuItem onClick={(event) => {
-                        downloadFile(this.props.local.mapConfig.downloadShapefileUrl, this.getActiveLayers(), '.zip', this.props.local.regProvComponent['filter']);
-                        this.handleCloseMenu();
-                    }}>
+                    <MenuItem 
+                        disabled={navigator.userAgent.indexOf("Edge")>-1 && this.props.local.regProvComponent['filter'] && this.props.local.regProvComponent.filter.length>2000} 
+                        onClick={(event) => {
+                            downloadFile(this.props.local.mapConfig.downloadShapefileUrl, this.getActiveLayers(), '.zip', this.props.local.regProvComponent['filter']);
+                            this.handleCloseMenu();
+                        }}>
                         <i className="material-icons">file_download</i><span style={{ padding: '10px' }}>Shapefile</span>
                     </MenuItem>
 
