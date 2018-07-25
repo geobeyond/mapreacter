@@ -347,3 +347,10 @@ li.sdk-layer-group {
 
 .ol-control:hover {
   background-color: #FFFFFF; }
+
+.ol-selectable {
+  -webkit-touch-callout: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text; }
