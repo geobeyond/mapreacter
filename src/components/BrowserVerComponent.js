@@ -79,9 +79,13 @@ class BrowserVerComponent extends Component {
 
     render() {
         console.log("BrowserVerComponent.render()");
+        let _message = 
+            'Attenzione questo browser ('+theBrowserItem.name + ' ' + theBrowserVersion+') '+
+            'non è in grado di eseguire l\'applicativo ' +
+            '... è necessario eseguire un aggiornamento alla versione '+theBrowserItem.minver+ ' o successive';
         return (
             <Dialog open={this.state.sharedialog} >
-                <DialogTitle>Attenzione questo browser ({theBrowserItem.name + ' ' + theBrowserVersion}) non è in grado di eseguire l'applicativo</DialogTitle>
+                <DialogTitle>{_message}</DialogTitle>
             </Dialog>
         );
     }
