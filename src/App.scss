@@ -80,6 +80,7 @@ button.sdk-btn {
   color: #fff;
   font-family: Roboto, Courier, monospace;
   font-size: 16px;
+  -webkit-padding-start: 0;
 }
 
 li.sdk-layer {
@@ -96,7 +97,7 @@ li.sdk-layer-group {
 
 .toc-container {
   display: grid;
-  grid-template-columns: auto 100px 180px;
+  grid-template-columns: auto 60px 140px;
   grid-template-rows: auto;
   padding-bottom: 10px;
 }

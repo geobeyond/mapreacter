@@ -57,11 +57,11 @@ class TocComponent extends Component {
                 >
                     <Dialog
                         fullWidth={true}
-                        maxWidth='md'
+                        maxWidth='sm'
                         open={Boolean(anchorEl)}
                         onClose={() => { this.handleCloseMenu(); }}
                     >
-                        <DialogContent>
+                        <DialogContent style={{ padding: '10px' }}>
                         <div style={{ overflowY: 'scroll', maxHeight: '300px' }}>
                             <ul className="sdk-layer-list" >
                                 <li className="sdk-layer" >
