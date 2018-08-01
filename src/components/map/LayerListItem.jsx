@@ -2,7 +2,7 @@ import React from 'react';
 import { DragSource, DropTarget } from 'react-dnd';
 import { types, layerListItemSource, layerListItemTarget, collect, collectDrop } from '@boundlessgeo/sdk/components/layer-list-item';
 import SdkLayerListItem from '@boundlessgeo/sdk/components/layer-list-item';
-import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 import { fitextent } from '../../actions/map';
 
 
@@ -14,29 +14,29 @@ class LayerListItem extends SdkLayerListItem {
     let fitextentbutton = null;
     if (layer.flag_filter) {
       fitextentbutton = (
-        <IconButton
+        <Button className="button"
           onClick={() => {
             this.props.dispatch(fitextent(this.props.layer.id));
           }}>
           <i className="material-icons">fullscreen</i>
-        </IconButton>
+        </Button>
       );
     }
 
     let moveButtons = (
       <span className="btn-container" style={{width: '100%'}}>
-        <IconButton
+        <Button mini className="button"
           onClick={() => {
             this.moveLayerUp();
           }}>
           <i className="material-icons">arrow_upward</i>
-        </IconButton>
-        <IconButton
+        </Button>
+        <Button className="button"
           onClick={() => {
             this.moveLayerDown();
           }}>
           <i className="material-icons">arrow_downward</i>
-        </IconButton>
+        </Button>
         {fitextentbutton}
       </span>
     );
@@ -44,7 +44,7 @@ class LayerListItem extends SdkLayerListItem {
     return this.props.connectDragSource(this.props.connectDropTarget((
       <li className="sdk-layer">
         <div className="toc-container">
-          <div className="div1" dangerouslySetInnerHTML={{__html: '<span className="name">'+layer.id+'<br/>'+layer.description+'</span>'}} />
+          <div className="div1" dangerouslySetInnerHTML={{__html: '<span class='+(layer.class?layer.class:'name')+'>'+layer.id+(layer.description?'<br/>'+layer.description:'')+'</span>'}} />
           <div className="div2">{checkbox} </div>
           <div className="div3">{moveButtons}</div>
         </div>

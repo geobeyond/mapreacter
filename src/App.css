@@ -301,7 +301,9 @@ button.sdk-btn {
   border-radius: .25rem; }
 
 .sdk-layer-list {
-  color: #fff; }
+  color: #fff;
+  font-family: Roboto, Courier, monospace;
+  font-size: 16px; }
 
 li.sdk-layer {
   list-style: none; }
@@ -315,11 +317,12 @@ li.sdk-layer-group {
 
 .toc-container {
   display: grid;
-  grid-template-columns: auto 100px 180px; }
+  grid-template-columns: auto 100px 180px;
+  grid-template-rows: auto;
+  padding-bottom: 10px; }
 
 .toc-container .div1 {
-  text-align: left;
-  padding: 5px; }
+  text-align: left; }
 
 .toc-container .div2 {
   text-align: center; }
@@ -327,19 +330,35 @@ li.sdk-layer-group {
 .toc-container .div3 {
   text-align: center; }
 
-.toc-container .name {
-  font-family: "Courier New", Courier, monospace;
-  font-size: 14px; }
+.toc-container .title {
+  font-size: 16px;
+  font-style: bold; }
 
-.toc-container input[type=checkbox] {
-  height: 48px; }
+.toc-container .dataLayer {
+  font-size: 16px;
+  font-style: bold; }
+
+.toc-container .name {
+  font-size: 13px; }
+
+.toc-container .description {
+  font-size: 10px;
+  font-style: italic; }
+
+.toc-container .button {
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 10px;
+  padding-right: 10px;
+  min-width: 0;
+  min-height: 0; }
 
 .legend-control {
   top: 65px;
   left: .5em; }
 
 .legend-control .name {
-  font-family: "Courier New", Courier, monospace;
+  font-family: Roboto, Courier, monospace;
   font-size: 14px; }
 
 .ol-control {
