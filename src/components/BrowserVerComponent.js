@@ -1,28 +1,34 @@
 import React, { Component } from 'react';
 import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogTitle';
+// eslint-disable-next-line
+import DialogActions from '@material-ui/core/DialogActions';
+// eslint-disable-next-line
+import Button from '@material-ui/core/Button';
+// eslint-disable-next-line
+import { mylocalizedstrings } from '../services/localizedstring';
 
 const theBrowserList = [
     {
         name: "Edge",
         minver: Number(16.0),
-    }, 
+    },
     {
         name: "Chrome",
         minver: Number(57.0),
-    }, 
+    },
     {
         name: "Safari",
         minver: Number(602.0),  // questa è la "webkit version" e corrisponde a Safari 10.0 
-    }, 
+    },
     {
         name: "Opera",
         minver: Number(44.0),
-    }, 
+    },
     {
         name: "Firefox",
         minver: Number(52.0),
-    }, 
+    },
     {
         name: "MSIE",
         minver: Number(0),
@@ -50,8 +56,8 @@ try {
         return element.indexOf(theBrowserItem.name) > -1;
     });
     let fullversion = userAgentRecord.split("/")[1];
-    while (! Number(fullversion)) {
-        fullversion = fullversion.substr(0,fullversion.lastIndexOf("."));
+    while (!Number(fullversion)) {
+        fullversion = fullversion.substr(0, fullversion.lastIndexOf("."));
     }
     theBrowserVersion = Number(fullversion);
     console.log("BrowserVerComponent() detected:", JSON.stringify(theBrowserItem), theBrowserVersion);
@@ -63,12 +69,15 @@ try {
     }
 }
 
-
-
 class BrowserVerComponent extends Component {
 
     state = {
         sharedialog: false,
+    };
+
+    handleCloseMenu = () => {
+        console.log("TocComponent.handleCloseMenu()");
+        this.setState({ sharedialog: false });
     };
 
     componentDidMount() {
@@ -79,13 +88,23 @@ class BrowserVerComponent extends Component {
 
     render() {
         console.log("BrowserVerComponent.render()");
-        let _message = 
-            'Attenzione questo browser ('+theBrowserItem.name + ' ' + theBrowserVersion+') '+
-            'non è in grado di eseguire l\'applicativo ' +
-            '... è necessario eseguire un aggiornamento alla versione '+theBrowserItem.minver+ ' o successive';
         return (
             <Dialog open={this.state.sharedialog} >
-                <DialogTitle>{_message}</DialogTitle>
+                <DialogContent style={{ 
+                    //padding: '10px' 
+                }}>
+                    <h2>Attenzione</h2>
+                    <p>
+                        il browser corrente ({theBrowserItem.name} {theBrowserVersion})
+                        non è compatibile con l’applicazione, per una corretta visualizzazione è necessario
+                        eseguire l’aggiornamento alla versione {theBrowserItem.minver} o successive
+                    </p>
+                </DialogContent>
+                { /* <DialogActions>
+                    <Button onClick={() => { this.handleCloseMenu(); }}>
+                        {mylocalizedstrings.close}
+                    </Button>
+                </DialogActions> */ }       
             </Dialog>
         );
     }
