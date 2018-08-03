@@ -12,24 +12,10 @@ import ol from 'ol';
 import Control from 'ol/control/control';
 import OverviewMap from 'ol/control/overviewmap';
 //import FullScreen from 'ol/control/fullscreen';
-import DragPan from 'ol/interaction/dragpan';
 import WMSPopup from './map/wms/wmspopup'
 import ZoomControl from './map/zoom-control';
 import * as actions from '../actions/map';
 import { store } from '../App';
-
-const myDragPan = new DragPan({condition: function(event) { 
-  var target = event.originalEvent.target;
-  var tagName = target.tagName;
-  console.log("Map.DragPan() tagName=", tagName);
-  switch(tagName) {
-    case 'CANVAS':
-    //case 'DIV':
-      return true;
-    default:
-      return false;
-  }
-}});
 
 const LegendControl = function (opt_options) {
 
@@ -165,15 +151,6 @@ class Map extends Component {
               input.wrappedInstance.map.removeControl(this.theLegendControl);
               this.theLegendControl = new LegendControl({ layers: this.props.layers, geoserverurl: this.props.local.mapConfig.geoserverurl });
               input.wrappedInstance.map.addControl(this.theLegendControl);
-
-              this.interactions = input.wrappedInstance.map.getInteractions();
-
-              this.interactions.forEach(function(interaction) {
-                if (interaction instanceof DragPan) {
-                  input.wrappedInstance.map.removeInteraction(interaction);
-                  input.wrappedInstance.map.addInteraction(myDragPan);
-                }
-              }, this);
             }
           }}
           style={{ position: 'relative' }}
@@ -194,13 +171,6 @@ class Map extends Component {
                 });
               });
               if (items.length > 0) {
-                this.interactions.forEach(function(interaction) {
-                  if (interaction instanceof DragPan) {
-                  } else {
-                    console.log("Map, disable --->",interaction);
-                    interaction.setActive(false);  
-                  }                    
-                }, this);
                 map.addPopup(
                   <WMSPopup
                     coordinate={xy}
@@ -213,7 +183,7 @@ class Map extends Component {
                         interaction.setActive(true);
                       }, this);
                     }}
-                  />
+                  />, true, true
                 );
               }
               this.props.changerefreshindicator({ status: "hide" });
