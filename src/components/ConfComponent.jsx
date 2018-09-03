@@ -178,8 +178,7 @@ class ConfComponent extends Component {
                         <i className="material-icons">fullscreen</i>
                     </MenuItem>
 
-                    <hr/>
-                    <MenuItem disabled>
+                    <MenuItem disabled style={{ fontStyle: 'italic', paddingTop: 0, paddingBottom: 0 }}>
                         {theBrowserItem.name} {theBrowserVersion}
                     </MenuItem>
                 </Menu>
