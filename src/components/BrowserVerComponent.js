@@ -100,11 +100,11 @@ class BrowserVerComponent extends Component {
                         eseguire l’aggiornamento alla versione {theBrowserItem.minver} o successive
                     </p>
                 </DialogContent>
-                { /* <DialogActions>
+                <DialogActions>
                     <Button onClick={() => { this.handleCloseMenu(); }}>
                         {mylocalizedstrings.close}
                     </Button>
-                </DialogActions> */ }       
+                </DialogActions>
             </Dialog>
         );
     }
