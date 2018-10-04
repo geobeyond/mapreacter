@@ -31,75 +31,15 @@ const theBrowserList = [
     }
 ];
 
-export var theBrowserItem;
-export var theBrowserVersion;
-var sharedialog = false;
-var theMessage = "";
+export var theBrowserItem = { name: "" };
+export var theBrowserVersion = "";
 
-try {
-    //console.log("browser,  Browser CodeName: ", navigator.appCodeName);
-    //console.log("browser,  Browser Name: ", navigator.appName);
-    //console.log("browser,  Browser Version: ", navigator.appVersion);
-    console.log("BrowserVerComponent() Cookies Enabled: ", navigator.cookieEnabled);
-    console.log("BrowserVerComponent() Browser Language: ", navigator.language);
-    console.log("BrowserVerComponent() Browser Online: ", navigator.onLine);
-    console.log("BrowserVerComponent() Platform: ", navigator.platform);
-    console.log("BrowserVerComponent() User-agent header: ", navigator.userAgent);
-
-    if (navigator.userAgent.indexOf("rv:11") > -1) {
-        theBrowserItem = {
-            name: "MSIE",
-        }
-        theBrowserVersion = Number(11);
-        sharedialog = true;
-        theMessage = "il browser corrente (" + theBrowserItem.name + " " + theBrowserVersion + ") non è compatibile con l’applicazione ...";
-
-    } else if (navigator.userAgent.indexOf("MSIE") > -1) {
-        theBrowserItem = {
-            name: "MSIE",
-        }
-        let userAgentRecord = navigator.userAgent.split(";").find(function (element) {
-            return element.indexOf(theBrowserItem.name) > -1;
-        });
-        console.log("BrowserVerComponent() userAgentRecord ->", userAgentRecord);
-        let fullversion = userAgentRecord.split(" ")[2];
-        console.log("BrowserVerComponent() fullversion ->", fullversion);
-        theBrowserVersion = Number(fullversion);
-        sharedialog = true;
-        theMessage = "il browser corrente (" + theBrowserItem.name + " " + theBrowserVersion + ") non è compatibile con l’applicazione ...";
-        
-    } else {
-        theBrowserItem = theBrowserList.find(function (element) {
-            return navigator.userAgent.indexOf(element.name) > -1;
-        });
-
-        let userAgentRecord = navigator.userAgent.split(" ").find(function (element) {
-            return element.indexOf(theBrowserItem.name) > -1;
-        });
-        let fullversion = userAgentRecord.split("/")[1];
-        while (!Number(fullversion)) {
-            fullversion = fullversion.substr(0, fullversion.lastIndexOf("."));
-        }
-        theBrowserVersion = Number(fullversion);
-        if (theBrowserVersion < theBrowserItem.minver) {
-            sharedialog = true;
-            theMessage = "il browser corrente (" + theBrowserItem.name + " " + theBrowserVersion + ") non è compatibile con l’applicazione, " +
-                "per una corretta visualizzazione è necessario eseguire l’aggiornamento alla versione " + theBrowserItem.minver + " o successive";
-        }
-    }
-    console.log("BrowserVerComponent() detected:", JSON.stringify(theBrowserItem), theBrowserVersion, sharedialog, theMessage);
-} catch (error) {
-    theBrowserVersion = Number(0);
-    theBrowserItem = {
-        name: "",
-        minver: Number(-1),
-    }
-}
 
 class BrowserVerComponent extends Component {
 
     state = {
-        sharedialog: false,
+        sharedialog: false, 
+        theMessage: ""
     };
 
     handleCloseMenu = () => {
@@ -108,7 +48,66 @@ class BrowserVerComponent extends Component {
     };
 
     componentDidMount() {
-        this.setState({ sharedialog, theMessage });
+
+        //console.log("browser,  Browser CodeName: ", navigator.appCodeName);
+        //console.log("browser,  Browser Name: ", navigator.appName);
+        //console.log("browser,  Browser Version: ", navigator.appVersion);
+        console.log("BrowserVerComponent.componentDidMount() Cookies Enabled: ", navigator.cookieEnabled);
+        console.log("BrowserVerComponent.componentDidMount() Browser Language: ", navigator.language);
+        console.log("BrowserVerComponent.componentDidMount() Browser Online: ", navigator.onLine);
+        console.log("BrowserVerComponent.componentDidMount() Platform: ", navigator.platform);
+        console.log("BrowserVerComponent.componentDidMount() User-agent header: ", navigator.userAgent);
+
+        if (navigator.userAgent.indexOf("rv:11") > -1) {
+            theBrowserItem = {
+                name: "IE",
+            }
+            theBrowserVersion = Number(11);
+            let theMessage = "il browser corrente (" + theBrowserItem.name + " " + theBrowserVersion + ") non è compatibile con l’applicazione ... " +
+                "per una corretta visualizzazione è necessario utilizzare un browser di ultima generazione";
+            this.setState({ sharedialog: true, theMessage });
+
+        } else if (navigator.userAgent.indexOf("MSIE") > -1) {
+            try {
+                theBrowserItem = {
+                    name: "MSIE",
+                }
+                let userAgentRecord = navigator.userAgent.split(";").find(function (element) {
+                    return element.indexOf(theBrowserItem.name) > -1;
+                });
+                console.log("BrowserVerComponent.componentDidMount() userAgentRecord ->", userAgentRecord);
+                let fullversion = userAgentRecord.split(" ")[2];
+                console.log("BrowserVerComponent.componentDidMount() fullversion ->", fullversion);
+                theBrowserVersion = Number(fullversion);
+            } catch (error) {
+            }
+            let theMessage = "il browser corrente (" + theBrowserItem.name + " " + theBrowserVersion + ") non è compatibile con l’applicazione ... " +
+                "per una corretta visualizzazione è necessario utilizzare un browser di ultima generazione";
+            this.setState({ sharedialog: true, theMessage });
+
+        } else {
+            try {
+                theBrowserItem = theBrowserList.find(function (element) {
+                    return navigator.userAgent.indexOf(element.name) > -1;
+                });
+
+                let userAgentRecord = navigator.userAgent.split(" ").find(function (element) {
+                    return element.indexOf(theBrowserItem.name) > -1;
+                });
+                let fullversion = userAgentRecord.split("/")[1];
+                while (!Number(fullversion)) {
+                    fullversion = fullversion.substr(0, fullversion.lastIndexOf("."));
+                }
+                theBrowserVersion = Number(fullversion);
+                if (theBrowserVersion < theBrowserItem.minver) {
+                    let theMessage = "il browser corrente (" + theBrowserItem.name + " " + theBrowserVersion + ") non è compatibile con l’applicazione, " +
+                        "per una corretta visualizzazione è necessario eseguire l’aggiornamento alla versione " + theBrowserItem.minver + " o successive";
+                    this.setState({ sharedialog: true, theMessage });
+                }
+            } catch (error) {
+            }
+        }
+        console.log("BrowserVerComponent.componentDidMount() detected:", JSON.stringify(theBrowserItem), theBrowserVersion, this.state.sharedialog, this.state.theMessage);
     }
 
     render() {
