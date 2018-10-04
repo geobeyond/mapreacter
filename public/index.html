@@ -411,18 +411,24 @@
           cql_filter: '',
           wpsserviceurl: 'http://193.206.192.107/geoserver/ows?strict:true',
           propertyname: 'regione',  //&propertyName=REGIONE
+          intersectfilter: "&cql_filter=INTERSECTS(geom,collectGeometries(queryCollection('nnb:reg_2016_wgs84_g','geom','cod_reg=<KEY>')))",
+          intersectproperty: 'cod_reg'
         },
         {
           url: 'http://193.206.192.107/geoserver/wfs?service=wfs&version=2.0.0&request=GetFeature&typeNames=nnb:cmprov2016_wgs84_g',
           cql_filter: '&CQL_FILTER=flag_cmpro=2',
           wpsserviceurl: 'http://193.206.192.107/geoserver/ows?strict:true',
-          propertyname: 'provincia'
+          propertyname: 'provincia',
+          intersectfilter: "&cql_filter=INTERSECTS(geom,collectGeometries(queryCollection('nnb:cmprov2016_wgs84_g','geom','cod_pro=<KEY>')))",
+          intersectproperty: 'cod_pro'
         },
         {
           url: 'http://193.206.192.107/geoserver/wfs?service=wfs&version=2.0.0&request=GetFeature&typeNames=nnb:cmprov2016_wgs84_g',
           cql_filter: '&CQL_FILTER=flag_cmpro=1',
           wpsserviceurl: 'http://193.206.192.107/geoserver/ows?strict:true',
-          propertyname: 'den_cmpro'
+          propertyname: 'den_cmpro',
+          intersectfilter: "&cql_filter=INTERSECTS(geom,collectGeometries(queryCollection('nnb:cmprov2016_wgs84_g','geom','cod_cm=<KEY>')))",
+          intersectproperty: 'cod_cm'
         }
       ],
 

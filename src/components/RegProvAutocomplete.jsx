@@ -132,7 +132,7 @@ class RegProvAutocomplete extends React.Component {
     console.log("RegProvAutocomplete() this.state:", JSON.stringify(this.state));
 
     this.props.local.mapConfig.regprovconf.forEach(_record => {
-      const url = _record.url + _record.cql_filter + '&outputFormat=application/json&propertyName=' + _record.propertyname;
+      const url = _record.url + _record.cql_filter + '&outputFormat=application/json&propertyName=' + _record.propertyname + ',' + _record.intersectproperty
       console.log("RegProvAutocomplete() GET", url);
       axios.get(url)
         .then((response) => {
@@ -147,7 +147,8 @@ class RegProvAutocomplete extends React.Component {
                       label: _feature.properties[_record.propertyname],
                       sublabel: _record.propertyname,
                       url: _record.url,
-                      wpsserviceurl: _record.wpsserviceurl
+                      wpsserviceurl: _record.wpsserviceurl,
+                      intersectfilter: _record.intersectfilter.replace("<KEY>", _feature.properties[_record.intersectproperty]),
                     });
                   })
                 )
@@ -261,11 +262,12 @@ class RegProvAutocomplete extends React.Component {
     })
       .then((response) => {
         console.log("RegProvAutocomplete.handleChange() response:", response.data);
-        let feature_coll = (new GeoJSON()).readFeatures(response.data);
-        console.log('RegProvAutocomplete.handleChange() geojson -->', (new GeoJSON()).writeFeature(feature_coll[0]));
-        let feature_wkt = (new WKT()).writeFeature(feature_coll[0]);
+        //let feature_coll = (new GeoJSON()).readFeatures(response.data);
+        //console.log('RegProvAutocomplete.handleChange() geojson -->', (new GeoJSON()).writeFeature(feature_coll[0]));
+        //let feature_wkt = (new WKT()).writeFeature(feature_coll[0]);
 
-        let filter = '&cql_filter=INTERSECTS(geom,' + feature_wkt + ')';
+        //let filter = '&cql_filter=INTERSECTS(geom,' + feature_wkt + ')';
+        let filter = selectedRecord.intersectfilter;
 
         console.log("RegProvAutocomplete.handleChange() filter -->", filter);
         this.props.changeRegProvComponent({ filter: filter });
