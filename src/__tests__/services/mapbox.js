@@ -5,7 +5,9 @@ describe('#createRasterSourceFromStyle', () => {
   it('returns mapboxgl source object of type raster', () => {
     const style = 'satellite';
     const token = 'test';
-    const expected = { type: 'raster',
+    const expected = { 
+      attribution: '<a href="http://mapbox.com">MapBox</a> | <a href="http://mapbox.com/tos">Terms of Service</a>',
+      type: 'raster',
       tileSize: 256,
       tiles: [
         `https://a.tiles.mapbox.com/v4/${style}/{z}/{x}/{y}.png?access_token=${token}`,

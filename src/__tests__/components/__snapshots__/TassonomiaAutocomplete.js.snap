@@ -10,8 +10,6 @@ exports[`renders correctly 1`] = `
     <div
       aria-describedby={undefined}
       className="MuiFormControl-root-6 MuiFormControl-fullWidth-9"
-      onBlur={[Function]}
-      onFocus={[Function]}
     >
       <div
         aria-activedescendant={null}
