@@ -12,12 +12,13 @@
     background-color: white;
     -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
     filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
-    padding: 18px 15px 15px;
+    padding: 15px;
     border-radius: 10px;
     border: 1px solid #cccccc;
     bottom: 12px;
-    left: -50px; 
-    width: 700px;}
+    //left: -50px; 
+    //width: 700px;
+    }
     .sdk-popup:after, .sdk-popup:before {
       top: 100%;
       border: solid transparent;
@@ -76,7 +77,11 @@ button.sdk-btn {
 }  
 
 .sdk-layer-list {
-  color: #fff; }
+  color: #fff;
+  font-family: Roboto, Courier, monospace;
+  font-size: 16px;
+  -webkit-padding-start: 0;
+}
 
 li.sdk-layer {
   list-style: none; 
@@ -92,12 +97,13 @@ li.sdk-layer-group {
 
 .toc-container {
   display: grid;
-  grid-template-columns: auto 100px 180px;
+  grid-template-columns: auto 60px 140px;
+  grid-template-rows: auto;
+  padding-bottom: 10px;
 }
 
 .toc-container .div1 {
   text-align: left;
-  padding: 5px;
 }
 
 .toc-container .div2 {
@@ -108,13 +114,32 @@ li.sdk-layer-group {
   text-align: center;
 }
 
-.toc-container .name {
-  font-family: "Courier New", Courier, monospace;
-  font-size: 14px;
+.toc-container .title {
+  font-size: 16px;
+  font-style: bold;  
 }
 
-.toc-container input[type=checkbox] {
-  height: 48px;
+.toc-container .dataLayer {
+  font-size: 16px;
+  font-style: bold;
+}
+
+.toc-container .name {
+  font-size: 13px;
+}
+
+.toc-container .description {
+  font-size: 10px;
+  font-style: italic;
+}
+
+.toc-container .button {
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 10px;
+  padding-right: 10px;
+  min-width: 0;
+  min-height: 0;
 }
 
 .legend-control {
@@ -123,7 +148,7 @@ li.sdk-layer-group {
 }
 
 .legend-control .name {
-  font-family: "Courier New", Courier, monospace;
+  font-family: Roboto, Courier, monospace;
   font-size: 14px; 
 } 
 
@@ -132,4 +157,12 @@ li.sdk-layer-group {
 }
 .ol-control:hover {
   background-color: #FFFFFF;
+}
+
+.ol-selectable {
+  -webkit-touch-callout: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
 }

@@ -46,7 +46,7 @@ function featuresTableBody(classes, layer, features) {
         <TableRow className={classes.row} key={key}>
           <CustomTableCell>{j===0?layer:''}</CustomTableCell>
           <CustomTableCell>{keys[j]}</CustomTableCell>
-          <CustomTableCell>{feature.properties[keys[j]]}</CustomTableCell>
+          <CustomTableCell dangerouslySetInnerHTML={{__html: feature.properties[keys[j]]}} />
         </TableRow>
       );
     }

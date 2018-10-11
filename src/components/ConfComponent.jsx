@@ -18,6 +18,7 @@ import Button from '@material-ui/core/Button';
 import * as configActions from '../actions/map';
 import { mylocalizedstrings } from '../services/localizedstring';
 import { downloadFile } from '../services/download';
+import { theBrowserItem, theBrowserVersion } from './BrowserVerComponent';
 
 
 class ConfComponent extends Component {
@@ -42,9 +43,11 @@ class ConfComponent extends Component {
     getActiveLayers() {
         let _array = [];
         this.props.layers.forEach((rec) => {
-            if (rec['layout']) {
-                if (rec.layout.visibility === 'visible') {
-                    _array.push(rec.id);
+            if (rec.flag_filter) {
+                if (rec['layout']) {
+                    if (rec.layout.visibility === 'visible') {
+                        _array.push(rec.id);
+                    }
                 }
             }
         });
@@ -65,7 +68,7 @@ class ConfComponent extends Component {
                     onClose={() => { this.setState({ sharedialog: false }); }}
                 >
                     <DialogTitle>{mylocalizedstrings.sharetitle}</DialogTitle>
-                    {/* 
+                    {/*
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
                             {mylocalizedstrings.sharetitle}
@@ -117,10 +120,12 @@ class ConfComponent extends Component {
                     </MenuItem>
 
 
-                    <MenuItem onClick={(event) => {
-                        this.props.exportMapImage();
-                        this.handleCloseMenu();
-                    }}>
+                    <MenuItem
+                        disabled={navigator.userAgent.indexOf("Edge")>-1}
+                        onClick={(event) => {
+                            this.props.exportMapImage();
+                            this.handleCloseMenu();
+                        }}>
                         <i className="material-icons">file_download</i><span style={{ padding: '10px' }}>PNG</span>
                     </MenuItem>
 
@@ -131,19 +136,23 @@ class ConfComponent extends Component {
                         <i className="material-icons">file_download</i><span style={{ padding: '10px' }}>CSV</span>
                     </MenuItem>
 
-                    <MenuItem onClick={(event) => {
-                        downloadFile(this.props.local.mapConfig.downloadShapefileUrl, this.getActiveLayers(), '.zip', this.props.local.regProvComponent['filter']);
-                        this.handleCloseMenu();
-                    }}>
+                    <MenuItem
+                        disabled={navigator.userAgent.indexOf("Edge")>-1 && this.props.local.regProvComponent['filter'] && this.props.local.regProvComponent.filter.length>2000}
+                        onClick={(event) => {
+                            downloadFile(this.props.local.mapConfig.downloadShapefileUrl, this.getActiveLayers(), '.zip', this.props.local.regProvComponent['filter']);
+                            this.handleCloseMenu();
+                        }}>
                         <i className="material-icons">file_download</i><span style={{ padding: '10px' }}>Shapefile</span>
                     </MenuItem>
 
+                    { /*
                     <MenuItem onClick={(event) => {
                         downloadFile(this.props.local.mapConfig.downloadPdfUrl, this.getActiveLayers(), '.pdf', this.props.local.regProvComponent['filter']);
                         this.handleCloseMenu();
                     }} >
                         <i className="material-icons">file_download</i><span style={{ padding: '10px' }}>PDF</span>
                     </MenuItem>
+                    */ }
 
                     <MenuItem onClick={(event) => {
                         this.props.startMeasure(INTERACTIONS.measure_line);
@@ -167,6 +176,10 @@ class ConfComponent extends Component {
                         this.handleCloseMenu();
                     }} >
                         <i className="material-icons">fullscreen</i>
+                    </MenuItem>
+
+                    <MenuItem disabled style={{ fontStyle: 'italic', paddingTop: 0, paddingBottom: 0 }}>
+                        {theBrowserItem.name} {theBrowserVersion}
                     </MenuItem>
                 </Menu>
 

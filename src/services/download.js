@@ -51,30 +51,43 @@ export const downloadFile = (serviceurl, layers, filenameExtension, filter) => {
     }
     layers.forEach(element => {
         let url = serviceurl.replace('<LAYER>', element).replace('<VIEWPARAMS>', viewparams.join(';')+filter);
-        console.log("downloadFile()", url);
         
         if (url.includes('outputFormat=CSV')) {
-            console.log("GET", url);
+            console.log("downloadFile() GET", url);
             axios.get(url)
                 .then((response) => {
-                    console.log("response:", JSON.stringify(response.data));
+                    console.log("downloadFile() navigator.msSaveBlob ->", navigator.msSaveBlob);
+                    console.log("downloadFile() received", response.data.length, "bytes");
+                    var blob = new Blob([response.data], { type: "text/csv" });
 
-                    var hiddenElement = document.createElement('a');
-                    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(response.data);
-                    hiddenElement.target = '_blank';
-                    hiddenElement.download = element + filenameExtension;
-                    hiddenElement.click();
+                    if ( navigator.msSaveBlob ) {                        
+                        navigator.msSaveBlob(blob, element + filenameExtension);
 
+                    } else {
+                        var hiddenElement = document.createElement('a');
+                        hiddenElement.href = window.URL.createObjectURL(blob);
+                        hiddenElement.target = '_blank';
+                        hiddenElement.download = element + filenameExtension;
+                        console.log("downloadFile() hiddenElement:", hiddenElement);
+                        document.body.appendChild(hiddenElement); // necessario x firefox
+                        hiddenElement.click();                        
+                        setTimeout(function(){
+                            window.URL.revokeObjectURL(hiddenElement.href);  
+                            document.body.removeChild(hiddenElement);
+                        }, 100);
+                    }
                 })
                 .catch((error) => {
                     console.error(error);
                 });
         } else {
+            console.log("downloadFile()", url);
             var hiddenElement = document.createElement('a');
             hiddenElement.href = url;
             hiddenElement.target = '_blank';
             hiddenElement.download = element + filenameExtension;
-            console.log("hiddenElement:", hiddenElement);
+            console.log("downloadFile() hiddenElement:", hiddenElement);
+            document.body.appendChild(hiddenElement); // necessario x firefox
             hiddenElement.click();
         }
     });

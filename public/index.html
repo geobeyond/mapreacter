@@ -73,9 +73,9 @@
           metadata: {
             'mapbox:group': 'base',
           },
-          description: '<sub><i>OpenStreetMap</i> is a free, editable map of the whole world</sub>',
+          description: "<span class='description'>Open Street Map</span>",
           layout: {
-            visibility: 'visible'
+            visibility: 'none'
           }
         },
         {
@@ -86,52 +86,93 @@
           },
           type: 'raster',
           source: 'mapbox',
-          description: '<sub><i>Mapbox</i> is a large provider of custom online maps for websites and applications</sub>',
+          description: "<span class='description'>Dato di base satellitare</span>",
           layout: {
             visibility: 'visible'
           }
         },
         {
-          id: 'griglia 10 km',
+          id: 'Griglia 10x10 km',
           name: 'nnb:admin_shp_it_10km',
           metadata: {
             'mapbox:group': 'base',
             'bnd:queryable': true,
           },
-          description: '<sub>griglia 10 km</sub>',
           layout: { visibility: 'none' },
           flag_legend: true
         },
         {
-          id: 'comuni',
+          id: 'Comuni',
           name: 'nnb:com2016_wgs84_g',
           metadata: {
             'mapbox:group': 'base',
             'bnd:queryable': true,
           },
-          description: '<sub>comuni</sub>',
           layout: { visibility: 'none' },
           flag_legend: true
         },
         {
-          id: 'provincie',
+          id: 'Provincie',
           name: 'nnb:cmprov2016_wgs84_g',
           metadata: {
             'mapbox:group': 'base',
             'bnd:queryable': true,
           },
-          description: '<sub>provincie</sub>',
           layout: { visibility: 'none' },
           flag_legend: true
         },
         {
-          id: 'regioni',
+          id: 'Regioni',
           name: 'nnb:reg_2016_wgs84_g',
           metadata: {
             'mapbox:group': 'base',
             'bnd:queryable': true,
           },
-          description: '<sub>regioni</sub>',
+          description: "<span class='description'></span>",
+          layout: { visibility: 'none' },
+          flag_legend: true
+        },
+        {
+          id: 'Studi Federparchi',
+          name: 'nnb:studi_federparchi',
+          metadata: {
+            'mapbox:group': 'sitiprotetti',
+            'bnd:queryable': true,
+          },
+          description: "<span class='description'>Studi scientifici prodotti dai Parchi Nazionali Italiani</span>",
+          layout: { visibility: 'none' },
+          flag_legend: true
+        },
+        {
+          id: 'Rete Natura 2000 (SIC ZPS ZSC)',
+          name: 'nnb:sic_zps_ita_32',
+          metadata: {
+            'mapbox:group': 'sitiprotetti',
+            'bnd:queryable': true,
+          },
+          description: "<span class='description'>Siti protetti (SIC ZPS ZSC)</span>",
+          layout: { visibility: 'none' },
+          flag_legend: true
+        },
+        {
+          id: 'Aree Protette EUAP',
+          name: 'nnb:Siti_protetti_Aree_Protette_EUAP',
+          metadata: {
+            'mapbox:group': 'sitiprotetti',
+            'bnd:queryable': false,
+          },
+          description: "<span class='description'>Elenco Aree Protette EUAP</span>",
+          layout: { visibility: 'none' },
+          flag_legend: true
+        },
+        {
+          id: 'Aree Ramsar',
+          name: 'nnb:Siti_Protetti_Aree_Protette_Ramsar',
+          metadata: {
+            'mapbox:group': 'sitiprotetti',
+            'bnd:queryable': false,
+          },
+          description: "<span class='description'>Zone umide di importanza internazionale</span>",
           layout: { visibility: 'none' },
           flag_legend: true
         },
@@ -139,65 +180,21 @@
           id: 'Siti protetti aree importanti avifauna',
           name: 'nnb:Aree_Importanti_Avifauna',
           metadata: {
-            'mapbox:group': 'sitiprotetti',
+            'mapbox:group': 'specieehabitat',
             'bnd:queryable': false,
           },
-          description: '<sub>Siti protetti aree importanti avifauna</sub>',
+          description: "<span class='description'>Cartografia delle Aree importanti per la salvaguardia dell'avifanua nazionale</span>",
           layout: { visibility: 'none' },
           flag_legend: true
-        },
+        },        
         {
-          id: 'Studi federparchi',
-          name: 'nnb:studi_federparchi',
-          metadata: {
-            'mapbox:group': 'sitiprotetti',
-            'bnd:queryable': true,
-          },
-          description: '<sub>Studi federparchi</sub>',
-          layout: { visibility: 'none' },
-          flag_legend: true
-        },
-        {
-          id: 'Siti protetti (SIC ZPS ZSC)',
-          name: 'nnb:sic_zps_ita_32',
-          metadata: {
-            'mapbox:group': 'sitiprotetti',
-            'bnd:queryable': true,
-          },
-          description: '<sub>Siti protetti (SIC ZPS ZSC)</sub>',
-          layout: { visibility: 'none' },
-          flag_legend: true
-        },
-        {
-          id: 'Siti protetti Aree Protette EUAP',
-          name: 'nnb:Siti_protetti_Aree_Protette_EUAP',
-          metadata: {
-            'mapbox:group': 'sitiprotetti',
-            'bnd:queryable': false,
-          },
-          description: '<sub>Siti protetti Aree Protette EUAP</sub>',
-          layout: { visibility: 'none' },
-          flag_legend: true
-        },
-        {
-          id: 'Siti protetti Aree Protette Ramsar',
-          name: 'nnb:Siti_Protetti_Aree_Protette_Ramsar',
-          metadata: {
-            'mapbox:group': 'sitiprotetti',
-            'bnd:queryable': false,
-          },
-          description: '<sub>Siti protetti Aree Protette Ramsar</sub>',
-          layout: { visibility: 'none' },
-          flag_legend: true
-        },
-        {
-          id: 'serie vegetazione italia',
+          id: 'Serie vegetazione italia',
           name: 'nnb:carta_serie_vegetazione_italia',
           metadata: {
             'mapbox:group': 'specieehabitat',
             'bnd:queryable': true,
           },
-          description: '<sub>serie vegetazione italia</sub>',
+          description: "<span class='description'>Cartografia degli ambiti di pertinenza di una stessa serie di vegetazione</span>",
           layout: { visibility: 'none' },
           flag_legend: true
         },
@@ -208,253 +205,200 @@
             'mapbox:group': 'specieehabitat',
             'bnd:queryable': true,
           },
-          description: '<sub>vegetazione naturale potenziale - VNP</sub>',
+          description: "<span class='description'>Cartografia degli ambiti di pertinenza delle tipologie di Vegetazione Naturale Potenziale e loro stato di conservazione</span>",
           layout: { visibility: 'none' },
           flag_legend: true,
           styles: 'VEGETAZIONE_NATURALE_POTENZIALE_vnp'
         },
         {
-          id: 'vegetazione naturale potenziale - ILC',
+          id: 'Vegetazione naturale potenziale - ILC',
           name: 'nnb:vegetazione naturale potenziale - ILC',
           metadata: {
             'mapbox:group': 'specieehabitat',
             'bnd:queryable': true,
           },
-          description: '<sub>vegetazione naturale potenziale - ILC</sub>',
+          description: "<span class='description'>Cartografia degli ambiti di pertinenza delle tipologie di Vegetazione Naturale Potenziale - Index of Landscape Conservation (ILC)</span>",
           layout: { visibility: 'none' },
           flag_legend: true
         },
         {
-          id: 'ecoregioni',
+          id: 'Ecoregioni',
           name: 'nnb:ecoregioni_italia',
           metadata: {
             'mapbox:group': 'specieehabitat',
             'bnd:queryable': true,
           },
-          description: '<sub>ecoregioni</sub>',
+          description: "<span class='description'>Cartografia di regioni geografiche ecologicamente omogenee</span>",
           layout: { visibility: 'none' },
           flag_legend: true
         },
         {
-          id: 'ecosistemi - naturalita',
+          id: 'Ecosistemi - naturalita',
           name: 'nnb:ecosistemi_reali',
           metadata: {
             'mapbox:group': 'specieehabitat',
             'bnd:queryable': true,
           },
-          description: '<sub>ecosistemi - naturalità</sub>',
+          description: "<span class='description'>Cartografia nazionale che descrive gli Ecosistemi d'Italia Ecosistemi reali, qualità e naturalità</span>",
           layout: { visibility: 'none' },
           flag_legend: true,
           styles: 'ecosistemi_naturalita'
         },
         {
-          id: 'ecosistemi - qualita',
+          id: 'Ecosistemi - qualita',
           name: 'nnb:ecosistemi_reali',
           metadata: {
             'mapbox:group': 'specieehabitat',
             'bnd:queryable': true,
           },
-          description: '<sub>ecosistemi - qualità</sub>',
+          description: "<span class='description'>Cartografia nazionale che descrive gli Ecosistemi d'Italia Ecosistemi reali, qualità e naturalità</span>",
           layout: { visibility: 'none' },
           flag_legend: true,
           styles: 'ecosistemi_qualita'
         },
         {
-          id: 'ecosistemi reali',
+          id: 'Ecosistemi reali',
           name: 'nnb:ecosistemi_reali',
           metadata: {
             'mapbox:group': 'specieehabitat',
             'bnd:queryable': true,
           },
-          description: '<sub>ecosistemi reali</sub>',
+          description: "<span class='description'>Cartografia nazionale che descrive gli Ecosistemi d'Italia Ecosistemi reali, qualità e naturalità</span>",
           layout: { visibility: 'none' },
           flag_legend: true
         },
         {
-          id: 'IPA - Important plant areas',
+          id: 'IPA - Important Plant Areas',
           name: 'nnb:ipa_nazionale',
           metadata: {
             'mapbox:group': 'specieehabitat',
             'bnd:queryable': true,
           },
-          description: '<sub>IPA - Important plant areas</sub>',
+          description: "<span class='description'>Cartografia delle Aree Importanti per le Piante</span>",
           layout: { visibility: 'none' },
           flag_legend: true
         },
         {
-          id: 'foreste vetuste',
+          id: 'Foreste vetuste',
           name: 'nnb:foreste_vetuste',
           metadata: {
             'mapbox:group': 'specieehabitat',
             'bnd:queryable': true,
           },
-          description: '<sub>foreste vetuste</sub>',
+          description: "<span class='description'>Cartografia delle foreste vetuste nei Parchi Nazionali d'Italia - caratterizzazione floristica, vegetazionale, strutturale</span>",
           layout: { visibility: 'none' },
           flag_legend: true
         },
         {
-          id: 'carta dei tipi forestali molise',
+          id: 'Carta dei tipi forestali Molise',
           name: 'nnb:carta_dei_tipi_forestali_molise',
           metadata: {
             'mapbox:group': 'specieehabitat',
             'bnd:queryable': true,
           },
-          description: '<sub>carta dei tipi forestali molise</sub>',
+          description: "<span class='description'>Cartografia puntuale che descrive la distribuzione delle specie di flora presenti nella regione Molise</span>",
           layout: { visibility: 'none' },
           flag_legend: true
         },
         {
-          id: 'tipi forestali molise',
+          id: 'Tipi forestali Molise',
           name: 'nnb:tipi_forestali_molise',
           metadata: {
             'mapbox:group': 'specieehabitat',
             'bnd:queryable': true,
           },
-          description: '<sub>tipi forestali molise</sub>',
+          description: "<span class='description'>Cartografia puntuale dei tipi forestali per la Regione Molise</span>",
           layout: { visibility: 'none' },
           flag_legend: true
         },
         {
-          id: 'art.17 species distribution',
-          name: 'nnb:art17_species_distribution',
-          metadata: {
-            'mapbox:group': 'specieehabitat',
-            'bnd:queryable': true,
-          },
-          description: '<sub>art.17 species distribution</sub>',
-          layout: { visibility: 'none' },
-          flag_legend: true
-        },
-        {
-          id: 'art17 habitats distribution',
-          name: 'nnb:art17_habitats_distribution',
-          metadata: {
-            'mapbox:group': 'specieehabitat',
-            'bnd:queryable': true,
-          },
-          description: '<sub>art.17 habitats distribution</sub>',
-          layout: { visibility: 'none' },
-          flag_legend: true
-        },
-        {
-          id: 'art12 birds sensitives nnb',
-          name: 'nnb:art12_birds_sensitives_nnb',
-          metadata: {
-            'mapbox:group': 'specieehabitat',
-            'bnd:queryable': true,
-          },
-          description: '<sub>art.12 birds sensitives nnb</sub>',
-          layout: { visibility: 'none' },
-          flag_legend: true
-        },
-        {
-          id: 'art12 birds distribution nnb',
-          name: 'nnb:art12_birds_distribution_nnb',
-          metadata: {
-            'mapbox:group': 'specieehabitat',
-            'bnd:queryable': true,
-          },
-          description: '<sub>art.12 birds distribution nnb</sub>',
-          layout: { visibility: 'none' },
-          flag_legend: true
-        },
-        {
-          id: 'art12 birds range nnb',
-          name: 'nnb:art12_birds_range_nnb',
-          metadata: {
-            'mapbox:group': 'specieehabitat',
-            'bnd:queryable': true,
-          },
-          description: '<sub>art.12_birds range nnb</sub>',
-          layout: { visibility: 'none' },
-          flag_legend: true
-        },
-        {
-          id: 'sidimar batimetria',
+          id: 'Batimetria',
           name: 'nnb:sidimar_batimetria',
           metadata: {
             'mapbox:group': 'mare',
             'bnd:queryable': true,
           },
-          description: '<sub>Sidimar - batimetria</sub>',
+          description: "<span class='description'>Cartografia della Batimetria costiera nazionale</span>",
           layout: { visibility: 'none' },
           flag_legend: true
         },
         {
-          id: 'praterie posidonia oceanica',
+          id: 'Praterie posidonia oceanica',
           name: 'nnb:praterie_posidonia_oceanica',
           metadata: {
             'mapbox:group': 'mare',
             'bnd:queryable': true,
           },
-          description: '<sub>Praterie posidonia oceanica</sub>',
+          description: "<span class='description'>Cartografia delle Praterie di posidonia oceanica</span>",
           layout: { visibility: 'none' },
           flag_legend: true
         },
         {
-          id: 'naturalita marino costiera',
+          id: 'Naturalità marino costiera',
           name: 'nnb:naturalita_marino_costiera',
           metadata: {
             'mapbox:group': 'mare',
             'bnd:queryable': true,
           },
-          description: '<sub>Naturalità marino costiera</sub>',
+          description: "<span class='description'>Cartografia dell’indice di naturalità delle acque</span>",
           layout: { visibility: 'none' },
           flag_legend: true
         },
         {
-          id: 'sedimenti marino costieri',
+          id: 'Sedimenti marino costieri',
           name: 'nnb:sedimenti_marino_costieri',
           metadata: {
             'mapbox:group': 'mare',
             'bnd:queryable': true,
           },
-          description: '<sub>Sedimenti marino costieri</sub>',
+          description: "<span class='description'>Cartografia dei sedimenti delle principali biocenosi marine costiere</span>",
           layout: { visibility: 'none' },
           flag_legend: true
         },
         {
-          id: 'biocenosi bentoniche',
+          id: 'Biocenosi bentoniche',
           name: 'nnb:biocenosi_bentoniche',
           metadata: {
             'mapbox:group': 'mare',
             'bnd:queryable': true,
           },
-          description: '<sub>Biocenosi bentoniche</sub>',
+          description: "<span class='description'>Cartografia delle principali biocenosi marine costiere</span>",
           layout: { visibility: 'none' },
           flag_legend: true
         },
         {
-          id: 'nnb:param_oss_polig4b',
-          name: 'nnb:param_oss_polig4b',
+          id: 'nnb:Osservazioni_su_Regioni-Provincie-Comuni',
+          name: 'nnb:Osservazioni_su_Regioni-Provincie-Comuni',
           metadata: { 'bnd:queryable': true, },
-          description: '<sub>osservazioni</sub>',
+          description: "<span class='description'>Osservazioni di presenza/assenza sul territorio Nazionale, Regionale e Provinciale</span>",
           layout: { visibility: 'visible' },
           flag_filter: true,
           flag_legend: true,
+          class: 'dataLayer',
         },
         {
-          id: 'nnb:param_dist_geom4b',
-          name: 'nnb:param_dist_geom4b',
+          id: 'nnb:Osservazioni_su_griglia_10x10',
+          name: 'nnb:Osservazioni_su_griglia_10x10',
           metadata: {
             'bnd:queryable': true,
           },
-          description: '<sub>distribuzioni</sub>',
+          description: "<span class='description'>Osservazioni con griglia</span>",
           layout: { visibility: 'visible' },
           flag_filter: true,
           flag_legend: true,
+          class: 'dataLayer',
         },
         {
-          id: 'nnb:param_oss_point4b',
-          name: 'nnb:param_oss_point4b',
+          id: 'nnb:Osservazioni_puntuali',
+          name: 'nnb:Osservazioni_puntuali',
           metadata: {
             'bnd:queryable': true,
           },
-          id: 'nnb:param_oss_point4b',
-          description: '<sub>osservazioni</sub>',
+          description: "<span class='description'>Osservazioni con coordinate</span>",
           layout: { visibility: 'visible' },
           flag_filter: true,
           flag_legend: true,
+          class: 'dataLayer',
         },
       ],
       tassonomiaserviceurl: 'http://193.206.192.107/MyRestServer/tassonomia?name=',
@@ -467,18 +411,24 @@
           cql_filter: '',
           wpsserviceurl: 'http://193.206.192.107/geoserver/ows?strict:true',
           propertyname: 'regione',  //&propertyName=REGIONE
+          intersectfilter: "&cql_filter=INTERSECTS(geom,collectGeometries(queryCollection('nnb:reg_2016_wgs84_g','geom','cod_reg=<KEY>')))",
+          intersectproperty: 'cod_reg'
         },
         {
           url: 'http://193.206.192.107/geoserver/wfs?service=wfs&version=2.0.0&request=GetFeature&typeNames=nnb:cmprov2016_wgs84_g',
           cql_filter: '&CQL_FILTER=flag_cmpro=2',
           wpsserviceurl: 'http://193.206.192.107/geoserver/ows?strict:true',
-          propertyname: 'provincia'
+          propertyname: 'provincia',
+          intersectfilter: "&cql_filter=INTERSECTS(geom,collectGeometries(queryCollection('nnb:cmprov2016_wgs84_g','geom','cod_pro=<KEY>')))",
+          intersectproperty: 'cod_pro'
         },
         {
           url: 'http://193.206.192.107/geoserver/wfs?service=wfs&version=2.0.0&request=GetFeature&typeNames=nnb:cmprov2016_wgs84_g',
           cql_filter: '&CQL_FILTER=flag_cmpro=1',
           wpsserviceurl: 'http://193.206.192.107/geoserver/ows?strict:true',
-          propertyname: 'den_cmpro'
+          propertyname: 'den_cmpro',
+          intersectfilter: "&cql_filter=INTERSECTS(geom,collectGeometries(queryCollection('nnb:cmprov2016_wgs84_g','geom','cod_cm=<KEY>')))",
+          intersectproperty: 'cod_cm'
         }
       ],
 
@@ -489,13 +439,13 @@
         { field: 'nome_scientifico', label: 'specielabel', mask: '<SPECIESxx>' },
       ],
       wpsserviceurl: 'http://193.206.192.107/geoserver/ows?strict:true',
-      downloadCSVUrl: 'http://193.206.192.107/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=CSV&typeName=<LAYER>&viewparams=<VIEWPARAMS>&PropertyName=nome_scientifico,anno,lat,lon',
+      downloadCSVUrl: 'http://193.206.192.107/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=CSV&typeName=<LAYER>&viewparams=<VIEWPARAMS>',
       downloadShapefileUrl: 'http://193.206.192.107/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=shape-zip&typeName=<LAYER>&viewparams=<VIEWPARAMS>',
       downloadPdfUrl: 'http://193.206.192.107/geoserver/nnb/wms?service=WMS&version=1.1.0&request=GetMap&format=application/pdf&width=768&height=384&bbox=-180.0,-90.0,180.0,90.0&srs=EPSG:4326&layers=<LAYER>&viewparams=<VIEWPARAMS>',
       helpUrl: 'http://193.206.192.107/mapreacter-help/docs/',
       helpDoc: '/doc_mapreacter.html',
       SdkMousePosition: {
-        style: { position: 'absolute', top: 10, right: 40, zIndex: 1, width: '5em', color: '#00ffff' }
+        style: { position: 'absolute', top: 10, right: 40, zIndex: 1, width: '5em', color: '#00ffff', fontFamily: 'roboto', fontSize: 14 }
       },
       geocodingurl: 'https://nominatim.openstreetmap.org/search?format=json&polygon_geojson=1&viewbox=35.2889616,47.0921462,6.6272658,18.7844746&bounded=1&q=',
       messages: {

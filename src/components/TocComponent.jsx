@@ -57,18 +57,18 @@ class TocComponent extends Component {
                 >
                     <Dialog
                         fullWidth={true}
-                        maxWidth='md'
+                        maxWidth='sm'
                         open={Boolean(anchorEl)}
                         onClose={() => { this.handleCloseMenu(); }}
                     >
-                        <DialogContent>
+                        <DialogContent style={{ padding: '10px' }}>
                         <div style={{ overflowY: 'scroll', maxHeight: '300px' }}>
                             <ul className="sdk-layer-list" >
                                 <li className="sdk-layer" >
                                     <div className="toc-container">
-                                        <div className="div1"><span className="name">{mylocalizedstrings.layer}</span> </div>
-                                        <div className="div2"><span className="name">{mylocalizedstrings.onoff}</span> </div>
-                                        <div className="div3"><span className="name">{mylocalizedstrings.updown}</span> </div>
+                                        <div className="div1"><span className="title">{mylocalizedstrings.layer}</span> </div>
+                                        <div className="div2"><span className="title">{mylocalizedstrings.onoff}</span> </div>
+                                        <div className="div3"><span className="title">{mylocalizedstrings.updown}</span> </div>
                                     </div>
                                 </li>
                             </ul>

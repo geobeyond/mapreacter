@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import React, { Component } from 'react';
 import { HashRouter, Switch, Route } from 'react-router-dom'
 import { createStore, combineReducers, applyMiddleware } from 'redux';
@@ -28,6 +29,8 @@ import LangComponent from './components/LangComponent';
 import ConfComponent from './components/ConfComponent';
 import RegProvAutocomplete from './components/RegProvAutocomplete';
 import GeocodingAutoComplete from './components/GeocodingAutoComplete';
+import BrowserVerComponent from './components/BrowserVerComponent';
+import ErrorBoundary from './ErrorBoundary';
 
 
 import './App.css';
@@ -295,42 +298,48 @@ class App extends Component {
     console.log("App.render()");
     return (
       <div style={{ width: '100%', height: '100%' }}>
-        <MuiThemeProvider theme={createMuiTheme(this.config.ispraTheme)}>
-          <Provider store={store}>
-            <HashRouter>
-              <div style={{ width: '100%', height: '100%' }}>
+        <ErrorBoundary>
+          <MuiThemeProvider theme={createMuiTheme(this.config.ispraTheme)}>
+            <Provider store={store}>
+              <HashRouter>
+                <div style={{ width: '100%', height: '100%' }}>
 
-                <RefreshIndicatorComponent />
-                <MeasureComponent />
+                  <RefreshIndicatorComponent />
+                  <MeasureComponent />
 
-                <AppBar position="static">
-                  <Toolbar style={{ height: '80px' }}>
+                  <AppBar position="static">
+                    <Toolbar style={{ height: '80px' }}>
 
-                    <ConfComponent />
+                      <BrowserVerComponent />
 
-                    <TocComponent />
+                      <ConfComponent />
 
-                    <TassonomiaAutoComplete />
+                      <TocComponent />
 
-                    <RegProvAutocomplete />
+                      <TassonomiaAutoComplete />
 
-                    <GeocodingAutoComplete />
+                      <RegProvAutocomplete />
 
-                    <LangComponent style={{ position: 'absolute', right: 40, width: '70px', color: 'currentColor' }} />
+                      <GeocodingAutoComplete />
 
-                  </Toolbar>
-                </AppBar>
+                      <LangComponent style={{ position: 'absolute', right: 40, width: '70px', color: 'currentColor' }} />
 
-                <Switch>
-                  <Route path="/:viewparams+" render={(props) => (
-                    <Map {...props} />
-                  )} />
-                  <Route exact path="/" component={Map} />
-                </Switch>
-              </div>
-            </HashRouter>
-          </Provider>
-        </MuiThemeProvider>
+                    </Toolbar>
+                  </AppBar>
+
+                  <ErrorBoundary>
+                    <Switch>
+                      <Route path="/:viewparams+" render={(props) => (
+                        <Map {...props} />
+                      )} />
+                      <Route exact path="/" component={Map} />
+                    </Switch>
+                  </ErrorBoundary>
+                </div>
+              </HashRouter>
+            </Provider>
+          </MuiThemeProvider>
+        </ErrorBoundary>
       </div>
     );
   }
